@@ -1,0 +1,45 @@
+.div-wrapper .overlap-wrapper {
+    position: absolute;
+    width: 349px;
+    height: 296px;
+    top: 689px;
+    left: 641px;
+  }
+  
+  .div-wrapper .overlap-3 {
+    position: relative;
+    width: 345px;
+    height: 296px;
+    background-color: #ffffff;
+    border-radius: 25px;
+    box-shadow: var(--1);
+  }
+  
+  .div-wrapper .text-wrapper {
+    position: absolute;
+    height: 24px;
+    top: 30px;
+    left: 40px;
+    font-family: "Pretendard Variable-Bold", Helvetica;
+    font-weight: 700;
+    color: #38465a;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+  }
+  
+  .div-wrapper .text-description {
+    position: absolute;
+    width: 265px;
+    height: 152px;
+    top: 84px;
+    left: 40px;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    color: #38465a;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
