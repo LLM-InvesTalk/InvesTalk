@@ -1,17 +1,14 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
+import router from "./router";
 
-// pages
-import Test from "./pages/test/TestPage";
+// css
+import "./components/detail/css/DetailGlobals.css";
+import "./components/detail/css/DetailStyleguide.css";
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          {/* <Route path="/" element={<Main />} /> */}
-          <Route path="/test" element={<Test />} />
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </div>
   );
 }
