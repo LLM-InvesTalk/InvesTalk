@@ -1,9 +1,11 @@
-import SemiConductorCard from "../../components/SemiConductorCard";
+import StockInfoCard from "../../components/detail/stockinfo/StockInfoCard";
+import FinancialStatements from "../../components/detail/financialstatements/FinancialStatements";
 
 const DetailPage = () => {
   return (
     <div>
-      <div>DetailPage</div>
+      <FinancialStatements />
+      <StockInfoCard />
     </div>
   );
 };
