@@ -1,5 +1,4 @@
-import React from "react";
-import "./FinancialStatements.css"; // CSS 파일을 따로 분리해서 사용
+import "./FinancialStatements.css";
 
 const FinancialStatements = () => {
   return (
