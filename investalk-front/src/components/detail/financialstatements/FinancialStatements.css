@@ -1,0 +1,208 @@
+.div-wrapper .overlap {
+  position: relative;
+  width: 1635px;
+  height: 1205px;
+  top: -48px;
+  left: -72px;
+}
+
+.div-wrapper .group {
+  position: absolute;
+  width: 1635px;
+  height: 1205px;
+  top: 0;
+  left: 0;
+}
+
+.div-wrapper .group-wrapper {
+  position: absolute;
+  width: 720px;
+  height: 200px;
+  top: 459px;
+  left: 266px;
+  background-color: #ffffff;
+  border-radius: 25px;
+  box-shadow: 0px 24px 40px rgba(175, 160, 217, 0.35);
+  /* margin-top: 30px; */
+}
+
+.div-wrapper .group-2 {
+  position: relative;
+  width: 654px;
+  height: 140px;
+  top: 30px;
+  left: 40px;
+}
+
+.div-wrapper .text-wrapper-2 {
+  position: absolute;
+  height: 24px;
+  top: 0;
+  left: 0;
+  font-family: "Pretendard Variable-Bold", Helvetica;
+  font-weight: 700;
+  color: #38465a;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.div-wrapper .frame {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  position: absolute;
+  top: 0;
+  left: 102px;
+}
+
+.div-wrapper .frame-wrapper {
+  position: relative;
+  width: 170px;
+  height: 140px;
+  box-shadow: 0px 24px 40px #afa0d926;
+}
+
+.div-wrapper .frame-2 {
+  display: flex;
+  flex-direction: column;
+  width: 170px;
+  height: 140px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 10px;
+  position: relative;
+  border-radius: 25px;
+  border: 0.15px solid;
+  border-color: var(--x);
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.div-wrapper .frame-3 {
+  display: flex;
+  flex-direction: column;
+  width: 149px;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  flex: 0 0 auto;
+  margin-top: -0.5px;
+  margin-bottom: -0.5px;
+}
+
+.div-wrapper .frame-4 {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0px 8px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.div-wrapper .text-wrapper-3 {
+  position: relative;
+  width: fit-content;
+  font-family: "Pretendard Variable-Bold", Helvetica;
+  font-weight: 700;
+  color: #38465a;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.div-wrapper .text-wrapper-4 {
+  position: relative;
+  width: fit-content;
+  margin-top: -0.8px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #534848;
+  font-size: 16px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.div-wrapper .text-wrapper-5 {
+  position: relative;
+  width: fit-content;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.div-wrapper .frame-5 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px 10px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.div-wrapper .frame-6 {
+  display: flex;
+  flex-direction: column;
+  width: 68px;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  position: relative;
+  background-color: #ffffffa6;
+  border-radius: 11.2px;
+  box-shadow: 0px 24px 40px #afa0d959;
+}
+
+.div-wrapper .text-wrapper-6 {
+  width: fit-content;
+  margin-top: -0.8px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  font-size: 12px;
+  white-space: nowrap;
+  position: relative;
+  color: #38465a;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.div-wrapper .frame-7 {
+  display: inline-flex;
+  align-items: flex-start;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.div-wrapper .text-wrapper-7 {
+  position: relative;
+  width: fit-content;
+  margin-top: -0.8px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #7f7f7f;
+  font-size: 11.2px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.div-wrapper .text-wrapper-8 {
+  position: relative;
+  width: fit-content;
+  margin-top: -0.8px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #7f7f7f;
+  font-size: 10px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}

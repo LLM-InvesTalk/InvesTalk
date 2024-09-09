@@ -3,9 +3,7 @@ import SemiConductorCard from "../../components/SemiConductorCard";
 const DetailPage = () => {
   return (
     <div>
-      <div>
-        <SemiConductorCard></SemiConductorCard>
-      </div>
+      <div>DetailPage</div>
     </div>
   );
 };
