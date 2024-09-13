@@ -1,0 +1,63 @@
+.div-wrapper .group-2 {
+    position: absolute;
+    width: 720px;
+    height: 324px;
+    top: 275px;
+    left: 269px;
+    background-color: #ffffffcc;
+    border-radius: 25px;
+    box-shadow: var(--1);
+  }
+  
+  .div-wrapper .vector {
+    position: absolute;
+    width: 640px;
+    height: 148px;
+    top: 156px;
+    left: 40px;
+  }
+  
+  .div-wrapper .group-3 {
+    position: absolute;
+    width: 542px;
+    height: 104px;
+    top: 8px;
+    left: 30px;
+  }
+  
+  .div-wrapper .element {
+    position: absolute;
+    width: 470px;
+    top: 28px;
+    left: 70px;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    color: #38465a;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+  }
+  
+  .div-wrapper .overlap-group-2 {
+    position: absolute;
+    width: 54px;
+    height: 74px;
+    top: 0;
+    left: 0;
+  }
+  
+  .div-wrapper .burst-pucker-4 {
+    position: absolute;
+    width: 26px;
+    height: 35px;
+    top: 0;
+    left: 28px;
+  }
+  
+  .div-wrapper .burst-pucker-5 {
+    position: absolute;
+    width: 45px;
+    height: 62px;
+    top: 12px;
+    left: 0;
+  }
