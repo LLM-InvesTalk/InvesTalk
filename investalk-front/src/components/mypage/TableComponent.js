@@ -184,7 +184,7 @@ const TableComponent = () => {
                             className="span arrow"
                             onClick={() => handleSort('희망가격')}
                         >
-                            {getArrow('나의 희망가격')}
+                            {getArrow('희망가격')}
                         </span>
                     </p>
                     <div className="frame-11">
