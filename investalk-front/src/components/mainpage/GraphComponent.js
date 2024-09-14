@@ -1,7 +1,7 @@
 import React from 'react';
-import '../styles/GraphComponentStyle.css';
-import '../styles/globals.css';
-import '../styles/styleguide.css';
+import './GraphComponentStyle.css';
+import './css/globals.css';
+import './css/styleguide.css';
 
 // 어제와 오늘의 데이터 배열
 const yesterdayData = [100, 120, 80, 150, 90, 130, 70, 300, 100, 40]; // 어제의 데이터 값
