@@ -1,13 +1,15 @@
-import { AreaPlot } from "@mui/x-charts/LineChart";
+import { AreaPlot, lineElementClasses } from "@mui/x-charts/LineChart";
 import { areaElementClasses } from "@mui/x-charts/LineChart";
 import { useYScale, useDrawingArea } from "@mui/x-charts/hooks";
 import { LinePlot } from "@mui/x-charts/LineChart";
 
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
 import { ChartsReferenceLine } from "@mui/x-charts/ChartsReferenceLine";
+import { colors } from "@mui/joy";
 
 const StockInfoChart = () => {
   const dataset = [
+    { x: 0, y: 2000 },
     { x: 1, y: 4000 },
     { x: 2, y: 3000 },
     { x: 3, y: 2000 },
@@ -31,6 +33,7 @@ const StockInfoChart = () => {
         dataKey: "y",
         showMark: false,
         area: true,
+        color: "#D2A5FF",
       },
     ],
     width: 312,
@@ -40,6 +43,9 @@ const StockInfoChart = () => {
       [`& .${areaElementClasses.root}`]: {
         fill: "url(#swich-color-id-1)",
       },
+      [`& .${lineElementClasses.root}`]: {
+        strokeWidth: 1,
+      },
     },
   };
 
@@ -47,8 +53,8 @@ const StockInfoChart = () => {
     const { top, height, bottom } = useDrawingArea();
     const svgHeight = top + bottom + height;
 
-    const scale = useYScale(); // You can provide the axis Id if you have multiple ones
-    const y0 = scale(threshold); // The coordinate of of the origine
+    const scale = useYScale();
+    const y0 = scale(threshold);
     const off = y0 !== undefined ? y0 / svgHeight : 0;
 
     return (
@@ -71,16 +77,14 @@ const StockInfoChart = () => {
   return (
     <ResponsiveChartContainer {...config}>
       <LinePlot />
-      {/* <AreaPlot /> */}
+      <AreaPlot />
       <ChartsReferenceLine y={0} />
       <ColorSwich
-        color1="#11B678" // green
-        color2="#FF3143" // red
+        color1="rgb(225, 247, 255)"
+        color2="rgb(247, 239, 255)"
         threshold={0}
         id="swich-color-id-1"
       />
-      {/* <ChartsXAxis /> */}
-      {/* <ChartsYAxis /> */}
     </ResponsiveChartContainer>
   );
 };
