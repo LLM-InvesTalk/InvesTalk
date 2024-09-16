@@ -1,4 +1,50 @@
-.div-wrapper .overlap {
+/* FinancialStatements.module.css */
+
+/* 글로벌 스타일 */
+:root {
+  --nvvj-48: rgba(56, 70, 90, 1);
+  --x: rgba(108, 138, 255, 1);
+  --1: 0px 30px 50px 0px rgba(175, 160, 218, 0.35);
+  --: 0px 2px 5px 0px rgba(199, 207, 239, 0.3);
+}
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+
+/* a blue color as a generic focus style */
+button:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline: -webkit-focus-ring-color auto 5px !important;
+}
+
+a {
+  text-decoration: none;
+}
+
+@font-face {
+  font-family: "Pretendard Variable-Bold";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/640764766bf479e1d3dd80f8/fonts/pretendard-bold.otf")
+    format("opentype");
+}
+
+@font-face {
+  font-family: "Pretendard Variable-Regular";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/64cc773c2f271fdb15f930b6/fonts/pretendardvariable.ttf")
+    format("truetype");
+}
+
+/* 컴포넌트 스타일 */
+.overlap {
   position: relative;
   width: 1635px;
   height: 1205px;
@@ -6,7 +52,7 @@
   left: -72px;
 }
 
-.div-wrapper .group {
+.group {
   position: absolute;
   width: 1635px;
   height: 1205px;
@@ -14,7 +60,7 @@
   left: 0;
 }
 
-.div-wrapper .group-wrapper {
+.group-wrapper {
   position: absolute;
   width: 720px;
   height: 200px;
@@ -26,7 +72,7 @@
   /* margin-top: 30px; */
 }
 
-.div-wrapper .group-2 {
+.group-2 {
   position: relative;
   width: 654px;
   height: 140px;
@@ -34,7 +80,7 @@
   left: 40px;
 }
 
-.div-wrapper .text-wrapper-2 {
+.text-wrapper-2 {
   position: absolute;
   height: 24px;
   top: 0;
@@ -48,7 +94,7 @@
   white-space: nowrap;
 }
 
-.div-wrapper .frame {
+.frame {
   display: inline-flex;
   align-items: center;
   gap: 20px;
@@ -57,14 +103,14 @@
   left: 102px;
 }
 
-.div-wrapper .frame-wrapper {
+.frame-wrapper {
   position: relative;
   width: 170px;
   height: 140px;
   box-shadow: 0px 24px 40px #afa0d926;
 }
 
-.div-wrapper .frame-2 {
+.frame-2 {
   display: flex;
   flex-direction: column;
   width: 170px;
@@ -81,7 +127,7 @@
   background-position: 50% 50%;
 }
 
-.div-wrapper .frame-3 {
+.frame-3 {
   display: flex;
   flex-direction: column;
   width: 149px;
@@ -93,7 +139,7 @@
   margin-bottom: -0.5px;
 }
 
-.div-wrapper .frame-4 {
+.frame-4 {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -102,7 +148,7 @@
   flex: 0 0 auto;
 }
 
-.div-wrapper .text-wrapper-3 {
+.text-wrapper-3 {
   position: relative;
   width: fit-content;
   font-family: "Pretendard Variable-Bold", Helvetica;
@@ -113,7 +159,7 @@
   line-height: normal;
 }
 
-.div-wrapper .text-wrapper-4 {
+.text-wrapper-4 {
   position: relative;
   width: fit-content;
   margin-top: -0.8px;
@@ -126,7 +172,7 @@
   line-height: normal;
 }
 
-.div-wrapper .text-wrapper-5 {
+.text-wrapper-5 {
   position: relative;
   width: fit-content;
   font-family: "Pretendard Variable-Regular", Helvetica;
@@ -137,7 +183,7 @@
   line-height: normal;
 }
 
-.div-wrapper .frame-5 {
+.frame-5 {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -148,7 +194,7 @@
   flex: 0 0 auto;
 }
 
-.div-wrapper .frame-6 {
+.frame-6 {
   display: flex;
   flex-direction: column;
   width: 68px;
@@ -161,7 +207,7 @@
   box-shadow: 0px 24px 40px #afa0d959;
 }
 
-.div-wrapper .text-wrapper-6 {
+.text-wrapper-6 {
   width: fit-content;
   margin-top: -0.8px;
   font-family: "Pretendard Variable-Regular", Helvetica;
@@ -174,14 +220,14 @@
   line-height: normal;
 }
 
-.div-wrapper .frame-7 {
+.frame-7 {
   display: inline-flex;
   align-items: flex-start;
   position: relative;
   flex: 0 0 auto;
 }
 
-.div-wrapper .text-wrapper-7 {
+.text-wrapper-7 {
   position: relative;
   width: fit-content;
   margin-top: -0.8px;
@@ -194,7 +240,7 @@
   line-height: normal;
 }
 
-.div-wrapper .text-wrapper-8 {
+.text-wrapper-8 {
   position: relative;
   width: fit-content;
   margin-top: -0.8px;
