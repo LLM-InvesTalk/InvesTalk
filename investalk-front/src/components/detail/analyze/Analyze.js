@@ -1,13 +1,13 @@
 import React from "react";
-import "./Analyze.css"; // CSS 파일 따로 관리
+import styles from "./Analyze.module.css"; // CSS 모듈 import
 
 const Analyze = () => {
   return (
-    <div className="div-wrapper">
-      <div className="overlap-wrapper">
-        <div className="overlap-3">
-          <div className="text-wrapper">Assistock 분석서</div>
-          <div className="text-description">
+    <div className={styles.divWrapper}>
+      <div className={styles.overlapWrapper}>
+        <div className={styles.overlap3}>
+          <div className={styles.textWrapper}>Assistock 분석서</div>
+          <div className={styles.textDescription}>
             Text Description...<br />
             .................................................................<br />
             .................................................................<br />

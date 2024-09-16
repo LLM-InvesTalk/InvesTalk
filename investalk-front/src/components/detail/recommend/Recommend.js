@@ -1,5 +1,5 @@
 import React from 'react';
-import './Recommend.css'; // CSS는 외부 파일로 분리
+import styles from './Recommend.module.css'; // CSS 모듈 import
 import "../css/DetailGlobals.css";   // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
 
@@ -8,50 +8,50 @@ const Recommend = () => {
   const numbers = ['01.', '02.', '03.', '04.', '05.'];
 
   return (
-    <div className="div-wrapper">
-      <div className="group-11">
-        <div className="overlap-7">
-          <div className="group-12">
-            <div className="overlap-group-3">
+    <div className={styles.divWrapper}>
+      <div className={styles.group11}>
+        <div className={styles.overlap7}>
+          <div className={styles.group12}>
+            <div className={styles.overlapGroup3}>
               <img
-                className="group-13"
+                className={styles.group13}
                 src="https://c.animaapp.com/8Gc7c0uK/img/group@2x.png"
                 alt="Group"
               />
-              <div className="frame-20">
-                <div className="frame-21">
-                  <div className="text-wrapper-20">추천</div>
-                  <div className="frame-22">
-                    <div className="text-wrapper-21">섹터</div>
-                    <div className="text-wrapper-22">·</div>
-                    <div className="text-wrapper-23">섹터 비율</div>
+              <div className={styles.frame20}>
+                <div className={styles.frame21}>
+                  <div className={styles.textWrapper20}>추천</div>
+                  <div className={styles.frame22}>
+                    <div className={styles.textWrapper21}>섹터</div>
+                    <div className={styles.textWrapper22}>·</div>
+                    <div className={styles.textWrapper23}>섹터 비율</div>
                   </div>
                 </div>
-                <div className="frame-23">
-                  <div className="frame-24">
+                <div className={styles.frame23}>
+                  <div className={styles.frame24}>
                     {numbers.map((num, index) => (
-                      <div key={index} className="text-wrapper-24">{num}</div>
+                      <div key={index} className={styles.textWrapper24}>{num}</div>
                     ))}
                   </div>
-                  <div className="frame-24">
+                  <div className={styles.frame24}>
                     {sectors.map((sector, index) => (
-                      <div key={index} className="text-wrapper-26">{sector}</div>
+                      <div key={index} className={styles.textWrapper26}>{sector}</div>
                     ))}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="group-14">
-            <div className="overlap-8">
-              <div className="ellipse-4"></div>
+          <div className={styles.group14}>
+            <div className={styles.overlap8}>
+              <div className={styles.ellipse4}></div>
               <img
-                className="subtract"
+                className={styles.subtract}
                 src="https://c.animaapp.com/8Gc7c0uK/img/subtract.svg"
                 alt="Subtract"
               />
               <img
-                className="vector-3"
+                className={styles.vector3}
                 src="https://c.animaapp.com/8Gc7c0uK/img/vector-2.svg"
                 alt="Vector"
               />
