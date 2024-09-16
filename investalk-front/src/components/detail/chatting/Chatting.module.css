@@ -1,4 +1,8 @@
-.div-wrapper .overlap-group-wrapper {
+.divWrapper {
+  /* 필요한 스타일이 있으면 추가 */
+}
+
+.overlapGroupWrapper {
   position: absolute;
   width: 304px;
   height: 710px;
@@ -6,14 +10,14 @@
   left: 1016px;
 }
 
-.div-wrapper .overlap-4 {
+.overlap4 {
   position: relative;
   width: 302px;
   height: 710px;
   border-radius: 25px;
 }
 
-.div-wrapper .group-3 {
+.group3 {
   position: absolute;
   width: 302px;
   height: 710px;
@@ -24,7 +28,7 @@
   box-shadow: var(--1);
 }
 
-.div-wrapper .group-4 {
+.group4 {
   position: absolute;
   width: 118px;
   height: 38px;
@@ -32,7 +36,7 @@
   left: 167px;
 }
 
-.div-wrapper .frame-10 {
+.frame10 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -48,7 +52,7 @@
   box-shadow: var(--);
 }
 
-.div-wrapper .text-wrapper-11 {
+.textWrapper11 {
   position: relative;
   width: fit-content;
   margin-top: -0.15px;
@@ -61,7 +65,7 @@
   white-space: nowrap;
 }
 
-.div-wrapper .text-wrapper-12 {
+.textWrapper12 {
   position: absolute;
   top: 26px;
   left: 89px;
@@ -75,7 +79,7 @@
   line-height: normal;
 }
 
-.div-wrapper .group-5 {
+.group5 {
   position: absolute;
   width: 117px;
   height: 38px;
@@ -83,7 +87,7 @@
   left: 20px;
 }
 
-.div-wrapper .frame-11 {
+.frame11 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -104,7 +108,7 @@
   );
 }
 
-.div-wrapper .text-wrapper-13 {
+.textWrapper13 {
   position: absolute;
   top: 26px;
   left: 0;
@@ -118,7 +122,7 @@
   line-height: normal;
 }
 
-.div-wrapper .group-6 {
+.group6 {
   position: absolute;
   width: 223px;
   height: 216px;
@@ -126,7 +130,7 @@
   left: 20px;
 }
 
-.div-wrapper .frame-12 {
+.frame12 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -147,7 +151,7 @@
   );
 }
 
-.div-wrapper .p {
+.p {
   position: relative;
   width: 189px;
   margin-top: -0.15px;
@@ -159,7 +163,7 @@
   line-height: normal;
 }
 
-.div-wrapper .frame-13 {
+.frame13 {
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
@@ -175,7 +179,7 @@
   box-shadow: var(--);
 }
 
-.div-wrapper .frame-14 {
+.frame14 {
   display: flex;
   align-items: center;
   gap: 22px;
@@ -185,7 +189,7 @@
   flex: 0 0 auto;
 }
 
-.div-wrapper .group-7 {
+.group7 {
   position: relative;
   width: 100px;
   height: 100px;
@@ -193,14 +197,14 @@
   background-size: 100% 100%;
 }
 
-.div-wrapper .overlap-group-2 {
+.overlapGroup2 {
   position: relative;
   height: 100px;
   background-image: url(https://c.animaapp.com/8Gc7c0uK/img/ellipse-71.svg);
   background-size: 100% 100%;
 }
 
-.div-wrapper .ellipse {
+.ellipse {
   position: absolute;
   width: 92px;
   height: 100px;
@@ -208,7 +212,7 @@
   left: 8px;
 }
 
-.div-wrapper .ellipse-2 {
+.ellipse2 {
   position: absolute;
   width: 72px;
   height: 100px;
@@ -216,7 +220,7 @@
   left: 28px;
 }
 
-.div-wrapper .ellipse-3 {
+.ellipse3 {
   position: absolute;
   width: 50px;
   height: 79px;
@@ -224,7 +228,7 @@
   left: 50px;
 }
 
-.div-wrapper .frame-15 {
+.frame15 {
   display: flex;
   flex-direction: column;
   width: 64px;
@@ -233,7 +237,7 @@
   position: relative;
 }
 
-.div-wrapper .frame-16 {
+.frame16 {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -243,7 +247,7 @@
   flex: 0 0 auto;
 }
 
-.div-wrapper .rectangle-2 {
+.rectangle2 {
   position: relative;
   width: 6px;
   height: 10px;
@@ -252,7 +256,43 @@
   border-color: var(--x);
 }
 
-.div-wrapper .text-wrapper-14 {
+.rectangle3 {
+  position: relative;
+  width: 6px;
+  height: 10px;
+  background-color: #b0ffe2;
+  border: 0.15px solid;
+  border-color: var(--x);
+}
+
+.rectangle4 {
+  position: relative;
+  width: 6px;
+  height: 10px;
+  background-color: #fbffd0;
+  border: 0.15px solid;
+  border-color: var(--x);
+}
+
+.rectangle5 {
+  position: relative;
+  width: 6px;
+  height: 10px;
+  background-color: #dbb7ff;
+  border: 0.15px solid;
+  border-color: var(--x);
+}
+
+.rectangle6 {
+  position: relative;
+  width: 6px;
+  height: 10px;
+  background-color: #b6edff;
+  border: 0.15px solid;
+  border-color: var(--x);
+}
+
+.textWrapper14 {
   position: relative;
   width: fit-content;
   margin-top: -1px;
@@ -265,43 +305,7 @@
   line-height: normal;
 }
 
-.div-wrapper .rectangle-3 {
-  position: relative;
-  width: 6px;
-  height: 10px;
-  background-color: #b0ffe2;
-  border: 0.15px solid;
-  border-color: var(--x);
-}
-
-.div-wrapper .rectangle-4 {
-  position: relative;
-  width: 6px;
-  height: 10px;
-  background-color: #fbffd0;
-  border: 0.15px solid;
-  border-color: var(--x);
-}
-
-.div-wrapper .rectangle-5 {
-  position: relative;
-  width: 6px;
-  height: 10px;
-  background-color: #dbb7ff;
-  border: 0.15px solid;
-  border-color: var(--x);
-}
-
-.div-wrapper .rectangle-6 {
-  position: relative;
-  width: 6px;
-  height: 10px;
-  background-color: #b6edff;
-  border: 0.15px solid;
-  border-color: var(--x);
-}
-
-.div-wrapper .text-wrapper-15 {
+.textWrapper15 {
   position: absolute;
   top: 204px;
   left: 0;
@@ -315,7 +319,7 @@
   line-height: normal;
 }
 
-.div-wrapper .overlap-5 {
+.overlap5 {
   position: absolute;
   width: 302px;
   height: 274px;
@@ -323,7 +327,7 @@
   left: 0;
 }
 
-.div-wrapper .group-8 {
+.group8 {
   position: absolute;
   width: 223px;
   height: 176px;
@@ -331,7 +335,7 @@
   left: 20px;
 }
 
-.div-wrapper .frame-17 {
+.frame17 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -352,7 +356,7 @@
   );
 }
 
-.div-wrapper .frame-18 {
+.frame18 {
   position: absolute;
   width: 231px;
   height: 110px;
@@ -360,7 +364,7 @@
   left: -5px;
 }
 
-.div-wrapper .text-wrapper-16 {
+.textWrapper16 {
   position: absolute;
   top: 164px;
   left: 0;
@@ -374,7 +378,7 @@
   line-height: normal;
 }
 
-.div-wrapper .group-9 {
+.group9 {
   position: absolute;
   width: 224px;
   height: 52px;
@@ -382,7 +386,7 @@
   left: 61px;
 }
 
-.div-wrapper .frame-19 {
+.frame19 {
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
@@ -398,7 +402,7 @@
   box-shadow: var(--);
 }
 
-.div-wrapper .text-wrapper-17 {
+.textWrapper17 {
   position: absolute;
   top: 40px;
   left: 195px;
@@ -412,7 +416,7 @@
   line-height: normal;
 }
 
-.div-wrapper .rectangle-7 {
+.rectangle7 {
   position: absolute;
   width: 302px;
   height: 120px;
@@ -420,14 +424,14 @@
   left: 0;
   border-radius: 25px 25px 0px 0px;
   transform: rotate(-180deg);
-  background: linear-gradient(      /* 이 부분이 그림자부분 */
+  background: linear-gradient(    /* 이 부분이 그림자부분 */
     180deg,
     rgb(255, 255, 255) 0%,
     rgba(255, 255, 255, 0) 100%
   );
 }
 
-.div-wrapper .rectangle-8 {
+.rectangle8 {
   position: absolute;
   width: 302px;
   height: 120px;
@@ -436,7 +440,7 @@
   border-radius: 25px 25px 0px 0px;
 }
 
-.div-wrapper .text-wrapper-18 {
+.textWrapper18 {
   position: absolute;
   height: 29px;
   top: 30px;
@@ -449,7 +453,7 @@
   line-height: normal;
 }
 
-.div-wrapper .group-10 {
+.group10 {
   position: absolute;
   width: 264px;
   height: 65px;
@@ -457,7 +461,7 @@
   left: 20px;
 }
 
-.div-wrapper .overlap-6 {
+.overlap6 {
   position: absolute;
   width: 262px;
   height: 30px;
@@ -475,7 +479,7 @@
   );
 }
 
-.div-wrapper .text-wrapper-19 {
+.textWrapper19 {
   position: absolute;
   top: 6px;
   left: 20px;
@@ -488,7 +492,7 @@
   line-height: normal;
 }
 
-.div-wrapper .vector-2 {
+.vector2 {
   position: absolute;
   width: 12px;
   height: 13px;
