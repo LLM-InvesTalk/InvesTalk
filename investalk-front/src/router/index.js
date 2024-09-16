@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 //pages
 import Test from "../pages/test/TestPage";
 import Detail from "../pages/detail/DetailPage";
+import Main from "../pages/main/MainPage";
 import Layout from "../pages/layout";
 
 const router = createBrowserRouter([
@@ -12,7 +13,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Detail />, // 기본 페이지 Detail -> Main
+        element: <Main />, // 기본 페이지 Detail -> Main
       },
       {
         path: "detail",
