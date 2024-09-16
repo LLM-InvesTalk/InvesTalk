@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './NewsComponentStyle.css';
-import './css/globals.css';
-import './css/styleguide.css';
+import styles from './NewsComponentStyle.module.css';  // 모듈화된 CSS
 
 const NewsComponent = () => {
     const [news, setNews] = useState([
@@ -23,7 +21,6 @@ const NewsComponent = () => {
     ]);
 
     useEffect(() => {
-        // 뉴스 1 데이터를 fetch
         const fetchNews1 = async () => {
             try {
                 const response = await fetch('https://api.example.com/news1'); // 실제 API URL로 변경
@@ -41,7 +38,6 @@ const NewsComponent = () => {
             }
         };
 
-        // 뉴스 2 데이터를 fetch
         const fetchNews2 = async () => {
             try {
                 const response = await fetch('https://api.example.com/news2'); // 실제 API URL로 변경
@@ -60,7 +56,6 @@ const NewsComponent = () => {
             }
         };
 
-        // 뉴스 3 데이터를 fetch
         const fetchNews3 = async () => {
             try {
                 const response = await fetch('https://api.example.com/news3'); // 실제 API URL로 변경
@@ -78,28 +73,28 @@ const NewsComponent = () => {
             }
         };
 
-        // 각각의 뉴스를 비동기로 호출
         fetchNews1();
         fetchNews2();
         fetchNews3();
     }, []);
 
     return (
-        <div className="group-14">
-            <div className="group-15">
-                <div className="text-wrapper-13">News</div>
-                <div className="frame-2">
-                    {news.map((article, index) => (
-                        <div className="group-16" key={index}>
-                            <div className={`overlap-${index+1}`}>
-                                <div className="group-17">
-                                    <div className="text-wrapper-14">{article.title}</div>
-                                    <div className="text-wrapper-15">{article.time}</div>
+        <div className={styles['div-wrapper']}>
+            <div className={styles['group-14']}>
+                <div className={styles['group-15']}>
+                    <div className={styles['text-wrapper-13']}>News</div>
+                    <div className={styles['frame-2']}>
+                        {news.map((article, index) => (
+                            <div className={styles['group-16']} key={index}>
+                                <div className={styles[`overlap-${index + 1}`]}>
+                                    <div className={styles['group-17']}>
+                                        <div className={styles['text-wrapper-14']}>{article.title}</div>
+                                        <div className={styles['text-wrapper-15']}>{article.time}</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
