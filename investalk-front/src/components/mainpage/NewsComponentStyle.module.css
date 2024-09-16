@@ -1,3 +1,50 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+* {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0px;
+    height: 100%;
+}
+
+/* a blue color as a generic focus style */
+button:focus-visible {
+    outline: 2px solid #4a90e2 !important;
+    outline: -webkit-focus-ring-color auto 5px !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+.div-wrapper {
+    width: 1440px;
+    height: 974px;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+@font-face {
+    font-family: "Pretendard Variable-Regular";
+    src: url("https://anima-uploads.s3.amazonaws.com/projects/64cc773c2f271fdb15f930b6/fonts/pretendardvariable.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Pretendard Variable-Bold";
+    src: url("https://anima-uploads.s3.amazonaws.com/projects/640764766bf479e1d3dd80f8/fonts/pretendard-bold.otf") format("opentype");
+}
+
+:root {
+    --x-8xv-OGC: rgba(56, 70, 90, 1);
+    --x: rgba(108, 138, 255, 1);
+    --1: 0px 30px 50px 0px rgba(175, 160, 218, 0.35);
+    --: 0px 2px 5px 0px rgba(199, 207, 239, 0.3);
+}
+
 .div-wrapper .group-14 {
     position: absolute;
     width: 720px;
