@@ -1,0 +1,204 @@
+.divWrapper {
+  /* 스타일 정의 */
+}
+
+.group11 {
+  position: absolute;
+  width: 345px;
+  height: 296px;
+  top: 689px;
+  left: 266px;
+}
+
+.overlap7 {
+  position: relative;
+  height: 296px;
+  border-radius: 25px;
+}
+
+.group12 {
+  position: absolute;
+  width: 345px;
+  height: 296px;
+  top: 0;
+  left: 0;
+  background-color: #ffffff;
+  border-radius: 25px;
+  box-shadow: var(--1);
+}
+
+.overlapGroup3 {
+  position: relative;
+  width: 285px;
+  height: 211px;
+  top: 30px;
+  left: 40px;
+}
+
+.group13 {
+  position: absolute;
+  width: 147px;
+  height: 196px;
+  top: 5px;
+  left: 138px;
+}
+
+.frame20 {
+  display: flex;
+  flex-direction: column;
+  width: 154px;
+  align-items: flex-start;
+  gap: 60px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.frame21 {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.textWrapper20 {
+  position: relative;
+  width: fit-content;
+  margin-top: -1px;
+  font-family: "Pretendard Variable-Bold", Helvetica;
+  font-weight: 700;
+  color: #38465a;
+  font-size: 20px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.frame22 {
+  display: inline-flex;
+  align-items: center;
+  gap: 3.2px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.textWrapper21 {
+  position: relative;
+  width: fit-content;
+  font-family: "Pretendard Variable-Bold", Helvetica;
+  font-weight: 700;
+  color: #38465a;
+  font-size: 16px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.textWrapper22 {
+  position: relative;
+  width: fit-content;
+  margin-top: -0.8px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #534848;
+  font-size: 19.2px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.textWrapper23 {
+  position: relative;
+  width: fit-content;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a;
+  font-size: 16px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.frame23 {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.frame24 {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.textWrapper24 {
+  position: relative;
+  align-self: stretch;
+  margin-top: -0.8px;
+  font-family: "Pretendard Variable-Bold", Helvetica;
+  font-weight: 700;
+  color: #38465a;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.textWrapper26 {
+  position: relative;
+  align-self: stretch;
+  margin-top: -0.8px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.group14 {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 138px;
+  left: 315px;
+  box-shadow: var(--);
+}
+
+.overlap8 {
+  position: relative;
+  height: 20px;
+}
+
+.ellipse4 {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 4px;
+  left: 4px;
+  background-color: #6b89ff;
+  border-radius: 6px;
+}
+
+.subtract {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 0;
+  left: 0;
+}
+
+.vector3 {
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  top: 5px;
+  left: 7px;
+}
