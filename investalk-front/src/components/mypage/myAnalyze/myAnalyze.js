@@ -3,12 +3,17 @@ import styles from "./myAnalyze.module.css"; // CSS Modules를 사용한 스타�
 import "../css/DetailGlobals.css";   // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
 
+// StockInfoChart 컴포넌트 임포트 추가
+import MyGraph from "./graph/mygraph";
+
 const MyAnalyze = () => {
   return (
     <div className={styles.divWrapper}> {/* 클래스 네임 변경 */}
       <div className={styles.group2}>
-        {/* 이미지 부분 */}
-        <img className={styles.vector} src="https://c.animaapp.com/99LNnW64/img/vector-26.svg" alt="Vector Icon" />
+        {/* 이미지 부분을 StockInfoChart 컴포넌트로 변경 */}
+        <div className={styles.vector}>
+          <MyGraph />
+        </div>
 
         <div className={styles.group3}>
           {/* 자산 설명 텍스트 */}
