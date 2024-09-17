@@ -3,7 +3,7 @@ import styles from "./myAnalyze.module.css"; // CSS Modules를 사용한 스타�
 import "../css/DetailGlobals.css";   // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
 
-const myAnalyze = () => {
+const MyAnalyze = () => {
   return (
     <div className={styles.divWrapper}> {/* 클래스 네임 변경 */}
       <div className={styles.group2}>
@@ -29,4 +29,4 @@ const myAnalyze = () => {
   );
 };
 
-export default myAnalyze;
+export default MyAnalyze;
