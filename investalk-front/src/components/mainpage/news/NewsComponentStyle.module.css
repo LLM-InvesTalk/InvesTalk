@@ -1,0 +1,164 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+* {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0px;
+    height: 100%;
+}
+
+/* a blue color as a generic focus style */
+button:focus-visible {
+    outline: 2px solid #4a90e2 !important;
+    outline: -webkit-focus-ring-color auto 5px !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+
+@font-face {
+    font-family: "Pretendard Variable-Regular";
+    src: url("https://anima-uploads.s3.amazonaws.com/projects/64cc773c2f271fdb15f930b6/fonts/pretendardvariable.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Pretendard Variable-Bold";
+    src: url("https://anima-uploads.s3.amazonaws.com/projects/640764766bf479e1d3dd80f8/fonts/pretendard-bold.otf") format("opentype");
+}
+
+:root {
+    --x-8xv-OGC: rgba(56, 70, 90, 1);
+    --x: rgba(108, 138, 255, 1);
+    --1: 0px 30px 50px 0px rgba(175, 160, 218, 0.35);
+    --: 0px 2px 5px 0px rgba(199, 207, 239, 0.3);
+}
+
+
+.div-wrapper .group-14 {
+    position: absolute;
+    width: 720px;
+    height: 270px;
+    top: 716px;
+    left: 266px;
+    background-color: #ffffffcc;
+    border-radius: 25px;
+    box-shadow: var(--1);
+}
+
+.div-wrapper .group-15 {
+    position: relative;
+    width: 635px;
+    height: 210px;
+    top: 30px;
+    left: 40px;
+}
+
+.div-wrapper .text-wrapper-13 {
+    position: absolute;
+    height: 29px;
+    top: 0;
+    left: 0;
+    font-family: "Pretendard Variable-Bold", Helvetica;
+    font-weight: 700;
+    color: #38465a;
+    font-size: 24px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.div-wrapper .frame-2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 50px;
+    position: absolute;
+    top: 59px;
+    left: 0;
+}
+
+.div-wrapper .group-16 {
+    position: relative;
+    width: 177.83px;
+    height: 150.34px;
+}
+
+.div-wrapper .overlap-1 {
+    position: relative;
+    width: 250px;
+    height: 172px;
+    top: -14px;
+    left: -36px;
+    background-image: url(https://c.animaapp.com/EtEiTaGN/img/image-83@2x.png);
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.div-wrapper .group-17 {
+    position: relative;
+    width: 88px;
+    height: 36px;
+    top: 129px;
+    left: 36px;
+}
+
+.div-wrapper .text-wrapper-14 {
+    position: absolute;
+    height: 19px;
+    top: 0;
+    left: 0;
+    font-family: "Pretendard Variable-Bold", Helvetica;
+    font-weight: 700;
+    color: #38465a;
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.div-wrapper .text-wrapper-15 {
+    position: absolute;
+    height: 14px;
+    top: 22px;
+    left: 0;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    color: #38465a;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.div-wrapper .overlap-2 {
+    position: relative;
+    width: 250px;
+    height: 172px;
+    top: -14px;
+    left: -36px;
+    background-image: url(https://c.animaapp.com/EtEiTaGN/img/image-84@2x.png);
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.div-wrapper .overlap-wrapper {
+    position: relative;
+    width: 176.96px;
+    height: 150.9px;
+}
+
+.div-wrapper .overlap-3 {
+    position: relative;
+    width: 249px;
+    height: 172px;
+    top: -14px;
+    left: -36px;
+    background-image: url(https://c.animaapp.com/EtEiTaGN/img/image-85@2x.png);
+    background-size: cover;
+    background-position: 50% 50%;
+}
