@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Recommend.module.css'; // CSS 모듈 import
+import styles from './SectorRecommend.module.css'; // CSS 모듈 import
 import "../css/DetailGlobals.css";   // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
 
