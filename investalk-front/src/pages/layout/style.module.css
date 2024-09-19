@@ -48,7 +48,6 @@ a {
 .overlap {
   position: relative;
   width: 1635px;
-  height: 1205px;
   top: -48px;
   left: -72px;
 }
@@ -56,7 +55,6 @@ a {
 .group {
   position: absolute;
   width: 1635px;
-  height: 1205px;
   top: 0;
   left: 0;
 }
