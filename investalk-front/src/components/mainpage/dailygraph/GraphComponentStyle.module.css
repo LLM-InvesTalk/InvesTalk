@@ -1,0 +1,147 @@
+/* 글로벌 스타일 통합 */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+* {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+button:focus-visible {
+    outline: 2px solid #4a90e2 !important;
+    outline: -webkit-focus-ring-color auto 5px !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+.div-wrapper {
+    width: 1440px;
+    height: 974px;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+@font-face {
+    font-family: "Pretendard Variable-Regular";
+    src: url("https://anima-uploads.s3.amazonaws.com/projects/64cc773c2f271fdb15f930b6/fonts/pretendardvariable.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Pretendard Variable-Bold";
+    src: url("https://anima-uploads.s3.amazonaws.com/projects/640764766bf479e1d3dd80f8/fonts/pretendard-bold.otf") format("opentype");
+}
+
+/* 스타일 가이드 통합 */
+:root {
+    --x-8xv-OGC: rgba(56, 70, 90, 1);
+    --x: rgba(108, 138, 255, 1);
+    --shadow-1: 0px 30px 50px 0px rgba(175, 160, 218, 0.35);
+    --shadow-2: 0px 2px 5px 0px rgba(199, 207, 239, 0.3);
+}
+
+/* 기존 GraphComponent 스타일 */
+.div-wrapper .group-wrapper {
+    position: absolute;
+    width: 720px;
+    height: 411px;
+    top: 275px;
+    left: 266px;
+    background-color: #ffffffcc;
+    border-radius: 25px;
+    box-shadow: var(--shadow-1);
+}
+
+.div-wrapper .group-2 {
+    position: relative;
+    width: 664px;
+    height: 355px;
+    top: 30px;
+    left: 40px;
+}
+
+.div-wrapper .group-3 {
+    position: absolute;
+    width: 666px;
+    height: 219px;
+    top: 136px;
+    left: 0;
+}
+
+.div-wrapper .overlap-group-wrapper {
+    position: absolute;
+    width: 575px;
+    height: 219px;
+    top: 0;
+    left: 89px;
+}
+
+.div-wrapper .rectangle-2 {
+    position: absolute;
+    width: 575px;
+    height: 134px;
+    top: 85px;
+    left: 0;
+    border-top-width: 0.5px;
+    border-top-style: solid;
+    border-color: #d2a5ff80;
+    background: linear-gradient(180deg,
+            rgba(225.25, 247.86, 255, 0.4) 0%,
+            rgba(235.88, 255, 248.11, 0.4) 17%,
+            rgba(246.77, 238.53, 255, 0.4) 36%,
+            rgba(255, 255, 255, 0) 100%);
+}
+
+.div-wrapper .text-wrapper-11 {
+    position: absolute;
+    width: 75px;
+    height: 15px;
+    top: 77px;
+    left: 0;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    color: #38465a;
+    font-size: 9.4px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.div-wrapper .frame {
+    display: flex;
+    flex-direction: column;
+    width: 486px;
+    align-items: flex-start;
+    gap: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.div-wrapper .text-wrapper-12 {
+    position: relative;
+    align-self: stretch;
+    margin-top: -1px;
+    font-family: "Pretendard Variable-Bold", Helvetica;
+    font-weight: 700;
+    color: #38465a;
+    font-size: 24px;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.div-wrapper .text-description {
+    position: relative;
+    align-self: stretch;
+    color: #38465a;
+    font-size: 16px;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+}

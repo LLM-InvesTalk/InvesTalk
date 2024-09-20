@@ -1,0 +1,48 @@
+.divWrapper {
+  /* 필요에 따라 스타일 추가 */
+}
+
+.overlapWrapper {
+  position: absolute;
+  width: 349px;
+  height: 296px;
+  top: 689px;
+  left: 641px;
+}
+
+.overlap3 {
+  position: relative;
+  width: 345px;
+  height: 296px;
+  background-color: #ffffff;
+  border-radius: 25px;
+  box-shadow: var(--1);
+}
+
+.textWrapper {
+  position: absolute;
+  height: 24px;
+  top: 30px;
+  left: 40px;
+  font-family: "Pretendard Variable-Bold", Helvetica;
+  font-weight: 700;
+  color: #38465a;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.textDescription {
+  position: absolute;
+  width: 265px;
+  height: 152px;
+  top: 84px;
+  left: 40px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+}

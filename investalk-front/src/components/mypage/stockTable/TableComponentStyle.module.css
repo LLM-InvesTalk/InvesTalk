@@ -1,0 +1,393 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+* {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0px;
+    height: 100%;
+}
+
+/* a blue color as a generic focus style */
+button:focus-visible {
+    outline: 2px solid #4a90e2 !important;
+    outline: -webkit-focus-ring-color auto 5px !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+@font-face {
+    font-family: "Pretendard Variable-Bold";
+    src: url("https://anima-uploads.s3.amazonaws.com/projects/640764766bf479e1d3dd80f8/fonts/pretendard-bold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "Pretendard Variable-Regular";
+    src: url("https://anima-uploads.s3.amazonaws.com/projects/64cc773c2f271fdb15f930b6/fonts/pretendardvariable.ttf") format("truetype");
+}
+
+:root {
+    --nvvj-48: rgba(56, 70, 90, 1);
+    --x: rgba(108, 138, 255, 1);
+    --1: 0px 30px 50px 0px rgba(175, 160, 218, 0.35);
+    --: 0px 2px 5px 0px rgba(199, 207, 239, 0.3);
+}
+
+.div-wrapper .frame-wrapper {
+    position: absolute;
+    width: 720px;
+    height: 356px;
+    top: 629px;
+    left: 269px;
+    background-color: #ffffffcc;
+    border-radius: 25px;
+    box-shadow: var(--1);
+}
+
+.div-wrapper .frame {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 26px;
+    position: relative;
+    top: 30px;
+    left: 40px;
+}
+
+.div-wrapper .frame-2 {
+    display: flex;
+    flex-direction: column;
+    width: 40px;
+    align-items: flex-start;
+    gap: 60px;
+    position: relative;
+}
+
+.div-wrapper .p {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    margin-right: -14px;
+    font-family: "Pretendard Variable-Bold", Helvetica;
+    font-weight: 700;
+    color: transparent;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.div-wrapper .text-wrapper {
+    color: #38465a;
+}
+
+.div-wrapper .span {
+    color: #a3baff;
+}
+
+.div-wrapper .arrow {
+    cursor: pointer;
+}
+
+.div-wrapper .frame-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 31px;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+.div-wrapper .text-wrapper-2 {
+    position: relative;
+    align-self: stretch;
+    margin-top: -1px;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    color: #38465a;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.div-wrapper .text-wrapper-3 {
+    position: relative;
+    align-self: stretch;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    color: #38465a;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.div-wrapper .frame-4 {
+    display: flex;
+    flex-direction: column;
+    width: 60px;
+    align-items: center;
+    gap: 48px;
+    position: relative;
+}
+
+.div-wrapper .div-2 {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: "Pretendard Variable-Bold", Helvetica;
+    font-weight: 700;
+    color: transparent;
+    font-size: 16px;
+    text-align: center;
+    white-space: nowrap;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.div-wrapper .frame-5 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+.div-wrapper .rectangle-2 {
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    height: 40px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 0.15px solid;
+    border-color: var(--x);
+}
+
+.div-wrapper .frame-6 {
+    display: flex;
+    flex-direction: column;
+    width: 45px;
+    align-items: center;
+    gap: 60px;
+    position: relative;
+}
+
+.div-wrapper .div-3 {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    margin-left: -6.5px;
+    margin-right: -6.5px;
+    font-family: "Pretendard Variable-Bold", Helvetica;
+    font-weight: 700;
+    color: transparent;
+    font-size: 16px;
+    text-align: center;
+    white-space: nowrap;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.div-wrapper .frame-7 {
+    display: flex;
+    flex-direction: column;
+    width: 24px;
+    align-items: flex-start;
+    gap: 31px;
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.div-wrapper .text-wrapper-4 {
+    align-self: stretch;
+    margin-top: -1.15px;
+    margin-left: -0.15px;
+    -webkit-text-stroke: 0.15px #6b89ff;
+    background: linear-gradient(180deg,
+            rgb(171.59, 179.93, 255) 0%,
+            rgb(182.75, 237.66, 255) 58%,
+            rgb(176.91, 255, 226.89) 100%);
+    -webkit-background-clip: text !important;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    position: relative;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    border-color: var(--x);
+}
+
+.div-wrapper .text-wrapper-6 {
+    align-self: stretch;
+    margin-left: -0.15px;
+    -webkit-text-stroke: 0.15px #6b89ff;
+    background: linear-gradient(180deg,
+            rgb(234.7, 255, 176.91) 0%,
+            rgb(255, 226.1, 182.75) 32%,
+            rgb(255, 171.59, 211.63) 100%);
+    -webkit-background-clip: text !important;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    position: relative;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    border-color: var(--x);
+}
+
+.div-wrapper .frame-8 {
+    display: flex;
+    flex-direction: column;
+    width: 45px;
+    align-items: flex-start;
+    gap: 60px;
+    position: relative;
+}
+
+.div-wrapper .div-4 {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    margin-right: -13px;
+    font-family: "Pretendard Variable-Bold", Helvetica;
+    font-weight: 700;
+    color: transparent;
+    font-size: 16px;
+    text-align: center;
+    white-space: nowrap;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.div-wrapper .frame-9 {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    align-items: flex-start;
+    gap: 60px;
+    position: relative;
+}
+
+.div-wrapper .div-5 {
+    position: relative;
+    align-self: stretch;
+    margin-top: -1px;
+    font-family: "Pretendard Variable-Bold", Helvetica;
+    font-weight: 700;
+    color: transparent;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.div-wrapper .frame-10 {
+    display: flex;
+    flex-direction: column;
+    width: 93px;
+    align-items: center;
+    gap: 60px;
+    position: relative;
+}
+
+.div-wrapper .div-6 {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    margin-left: -5px;
+    margin-right: -5px;
+    font-family: "Pretendard Variable-Bold", Helvetica;
+    font-weight: 700;
+    color: transparent;
+    font-size: 16px;
+    text-align: center;
+    white-space: nowrap;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.div-wrapper .frame-11 {
+    display: flex;
+    flex-direction: column;
+    width: 41px;
+    align-items: flex-start;
+    gap: 31px;
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.div-wrapper .ai {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    margin-left: -3px;
+    margin-right: -3px;
+    font-family: "Pretendard Variable-Bold", Helvetica;
+    font-weight: 700;
+    color: transparent;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.div-wrapper .frame-12 {
+    display: flex;
+    flex-direction: column;
+    width: 33px;
+    align-items: flex-start;
+    gap: 31px;
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.div-wrapper .text-wrapper-7 {
+    width: fit-content;
+    margin-top: -1px;
+    margin-right: -1px;
+    color: #38465a;
+    white-space: nowrap;
+    position: relative;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.div-wrapper .text-wrapper-8 {
+    position: relative;
+    width: fit-content;
+    margin-right: -1px;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    color: #38465a;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}

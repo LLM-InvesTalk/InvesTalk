@@ -1,0 +1,168 @@
+/* style.module.css */
+
+/* 글로벌 스타일 */
+:root {
+  --nvvj-48: rgba(56, 70, 90, 1);
+  --x: rgba(108, 138, 255, 1);
+  --1: 0px 30px 50px 0px rgba(175, 160, 218, 0.35);
+  --: 0px 2px 5px 0px rgba(199, 207, 239, 0.3);
+}
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+
+/* 포커스 스타일 */
+button:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline: -webkit-focus-ring-color auto 5px !important;
+}
+
+a {
+  text-decoration: none;
+}
+
+@font-face {
+  font-family: "Pretendard Variable-Bold";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/640764766bf479e1d3dd80f8/fonts/pretendard-bold.otf")
+    format("opentype");
+}
+
+@font-face {
+  font-family: "Pretendard Variable-Regular";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/64cc773c2f271fdb15f930b6/fonts/pretendardvariable.ttf")
+    format("truetype");
+}
+
+/* 컴포넌트 스타일 */
+
+.overlap {
+  position: relative;
+  width: 1635px;
+  top: -72px;
+  left: -72px;
+}
+
+.group {
+  position: absolute;
+  width: 1635px;
+  top: 0;
+  left: 0;
+}
+
+.overlap-group {
+  position: absolute;
+  width: 235px;
+  height: 324px;
+  top: 187px;
+  left: 1277px;
+}
+
+.burst-star {
+  position: absolute;
+  width: 235px;
+  height: 294px;
+  top: 0;
+  left: 0;
+}
+
+.img {
+  position: absolute;
+  width: 88px;
+  height: 100px;
+  top: 224px;
+  left: 147px;
+}
+
+.div {
+  position: absolute;
+  width: 296px;
+  height: 305px;
+  top: 717px;
+  left: 72px;
+}
+
+.burst-star-2 {
+  position: absolute;
+  width: 118px;
+  height: 138px;
+  top: 0;
+  left: 0;
+}
+
+.burst-star-3 {
+  position: absolute;
+  width: 281px;
+  height: 185px;
+  top: 120px;
+  left: 15px;
+}
+
+.overlap-2 {
+  position: absolute;
+  width: 442px;
+  height: 478px;
+  top: 48px;
+  left: 72px;
+  background-image: url(https://c.animaapp.com/8Gc7c0uK/img/looper-3.png);
+  background-size: 100% 100%;
+}
+
+.burst-pucker {
+  position: absolute;
+  width: 78px;
+  height: 74px;
+  top: 23px;
+  left: 0;
+}
+
+.burst-pucker-2 {
+  position: absolute;
+  width: 138px;
+  height: 131px;
+  top: 37px;
+  left: 25px;
+}
+
+.looper {
+  position: absolute;
+  width: 391px;
+  height: 343px;
+  top: 679px;
+  left: 1121px;
+}
+
+.burst-pucker-3 {
+  position: absolute;
+  width: 90px;
+  height: 86px;
+  top: 59px;
+  left: 1241px;
+}
+
+.rectangle {
+  position: absolute;
+  width: 1158px;
+  height: 808px;
+  top: 225px;
+  left: 216px;
+  border-radius: 40px 40px 0px 0px;
+  box-shadow: 0px 24px 40px #afa0d959;
+  backdrop-filter: blur(60px) brightness(100%);
+  -webkit-backdrop-filter: blur(60px) brightness(100%);
+  background: linear-gradient(
+    180deg,
+    rgba(225.25, 247.86, 255, 0.4) 0%,
+    rgba(235.88, 255, 248.11, 0.4) 44.5%,
+    rgba(246.77, 238.53, 255, 0.4) 100%
+  );
+}
