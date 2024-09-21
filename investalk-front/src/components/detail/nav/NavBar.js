@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect, useRef } from "react";
 import Input from "@mui/joy/Input";
 import { IconButton } from "@mui/joy";
 import SearchIcon from "@mui/icons-material/Search";
@@ -7,13 +7,31 @@ import styles from "./NavBar.module.css";
 
 const NavBar = () => {
   const [keyword, setKeyword] = useState("");
+  const wrapperRef = useRef(null); // 검색창과 결과를 감싸는 div 참조 생성
 
   const onChange = useCallback((e) => {
     setKeyword(e.target.value);
   }, []);
 
+  // 바깥 클릭 시 검색 결과를 닫는 함수
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setKeyword(""); // 바깥 클릭 시 검색창 비우기
+      }
+    };
+
+    // document에 클릭 이벤트 리스너 추가
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [wrapperRef]);
+
   return (
-    <div className={styles["frame-8"]}>
+    <div className={styles["frame-8"]} ref={wrapperRef}> {/* ref 추가 */}
       <img
         className={styles["frame-9"]}
         src="https://c.animaapp.com/8Gc7c0uK/img/frame-130.svg"
