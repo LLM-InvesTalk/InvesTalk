@@ -8,10 +8,13 @@ const Recommend = () => {
   const [sectors, setSectors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
+  // .env에서 Flask API URL 가져오기
+  const API_URL = process.env.REACT_APP_FLASK_API_URL;
+
   useEffect(() => {
     // Flask API 호출
-    axios.get('http://localhost:5000/api/recommend-sectors')
+    axios.get(`${API_URL}/api/recommend-sectors`)
       .then(response => {
         const { similar_sectors } = response.data;
         setSectors(similar_sectors);
@@ -22,7 +25,7 @@ const Recommend = () => {
         setError('섹터 데이터를 가져오는 데 실패했습니다.');
         setLoading(false);
       });
-  }, []);
+  }, [API_URL]);
 
   if (loading) {
     return <div>로딩 중...</div>;
