@@ -7,27 +7,26 @@ import styles from "./NavBar.module.css";
 
 const NavBar = () => {
   const [keyword, setKeyword] = useState("");
-  const wrapperRef = useRef(null); // 검색창과 결과를 감싸는 div 참조 생성
+  const wrapperRef = useRef(null);
 
-  // 임의의 검색 결과 예시
-  const searchResults = ["Search Result 1", "Search Result 2", "Search Result 3"];
+  // 예시 검색 결과 배열
+  const searchResults = [
+    "Search Result 1",
+    "Search Result 2",
+    "Search Result 3",
+  ];
 
   const onChange = useCallback((e) => {
     setKeyword(e.target.value);
   }, []);
 
-  // 바깥 클릭 시 검색 결과를 닫는 함수
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setKeyword(""); // 바깥 클릭 시 검색창 비우기
+        setKeyword("");
       }
     };
-
-    // document에 클릭 이벤트 리스너 추가
     document.addEventListener("mousedown", handleClickOutside);
-
-    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -76,7 +75,7 @@ const NavBar = () => {
       {keyword && (
         <div className={styles["rectangle-10"]}>
           {searchResults.map((result, index) => (
-            <div key={index} className={styles[`text-wrapper-${25 + index}`]}>
+            <div key={index} className={styles["text-wrapper"]}>
               {result}
             </div>
           ))}
