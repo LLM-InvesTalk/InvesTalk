@@ -9,6 +9,9 @@ const NavBar = () => {
   const [keyword, setKeyword] = useState("");
   const wrapperRef = useRef(null); // 검색창과 결과를 감싸는 div 참조 생성
 
+  // 임의의 검색 결과 예시
+  const searchResults = ["Search Result 1", "Search Result 2", "Search Result 3"];
+
   const onChange = useCallback((e) => {
     setKeyword(e.target.value);
   }, []);
@@ -31,7 +34,7 @@ const NavBar = () => {
   }, [wrapperRef]);
 
   return (
-    <div className={styles["frame-8"]} ref={wrapperRef}> {/* ref 추가 */}
+    <div className={styles["frame-8"]} ref={wrapperRef}>
       <img
         className={styles["frame-9"]}
         src="https://c.animaapp.com/8Gc7c0uK/img/frame-130.svg"
@@ -68,12 +71,15 @@ const NavBar = () => {
           </IconButton>
         }
       />
-      
+
+      {/* 검색 결과가 있을 때만 렌더링 */}
       {keyword && (
         <div className={styles["rectangle-10"]}>
-          <div className={styles["text-wrapper-25"]}>Search Result 1</div>
-          <div className={styles["text-wrapper-26"]}>Search Result 2</div>
-          <div className={styles["text-wrapper-27"]}>Search Result 3</div>
+          {searchResults.map((result, index) => (
+            <div key={index} className={styles[`text-wrapper-${25 + index}`]}>
+              {result}
+            </div>
+          ))}
         </div>
       )}
 

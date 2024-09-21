@@ -117,7 +117,6 @@ a {
 .rectangle-10 {
   position: absolute;
   width: 480px;
-  height: 181px;
   top: 40px; /* 검색창 아래에 위치하도록 조정 */
   left: 190px;
   background-color: rgba(255, 255, 255, 0.7);
@@ -125,6 +124,7 @@ a {
   border: 2px solid #1f6dd8; /* 테두리 색을 #38465a로 설정 */
   box-shadow: 0 4px 12px rgba(26, 49, 109, 0.1);
   z-index: 999;
+  padding: 10px; /* 내부 여백 추가 */
 }
 
 .text-wrapper-25,
@@ -139,13 +139,13 @@ a {
 }
 
 .text-wrapper-25 {
-  top: 20px;
+  margin-top: 10px; /* 각 검색 결과 간의 간격을 추가 */
 }
 
 .text-wrapper-26 {
-  top: 50px;
+  margin-top: 10px;
 }
 
 .text-wrapper-27 {
-  top: 80px;
+  margin-top: 10px;
 }
