@@ -50,6 +50,14 @@ const NavBar = () => {
           </IconButton>
         }
       />
+      
+      {keyword && (
+        <div className={styles["rectangle-10"]}>
+          <div className={styles["text-wrapper-25"]}>Search Result 1</div>
+          <div className={styles["text-wrapper-26"]}>Search Result 2</div>
+          <div className={styles["text-wrapper-27"]}>Search Result 3</div>
+        </div>
+      )}
 
       <div className={styles["navbar"]}>
         <div className={styles["text-wrapper-9"]}>Menu</div>
