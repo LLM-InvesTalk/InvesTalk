@@ -27,6 +27,9 @@ def average_growth():
     data = request.get_json()
     tickers = data.get('tickers')
 
+    # 받은 종목들을 콘솔에 출력
+    print(f"Received tickers from front-end: {tickers}")
+    
     # 4개의 종목이 주어졌는지 확인
     if len(tickers) != 4:
         return jsonify({'error': 'Exactly 4 tickers are required'}), 400
