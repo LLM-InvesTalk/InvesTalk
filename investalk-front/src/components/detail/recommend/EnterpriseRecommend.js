@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "./EnterpriseRecommend.module.css"; // CSS Module import
 import "../css/DetailGlobals.css"; // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
@@ -7,6 +8,27 @@ import NewsRecommend from "./NewsRecommend"; // NewsRecommend 컴포넌트 impor
 const EnterpriseRecommend = () => {
   // 상태를 사용하여 현재 컴포넌트를 관리
   const [isNewsRecommend, setIsNewsRecommend] = useState(false);
+  const [similarStocks, setSimilarStocks] = useState([]);
+  const symbol = "NVDA"; // 예시로 사용할 종목 심볼
+
+  // Finnhub API Key를 .env 파일에서 불러옴
+  const apiKey = process.env.REACT_APP_FINNHUB_API_KEY;
+
+  // 유사 종목을 가져오는 함수
+  useEffect(() => {
+    const fetchSimilarStocks = async () => {
+      try {
+        const response = await axios.get(
+          `https://finnhub.io/api/v1/stock/peers?symbol=${symbol}&token=${apiKey}`
+        );
+        setSimilarStocks(response.data); // API에서 받은 유사 종목 설정
+      } catch (error) {
+        console.error("Error fetching similar stocks:", error);
+      }
+    };
+
+    fetchSimilarStocks(); // 컴포넌트 로드 시 API 호출
+  }, [symbol, apiKey]); // symbol 또는 apiKey 변경 시 다시 호출
 
   // 클릭 시 NewsRecommend로 전환하는 함수
   const handleButtonClick = () => {
@@ -38,10 +60,12 @@ const EnterpriseRecommend = () => {
             <div className={styles.metricTitle}>유사한 종목</div>
             <div className={styles.stocksWrapper}>
               <div className={styles.stocksList}>
-                <div className={styles.metricValueText}>MSFT</div>
-                <div className={styles.metricValueText}>AAPL</div>
-                <div className={styles.metricValueText}>AAPL</div>
-                <div className={styles.metricValueText}>AAPL</div>
+                {/* 첫 번째 종목은 제외하고 그 뒤 4개만 출력 */}
+                {similarStocks.slice(1, 5).map((stock) => (
+                  <div key={stock} className={styles.metricValueText}>
+                    {stock}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
