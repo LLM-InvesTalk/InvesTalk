@@ -1,15 +1,53 @@
+<<<<<<< HEAD
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+=======
 import React, { useState } from 'react';
+>>>>>>> 7a2946f (✨ 추천.버튼 클릭시 다른 추천 컴포넌트로 변경되도록 추가)
 import styles from './SectorRecommend.module.css'; // CSS 모듈 import
 import "../css/DetailGlobals.css";   // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
 import EnterpriseRecommend from './EnterpriseRecommend'; // 새로운 컴포넌트 import
 
 const Recommend = () => {
+<<<<<<< HEAD
+  const [sectors, setSectors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // .env에서 Flask API URL 가져오기
+  const API_URL = process.env.REACT_APP_FLASK_API_URL;
+
+  useEffect(() => {
+    // Flask API 호출
+    axios.get(`${API_URL}/api/recommend-sectors`)
+      .then(response => {
+        const { similar_sectors } = response.data;
+        setSectors(similar_sectors);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching sectors:', error);
+        setError('섹터 데이터를 가져오는 데 실패했습니다.');
+        setLoading(false);
+      });
+  }, [API_URL]);
+
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+=======
   // 상태를 사용하여 현재 컴포넌트를 제어
   const [isEnterprise, setIsEnterprise] = useState(false);
 
   // 섹터 정보
   const sectors = ['IT', 'Software', 'Retail', 'Utilities', 'Fashion'];
+>>>>>>> 7a2946f (✨ 추천.버튼 클릭시 다른 추천 컴포넌트로 변경되도록 추가)
   const numbers = ['01.', '02.', '03.', '04.', '05.'];
 
   // 컴포넌트 전환 함수
