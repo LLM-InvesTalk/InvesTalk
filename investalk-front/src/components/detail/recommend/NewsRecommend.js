@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import styles from './NewsRecommend.module.css'; // CSS Module import
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import styles from "./NewsRecommend.module.css"; // CSS Module import
 import "../css/DetailGlobals.css"; // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
-import SectorRecommend from './SectorRecommend'; // SectorRecommend 컴포넌트 import
+import SectorRecommend from "./SectorRecommend"; // SectorRecommend 컴포넌트 import
+import ButtonComponent from "./ButtonComponent"; // 버튼 컴포넌트 import
 
 const NewsRecommend = () => {
-  // 상태를 사용하여 현재 컴포넌트를 전환
   const [isSector, setIsSector] = useState(false);
   const [newsData, setNewsData] = useState([]); // 뉴스 데이터를 저장할 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
@@ -15,13 +15,14 @@ const NewsRecommend = () => {
   // 뉴스 데이터를 가져오는 함수
   const fetchNewsData = async () => {
     try {
-      // 백엔드에서 뉴스 데이터 가져오기
-      const response = await axios.get(`${process.env.REACT_APP_FLASK_API_URL}/api/recommend-news?ticker=NVDA`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_FLASK_API_URL}/api/recommend-news?ticker=NVDA`
+      );
       setNewsData(response.data); // 가져온 데이터를 상태에 저장
       setLoading(false); // 로딩 완료
     } catch (error) {
       console.error("뉴스 데이터를 가져오는 데 실패했습니다.", error);
-      setError('뉴스 데이터를 가져오는 데 실패했습니다.');
+      setError("뉴스 데이터를 가져오는 데 실패했습니다.");
       setLoading(false); // 에러 발생 시 로딩 중지
     }
   };
@@ -39,7 +40,7 @@ const NewsRecommend = () => {
   // 제목을 80자 제한으로 자르고 '...' 추가하는 함수
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
-      return text.slice(0, maxLength) + '...';
+      return text.slice(0, maxLength) + "...";
     }
     return text;
   };
@@ -74,12 +75,12 @@ const NewsRecommend = () => {
             newsData.map((news, index) => (
               <div key={index} className={styles.newsItem}>
                 {/* 제목을 <a> 태그로 감싸서 링크로 이동, 80자 제한 */}
-                <a 
-                  href={news.url} 
-                  target="_blank" 
+                <a
+                  href={news.url}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className={styles.newsText}
-                  style={{ textDecoration: 'none', color: 'inherit' }} // 기본 스타일
+                  style={{ textDecoration: "none", color: "inherit" }} // 기본 스타일
                 >
                   {truncateText(news.title, 75)} {/* 80자 제한 */}
                 </a>
@@ -91,23 +92,9 @@ const NewsRecommend = () => {
           )}
         </div>
       </div>
-      
-      {/* SectorRecommend로 이동하는 버튼 */}
-      <div className={styles.group14} onClick={handleSwitchToSector} style={{ cursor: 'pointer' }}>
-        <div className={styles.overlap8}>
-          <div className={styles.ellipse4}></div>
-          <img
-            className={styles.subtract}
-            src="https://c.animaapp.com/8Gc7c0uK/img/subtract.svg"
-            alt="Subtract"
-          />
-          <img
-            className={styles.vector3}
-            src="https://c.animaapp.com/8Gc7c0uK/img/vector-2.svg"
-            alt="Vector"
-          />
-        </div>
-      </div>
+
+      {/* SectorRecommend로 이동하는 버튼을 ButtonComponent로 대체 */}
+      <ButtonComponent onClick={handleSwitchToSector} />
     </div>
   );
 };

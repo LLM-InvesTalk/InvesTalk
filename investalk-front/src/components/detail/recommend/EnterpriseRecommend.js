@@ -112,7 +112,7 @@ const EnterpriseRecommend = () => {
         </div>
       </div>
 
-      {/* 버튼 컴포넌트로 대체 */}
+      {/* ButtonComponent로 교체된 버튼 */}
       <ButtonComponent onClick={handleButtonClick} />
     </div>
   );
