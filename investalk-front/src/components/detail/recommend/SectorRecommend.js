@@ -4,6 +4,8 @@ import styles from './SectorRecommend.module.css'; // CSS 모듈 import
 import "../css/DetailGlobals.css";   // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
 import EnterpriseRecommend from './EnterpriseRecommend'; // 새로운 컴포넌트 import
+import ButtonComponent from './ButtonComponent'; // 오른쪽 버튼 컴포넌트 import
+import LeftButtonComponent from './LeftButtonComponent'; // 왼쪽 버튼 컴포넌트 import
 
 const Recommend = () => {
   const [sectors, setSectors] = useState([]); 
@@ -82,23 +84,10 @@ const Recommend = () => {
                 </div>
               </div>
             </div>
-            <div className={styles.group14}>
-              <div className={styles.overlap8}>
-                <div className={styles.ellipse4}></div>
-                <img
-                  className={styles.subtract}
-                  src="https://c.animaapp.com/8Gc7c0uK/img/subtract.svg"
-                  alt="Subtract"
-                  onClick={handleSwitchComponent} // 버튼 클릭 시 컴포넌트 교체
-                  style={{ cursor: 'pointer' }} // 버튼처럼 보이게 커서 스타일 추가
-                />
-                <img
-                  className={styles.vector3}
-                  src="https://c.animaapp.com/8Gc7c0uK/img/vector-2.svg"
-                  alt="Vector"
-                />
-              </div>
-            </div>
+            {/* 왼쪽 버튼 추가 */}
+            <LeftButtonComponent onClick={handleSwitchComponent} />
+            {/* 오른쪽 버튼 추가 */}
+            <ButtonComponent onClick={handleSwitchComponent} />
           </div>
         </div>
       )}

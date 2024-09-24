@@ -38,3 +38,11 @@
     left: 7px;
   }
   
+  .vectorLeft {
+    position: absolute;
+    width: 6px;
+    height: 10px;
+    top: 5px;
+    left: 7px;
+    transform: scaleX(-1); /* 화살표를 좌우 반전 */
+  }
