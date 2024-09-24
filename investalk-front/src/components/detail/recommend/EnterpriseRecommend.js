@@ -16,6 +16,7 @@ const EnterpriseRecommend = () => {
 
   const symbol = "NVDA"; // NVDA 심볼을 그대로 유지
   const apiKey = process.env.REACT_APP_FINNHUB_API_KEY; // .env에서 API 키 불러오기
+  const flaskApiUrl = process.env.REACT_APP_FLASK_API_URL; // Flask API URL을 환경 변수로 관리
 
   // 유사 종목을 가져오는 함수
   useEffect(() => {
@@ -41,7 +42,7 @@ const EnterpriseRecommend = () => {
 
   const fetchAverageGrowth = async (tickers) => {
     try {
-      const response = await axios.post("http://127.0.0.1:5000/api/average-growth", {
+      const response = await axios.post(`${flaskApiUrl}/api/average-growth`, {
         tickers,
       });
       setAverageGrowth({
