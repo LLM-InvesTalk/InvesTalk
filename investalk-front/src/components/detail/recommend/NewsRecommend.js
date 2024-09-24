@@ -5,8 +5,8 @@ import "../css/DetailGlobals.css"; // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
 import SectorRecommend from "./SectorRecommend"; // SectorRecommend 컴포넌트 import
 import EnterpriseRecommend from "./EnterpriseRecommend"; // EnterpriseRecommend 컴포넌트 import
-import ButtonComponent from "./ButtonComponent"; // 오른쪽 버튼 컴포넌트 import
-import LeftButtonComponent from "./LeftButtonComponent"; // 왼쪽 버튼 컴포넌트 import 추가
+import ButtonComponent from "./Button/ButtonComponent"; // 오른쪽 버튼 컴포넌트 import
+import LeftButtonComponent from "./Button/LeftButtonComponent"; // 왼쪽 버튼 컴포넌트 import 추가
 
 const NewsRecommend = () => {
   const [isSector, setIsSector] = useState(false);
