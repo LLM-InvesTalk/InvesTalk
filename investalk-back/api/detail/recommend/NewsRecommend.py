@@ -1,30 +1,36 @@
 import requests
+import os
+from dotenv import load_dotenv
 
-# NewsAPI API 키 설정
-API_KEY = 'your_newsapi_key'  # 여기에 NewsAPI에서 받은 API 키를 입력하세요.
+# .env 파일 로드
+load_dotenv()
 
-# 엔비디아 관련 뉴스 검색
-url = 'https://newsapi.org/v2/everything'
-params = {
-    'q': 'NVDA',  # 엔비디아 티커 심볼
-    'apiKey': 'c4e062f290c94a4a8823eceb29154491',  # API 키
-    'sortBy': 'popularity',  # 조회수 높은 순으로 정렬
-    'pageSize': 3  # 상위 3개의 뉴스만 가져오기
-}
+# NewsAPI를 통해 티커와 관련된 뉴스 3개를 가져오는 함수
+def get_related_news(ticker):
+    # .env 파일에서 API 키 불러오기
+    API_KEY = os.getenv('NEWS_API_KEY')
+    
+    if not API_KEY:
+        raise ValueError("API 키를 찾을 수 없습니다. .env 파일을 확인하세요.")
+    
+    url = 'https://newsapi.org/v2/everything'
+    params = {
+        'q': ticker,  # 티커 기반 뉴스 검색
+        'apiKey': API_KEY,  # .env에서 불러온 API 키
+        'sortBy': 'popularity',  # 조회수 높은 순으로 정렬
+        'pageSize': 3  # 상위 3개의 뉴스만 가져오기
+    }
 
-# API 요청
-response = requests.get(url, params=params)
-news_data = response.json()
+    response = requests.get(url, params=params)
+    news_data = response.json()
 
-# 응답 결과에서 뉴스 기사 정보 추출
-if news_data['status'] == 'ok':
-    top_articles = news_data['articles']
-    for idx, article in enumerate(top_articles, 1):
-        print(f"뉴스 {idx}")
-        print(f"제목: {article['title']}")
-        print(f"출처: {article['source']['name']}")
-        print(f"URL: {article['url']}")
-        print(f"발행일: {article['publishedAt']}")
-        print('-' * 40)
-else:
-    print("뉴스 데이터를 가져오는데 실패했습니다.")
+    # 뉴스 결과를 처리하여 필요한 정보만 반환
+    if news_data['status'] == 'ok':
+        articles = news_data['articles']
+        return [{
+            'title': article['title'],
+            'url': article['url'],
+            'publishedAt': article['publishedAt']
+        } for article in articles]
+    else:
+        return []  # 에러가 발생하면 빈 리스트 반환
