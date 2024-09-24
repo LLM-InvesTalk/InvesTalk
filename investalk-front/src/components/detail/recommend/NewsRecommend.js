@@ -15,14 +15,14 @@ const NewsRecommend = () => {
   // 뉴스 데이터를 가져오는 함수
   const fetchNewsData = async () => {
     try {
-      // 백엔드에서 뉴스 데이터 가져오기 (여기서는 NVDA 티커를 사용)
-      const response = await axios.get('http://127.0.0.1:5000/api/recommend-news?ticker=NVDA');
+      // 백엔드에서 뉴스 데이터 가져오기
+      const response = await axios.get(`${process.env.REACT_APP_FLASK_API_URL}/api/recommend-news?ticker=NVDA`);
       setNewsData(response.data); // 가져온 데이터를 상태에 저장
       setLoading(false); // 로딩 완료
     } catch (error) {
       console.error("뉴스 데이터를 가져오는 데 실패했습니다.", error);
       setError('뉴스 데이터를 가져오는 데 실패했습니다.');
-      setLoading(false);
+      setLoading(false); // 에러 발생 시 로딩 중지
     }
   };
 
@@ -49,16 +49,6 @@ const NewsRecommend = () => {
     return <SectorRecommend />;
   }
 
-  // 로딩 중일 때 보여줄 화면
-  if (loading) {
-    return <div>뉴스 데이터를 불러오는 중입니다...</div>;
-  }
-
-  // 에러 발생 시 보여줄 화면
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   return (
     <div className={styles.newsRecommend}>
       <div className={styles.titleWrapper}>
@@ -73,24 +63,32 @@ const NewsRecommend = () => {
           src="https://c.animaapp.com/8Gc7c0uK/img/group@2x.png"
           alt="뉴스 추천"
         />
+
+        {/* 뉴스 목록 */}
         <div className={styles.newsList}>
-          {newsData.map((news, index) => (
-            <div key={index} className={styles.newsItem}>
-              {/* 제목을 <a> 태그로 감싸서 링크로 이동, 80자 제한 */}
-              <a 
-                href={news.url} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className={styles.newsText}
-                style={{ textDecoration: 'none', color: 'inherit' }} // 기본 스타일
-              >
-                {truncateText(news.title, 75)} {/* 80자 제한 */}
-              </a>
-              <div className={styles.newsTime}>
-                {new Date(news.publishedAt).toLocaleString()}
+          {loading ? (
+            <div>Loading...</div> // 로딩 중일 때 표시
+          ) : error ? (
+            <div className={styles.errorMessage}>{error}</div> // 에러 발생 시 표시
+          ) : (
+            newsData.map((news, index) => (
+              <div key={index} className={styles.newsItem}>
+                {/* 제목을 <a> 태그로 감싸서 링크로 이동, 80자 제한 */}
+                <a 
+                  href={news.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className={styles.newsText}
+                  style={{ textDecoration: 'none', color: 'inherit' }} // 기본 스타일
+                >
+                  {truncateText(news.title, 75)} {/* 80자 제한 */}
+                </a>
+                <div className={styles.newsTime}>
+                  {new Date(news.publishedAt).toLocaleString()}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
       
