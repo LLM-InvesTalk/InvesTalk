@@ -4,10 +4,13 @@ import styles from "./EnterpriseRecommend.module.css"; // CSS Module import
 import "../css/DetailGlobals.css"; // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
 import NewsRecommend from "./NewsRecommend"; // NewsRecommend 컴포넌트 import
-import ButtonComponent from "./ButtonComponent"; // 버튼 컴포넌트 import
+import SectorRecommend from "./SectorRecommend"; // SectorRecommend 컴포넌트 import 추가
+import ButtonComponent from "./ButtonComponent"; // 오른쪽 버튼 컴포넌트 import
+import LeftButtonComponent from "./LeftButtonComponent"; // 왼쪽 버튼 컴포넌트 import 추가
 
 const EnterpriseRecommend = () => {
   const [isNewsRecommend, setIsNewsRecommend] = useState(false);
+  const [isSectorRecommend, setIsSectorRecommend] = useState(false); // SectorRecommend로 전환하는 상태 추가
   const [similarStocks, setSimilarStocks] = useState([]);
   const [averageGrowth, setAverageGrowth] = useState({
     cashFlowGrowth: null,
@@ -55,11 +58,21 @@ const EnterpriseRecommend = () => {
   };
 
   const handleButtonClick = () => {
-    setIsNewsRecommend(true); // 버튼 클릭 시 NewsRecommend로 전환
+    setIsNewsRecommend(true); // 오른쪽 버튼 클릭 시 NewsRecommend로 전환
   };
 
+  const handleLeftButtonClick = () => {
+    setIsSectorRecommend(true); // 왼쪽 버튼 클릭 시 SectorRecommend로 전환
+  };
+
+  // NewsRecommend가 true면 해당 컴포넌트 표시
   if (isNewsRecommend) {
     return <NewsRecommend />;
+  }
+
+  // SectorRecommend가 true면 해당 컴포넌트 표시
+  if (isSectorRecommend) {
+    return <SectorRecommend />;
   }
 
   return (
@@ -113,7 +126,10 @@ const EnterpriseRecommend = () => {
         </div>
       </div>
 
-      {/* ButtonComponent로 교체된 버튼 */}
+      {/* LeftButtonComponent 추가 */}
+      <LeftButtonComponent onClick={handleLeftButtonClick} />
+
+      {/* ButtonComponent로 교체된 오른쪽 버튼 */}
       <ButtonComponent onClick={handleButtonClick} />
     </div>
   );
