@@ -29,20 +29,12 @@ const Recommend = () => {
       });
   }, [API_URL]);
 
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  const numbers = ['01.', '02.', '03.', '04.', '05.'];
-
   // 컴포넌트 전환 함수
   const handleSwitchComponent = () => {
     setIsEnterprise((prev) => !prev); // 상태 토글
   };
+
+  const numbers = ['01.', '02.', '03.', '04.', '05.'];
 
   return (
     <div className={styles.divWrapper}>
@@ -76,9 +68,15 @@ const Recommend = () => {
                       ))}
                     </div>
                     <div className={styles.frame24}>
-                      {sectors.map((sector, index) => (
-                        <div key={index} className={styles.textWrapper26}>{sector}</div>
-                      ))}
+                      {loading ? (
+                        <div>Loading...</div> // 로딩 중일 때 섹터 데이터 대신 "Loading..." 표시
+                      ) : error ? (
+                        <div className={styles.errorMessage}>{error}</div> // 에러 발생 시 에러 메시지 표시
+                      ) : (
+                        sectors.map((sector, index) => (
+                          <div key={index} className={styles.textWrapper26}>{sector}</div>
+                        ))
+                      )}
                     </div>
                   </div>
                 </div>
