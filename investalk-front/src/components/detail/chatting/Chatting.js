@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./Chatting.module.css"; // CSS 모듈 import
 import "../css/DetailGlobals.css";   // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
+import CustomerMessage from "./CustomerMessage"; // 고객 메시지 컴포넌트 import
+import GptMessage from "./GptMessage"; // GPT 메시지 컴포넌트 import// 최상위 컴포넌트
 
 // 최상위 컴포넌트
 const Chatting = () => {
@@ -10,20 +12,10 @@ const Chatting = () => {
       <div className={styles.overlapGroupWrapper}>
         <div className={styles.overlap4}>
           <div className={styles.group3}>
-            {/* 첫 번째 채팅 그룹 */}
-            <div className={styles.group4}>
-              <div className={styles.frame10}>
-                <div className={styles.textWrapper11}>채팅채팅채팅채팅</div>
-              </div>
-              <div className={styles.textWrapper12}>00:00</div>
-            </div>
-            {/* 두 번째 채팅 그룹 */}
-            <div className={styles.group5}>
-              <div className={styles.frame11}>
-                <div className={styles.textWrapper11}>채팅채팅채팅채팅</div>
-              </div>
-              <div className={styles.textWrapper13}>00:00</div>
-            </div>
+            {/* 고객 메시지 컴포넌트 */}
+            <CustomerMessage message="고객용메세지" time="00:00" />
+            {/* GPT 메시지 컴포넌트 */}
+            <GptMessage message="상대 메세지" time="00:00" />
             {/* 채팅 세부 내용 */}
             <ChatDetails />
             {/* 추가적인 설명 포함 */}
@@ -44,7 +36,7 @@ const ChatDetails = () => {
     <div className={styles.group6}>
       <div className={styles.frame12}>
         <p className={styles.p}>
-          다음은 ~~에 대한 설명입니다. 주절주절블라블라에 대한 주절주절을 어쩌구중입니다.
+          파이차트용 메세지에요
         </p>
       </div>
       <div className={styles.frame13}>
@@ -71,17 +63,11 @@ const ChatExtraDetails = () => {
       <div className={styles.group8}>
         <div className={styles.frame17}>
           <p className={styles.p}>
-            다음은 ~~에 대한 설명입니다. 주절주절블라블라에 대한 주절주절을 어쩌구중입니다.
+            그래프용 메세지에요
           </p>
         </div>
         <img className={styles.frame18} src="https://c.animaapp.com/8Gc7c0uK/img/frame-141.svg" alt="frame 141" />
         <div className={styles.textWrapper16}>00:00</div>
-      </div>
-      <div className={styles.group9}>
-        <div className={styles.frame19}>
-          <p className={styles.p}>대충 채팅창의 최대 너비는 이 정도라고 생각하시면 될 듯 합니다.</p>
-        </div>
-        <div className={styles.textWrapper17}>00:00</div>
       </div>
       <div className={styles.rectangle7}></div>
       <div className={styles.rectangle8}></div>
