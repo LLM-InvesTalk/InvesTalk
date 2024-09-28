@@ -1,6 +1,7 @@
 import yfinance as yf
 import datetime
 from dateutil.relativedelta import relativedelta
+import numpy as np
 
 def get_stockInfo_chart(ticker_symbol, period):
     ticker = yf.Ticker(ticker_symbol)
@@ -16,11 +17,20 @@ def get_stockInfo_chart(ticker_symbol, period):
                 print("No data available for the given period.")
                 return []
 
+            market_caps = []
             for index, row in historical_data.iterrows():
                 market_cap = row['Close'] * shares_outstanding
+                market_caps.append(market_cap)
+
+            # 스케일링 (0에서 100 사이로 변환)
+            min_val = min(market_caps)
+            max_val = max(market_caps)
+            scaled_market_caps = [(mc - min_val) / (max_val - min_val) * 100 for mc in market_caps]
+
+            for idx, value in enumerate(scaled_market_caps):
                 dataset.append({
-                    "x": index.strftime("%Y-%m-%d"),
-                    "y": float(market_cap)
+                    "x": idx,
+                    "y": int(value)  # 소수점 제거
                 })
 
         elif period == "1m":
@@ -30,11 +40,20 @@ def get_stockInfo_chart(ticker_symbol, period):
                 print("No data available for the given period.")
                 return []
 
+            market_caps = []
             for index, row in historical_data.iterrows():
                 market_cap = row['Close'] * shares_outstanding
+                market_caps.append(market_cap)
+
+            # 스케일링 (0에서 100 사이로 변환)
+            min_val = min(market_caps)
+            max_val = max(market_caps)
+            scaled_market_caps = [(mc - min_val) / (max_val - min_val) * 100 for mc in market_caps]
+
+            for idx, value in enumerate(scaled_market_caps):
                 dataset.append({
-                    "x": index.strftime("%Y-%m"),
-                    "y": float(market_cap)
+                    "x": idx,
+                    "y": int(value)  # 소수점 제거
                 })
 
         elif period == "1y":
@@ -44,21 +63,24 @@ def get_stockInfo_chart(ticker_symbol, period):
                 print("No data available for the given period.")
                 return []
 
-            # 데이터를 연도로 그룹화
-            historical_data = historical_data['Close'].resample('Y').last().to_frame()
+            historical_data = historical_data['Close'].resample('YE').last().to_frame()
+            market_caps = []
             for index, row in historical_data.iterrows():
                 market_cap = row['Close'] * shares_outstanding
+                market_caps.append(market_cap)
+
+            # 스케일링 (0에서 100 사이로 변환)
+            min_val = min(market_caps)
+            max_val = max(market_caps)
+            scaled_market_caps = [(mc - min_val) / (max_val - min_val) * 100 for mc in market_caps]
+
+            for idx, value in enumerate(scaled_market_caps):
                 dataset.append({
-                    "x": index.strftime("%Y"),  # 연도로 표시
-                    "y": float(market_cap)
+                    "x": idx,
+                    "y": int(value)  # 소수점 제거
                 })
 
     except Exception as e:
         print(f"Error fetching data for {ticker_symbol} with period {period}: {e}")
 
     return dataset
-
-# 테스트
-print(get_stockInfo_chart("AAPL", "1d"))  # 최근 30일 동안의 시가총액 변화
-print(get_stockInfo_chart("AAPL", "1m"))  # 최근 12개월 동안의 시가총액 변화
-print(get_stockInfo_chart("AAPL", "1y"))  # 최근 12년 동안의 시가총액 변화
