@@ -164,6 +164,8 @@ a {
 
 .frame-29 {
   display: inline-flex;
+  flex-direction: row-reverse;
+  margin-right: 30px;
 }
 
 .frame-30,
@@ -234,4 +236,10 @@ a {
   white-space: nowrap;
   letter-spacing: 0;
   line-height: normal;
+}
+
+.text-wrapper-group {
+  position: relative;
+  left: 455px;
+  top: 20px;
 }
