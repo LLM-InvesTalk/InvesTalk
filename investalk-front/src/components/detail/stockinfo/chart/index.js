@@ -2,30 +2,36 @@ import { AreaPlot, lineElementClasses } from "@mui/x-charts/LineChart";
 import { areaElementClasses } from "@mui/x-charts/LineChart";
 import { useYScale, useDrawingArea } from "@mui/x-charts/hooks";
 import { LinePlot } from "@mui/x-charts/LineChart";
-
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
 import { ChartsReferenceLine } from "@mui/x-charts/ChartsReferenceLine";
 import { colors } from "@mui/joy";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { format } from "date-fns";
 
-const StockInfoChart = () => {
-  const dataset = [
-    { x: 0, y: 2000 },
-    { x: 1, y: 4000 },
-    { x: 2, y: 3000 },
-    { x: 3, y: 2000 },
-    { x: 4, y: 2780 },
-    { x: 5, y: -1890 },
-    { x: 6, y: 3490 },
-    { x: 8, y: -2000 },
-    { x: 9, y: 2780 },
-    { x: 10, y: 1890 },
-    { x: 11, y: 3490 },
-    { x: 12, y: 3490 },
-  ];
+const StockInfoChart = (props) => {
+  // const tickerSymbol = "TSLA";
+  // const period = "1d";
+  const { tickerSymbol, period } = props;
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/api/stockinfochart/${tickerSymbol}/${period}`)
+      .then((response) => {
+        console.log(response.data); // 데이터 확인을 위해 로그 출력
+        setData(response.data);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }, [tickerSymbol, period]);
 
   const config = {
-    dataset: dataset,
-    xAxis: [{ dataKey: "x" }],
+    dataset: data || [], // 데이터가 없을 때 빈 배열로 처리
+    xAxis: [
+      {
+        dataKey: "x",
+      },
+    ],
     series: [
       {
         type: "line",
@@ -36,17 +42,9 @@ const StockInfoChart = () => {
         color: "#D2A5FF",
       },
     ],
-    width: 312,
-    height: 62,
-    margin: { top: 25, bottom: 5, left: 0, right: 30 },
-    sx: {
-      [`& .${areaElementClasses.root}`]: {
-        fill: "url(#swich-color-id-1)",
-      },
-      [`& .${lineElementClasses.root}`]: {
-        strokeWidth: 1,
-      },
-    },
+    width: 300,
+    height: 100,
+    margin: { top: 25, bottom: 50, left: 50, right: 30 },
   };
 
   function ColorSwich({ threshold, color1, color2, id }) {
@@ -75,17 +73,15 @@ const StockInfoChart = () => {
   }
 
   return (
-    <ResponsiveChartContainer {...config}>
-      <LinePlot />
-      <AreaPlot />
-      <ChartsReferenceLine y={0} />
-      <ColorSwich
-        color1="rgb(225, 247, 255)"
-        color2="rgb(247, 239, 255)"
-        threshold={0}
-        id="swich-color-id-1"
-      />
-    </ResponsiveChartContainer>
+    <div>
+      {data ? (
+        <ResponsiveChartContainer {...config}>
+          <LinePlot />
+        </ResponsiveChartContainer>
+      ) : (
+        <p>Loading data...</p> // 데이터 로딩 중 메시지
+      )}
+    </div>
   );
 };
 
