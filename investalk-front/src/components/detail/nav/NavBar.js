@@ -5,12 +5,23 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import styles from "./NavBar.module.css";
 
-const NavBar = () => {
-  const [keyword, setKeyword] = useState("");
+import { useNavigate } from "react-router-dom";
+
+const NavBar = (props) => {
+  const { keyword, setKeyword } = props;
+
+  const [searchText, setSearchText] = useState();
+  const navigate = useNavigate();
 
   const onChange = useCallback((e) => {
-    setKeyword(e.target.value);
+    setSearchText(e.target.value);
   }, []);
+
+  const onSearch = useCallback(() => {
+    setKeyword(searchText);
+    setSearchText("");
+    navigate(`/detail`);
+  }, [searchText, setKeyword, navigate]);
 
   return (
     <div className={styles["frame-8"]}>
@@ -22,7 +33,7 @@ const NavBar = () => {
       <Input
         className={styles["vector-wrapper"]}
         placeholder="Search..."
-        value={keyword}
+        value={searchText}
         onChange={onChange}
         sx={{
           borderRadius: "40px",
@@ -31,7 +42,7 @@ const NavBar = () => {
           <IconButton
             variant="plain"
             size="sm"
-            onClick={() => setKeyword("")}
+            onClick={onSearch}
             className={styles["custom-icon-button"]}
             sx={{
               backgroundColor: "transparent",

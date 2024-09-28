@@ -4,11 +4,15 @@ import Chatting from "../../components/detail/chatting/Chatting";
 import Recommend from "../../components/detail/recommend/Recommend";
 import Analyze from "../../components/detail/analyze/Analyze";
 
+import { useOutletContext } from "react-router-dom";
+
 const DetailPage = () => {
+  const { keyword } = useOutletContext();
+  console.log("DetailPage: ", keyword);
   return (
     <div>
-      <FinancialStatements />
-      <StockInfoCard />
+      <FinancialStatements tickerSymbol={keyword} />
+      <StockInfoCard tickerSymbol={keyword} />
       <Recommend />
       <Analyze />
       <Chatting />
