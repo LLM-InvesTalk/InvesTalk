@@ -61,8 +61,8 @@ const NavBar = (props) => {
           </IconButton>
         }
       />
-      
-      {keyword && (
+
+      {searchText && (
         <div className={styles["rectangle-10"]}>
           <div className={styles["text-wrapper-25"]}>Search Result 1</div>
           <div className={styles["text-wrapper-26"]}>Search Result 2</div>
