@@ -45,28 +45,23 @@ const StockInfoChart = (props) => {
     width: 300,
     height: 100,
     margin: { top: 25, bottom: 50, left: 50, right: 30 },
+    sx: {
+      [`& .${areaElementClasses.root}`]: {
+        fill: "url(#swich-color-id-1)",
+      },
+      [`& .${lineElementClasses.root}`]: {
+        strokeWidth: 1,
+      },
+    },
   };
 
-  function ColorSwich({ threshold, color1, color2, id }) {
-    const { top, height, bottom } = useDrawingArea();
-    const svgHeight = top + bottom + height;
-
-    const scale = useYScale();
-    const y0 = scale(threshold);
-    const off = y0 !== undefined ? y0 / svgHeight : 0;
-
+  function ColorSwich({ id }) {
     return (
       <defs>
-        <linearGradient
-          id={id}
-          x1="0"
-          x2="0"
-          y1="0"
-          y2={`${svgHeight}px`}
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset={off} stopColor={color1} stopOpacity={1} />
-          <stop offset={off} stopColor={color2} stopOpacity={1} />
+        <linearGradient id={id} x2="0" y2="1" gradientUnits="objectBoundingBox">
+          <stop offset="5%" stopColor="rgb(225, 247, 255)" />
+          <stop offset="30%" stopColor="rgb(236, 255, 248)" />
+          <stop offset="100%" stopColor="rgb(247, 239, 255)" />
         </linearGradient>
       </defs>
     );
@@ -77,6 +72,8 @@ const StockInfoChart = (props) => {
       {data ? (
         <ResponsiveChartContainer {...config}>
           <LinePlot />
+          <AreaPlot />
+          <ColorSwich id="swich-color-id-1" />
         </ResponsiveChartContainer>
       ) : (
         <p>Loading data...</p> // 데이터 로딩 중 메시지
