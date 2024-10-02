@@ -18,6 +18,8 @@ const StockInfoCard = (props) => {
   const [stockInfo, setStockInfo] = useState({});
   const [analyzedStockScore, setAnalyedStockScore] = useState(0.0);
 
+  const [percentageChange, setPercentageChange] = useState(0);
+
   useEffect(() => {
     const getStockInfo = async () => {
       try {
@@ -113,12 +115,16 @@ const StockInfoCard = (props) => {
                     <StockInfoChart
                       tickerSymbol={tickerSymbol}
                       period={period}
+                      setPercentageChange={setPercentageChange}
                     ></StockInfoChart>
                   </div>
                 </div>
                 <div className={styles["text-wrapper-group"]}>
-                  <div className={styles["text-wrapper-33"]}>+30%</div>
-                  <div className={styles["text-wrapper-34"]}>-30%</div>
+                  <div className={styles["text-wrapper-33"]}>
+                    {percentageChange > 0
+                      ? `+${percentageChange}%`
+                      : `${percentageChange}%`}
+                  </div>
                 </div>
               </div>
             </div>

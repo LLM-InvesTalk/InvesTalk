@@ -1,32 +1,27 @@
 import { AreaPlot, lineElementClasses } from "@mui/x-charts/LineChart";
 import { areaElementClasses } from "@mui/x-charts/LineChart";
-import { useYScale, useDrawingArea } from "@mui/x-charts/hooks";
 import { LinePlot } from "@mui/x-charts/LineChart";
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
-import { ChartsReferenceLine } from "@mui/x-charts/ChartsReferenceLine";
-import { colors } from "@mui/joy";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { format } from "date-fns";
 
 const StockInfoChart = (props) => {
-  // const tickerSymbol = "TSLA";
-  // const period = "1d";
-  const { tickerSymbol, period } = props;
+  const { tickerSymbol, period, setPercentageChange } = props;
   const [data, setData] = useState(null);
 
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/stockinfochart/${tickerSymbol}/${period}`)
       .then((response) => {
-        console.log(response.data); // 데이터 확인을 위해 로그 출력
+        console.log(response); // 데이터 확인을 위해 로그 출력
         setData(response.data);
+        setPercentageChange(response.data.percentage_change);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, [tickerSymbol, period]);
 
   const config = {
-    dataset: data || [], // 데이터가 없을 때 빈 배열로 처리
+    dataset: data ? data.data : [], // 데이터가 없을 때 빈 배열로 처리
     xAxis: [
       {
         dataKey: "x",
