@@ -1,16 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import styles from './GraphComponentStyle.module.css';
+import ButtonComponent from './Button/ButtonComponent';
+import LeftButtonComponent from './Button/LeftButtonComponent';
 
 export default function DynamicBarChart() {
-    const [etfData, setEtfData] = useState({});
-    const [hoveredIndex, setHoveredIndex] = useState(null); // 마우스 오버한 막대의 인덱스
-    const [hoveredChange, setHoveredChange] = useState(null); // 마우스 오버한 퍼센트 포인트
+    const [etfData, setEtfData] = useState([]);
+    const [offset, setOffset] = useState(0);  // offset 상태 추가
+    const [hoveredIndex, setHoveredIndex] = useState(null);  // 마우스 오버된 막대의 인덱스
+    const [hoveredChange, setHoveredChange] = useState(null);  // 마우스 오버된 퍼센트 변경값
     const API_URL = process.env.REACT_APP_FLASK_API_URL;
+
+
+    const barMaxHeight = 200;
+
+    // OECD 상위 국가 순서에 따른 ETF 심볼 및 국가명 매핑
+    const countryMapping = [
+        { symbol: 'SPY', name: '미국' },
+        { symbol: 'EWJ', name: '일본' },
+        { symbol: 'EWG', name: '독일' },
+        { symbol: 'EWQ', name: '프랑스' },
+        { symbol: 'EWC', name: '캐나다' },
+        { symbol: 'EWA', name: '호주' },
+        { symbol: 'EWU', name: '영국' },
+        { symbol: 'EWL', name: '스위스' },
+        { symbol: 'EWK', name: '벨기에' },
+        { symbol: 'EWD', name: '스웨덴' },
+        { symbol: 'EWS', name: '싱가포르' },
+        { symbol: 'EWH', name: '홍콩' },
+        { symbol: 'EWI', name: '이탈리아' },
+        { symbol: 'EWN', name: '네덜란드' },
+        { symbol: 'EWP', name: '스페인' },
+        { symbol: 'EWO', name: '오스트리아' },
+        { symbol: 'EWD', name: '덴마크' },
+        { symbol: 'EWY', name: '대한민국' },
+        { symbol: 'EWZ', name: '브라질' },
+        { symbol: 'EWT', name: '대만' }
+    ];
 
     useEffect(() => {
         const fetchEtfData = async () => {
             try {
-                const response = await fetch(`${API_URL}/api/etf-data`);
+                const response = await fetch(`${API_URL}/api/etf-data?offset=${offset}`);
                 const data = await response.json();
                 setEtfData(data);
             } catch (error) {
@@ -18,9 +48,19 @@ export default function DynamicBarChart() {
             }
         };
         fetchEtfData();
-    }, [API_URL]);
+    }, [API_URL, offset]);
 
-    const barMaxHeight = 200;
+    const handleNext = () => {
+        if (offset + 10 < countryMapping.length) {
+            setOffset(offset + 3);  // 3개씩 이동
+        }
+    };
+
+    const handlePrev = () => {
+        if (offset > 0) {
+            setOffset(offset - 3);  // 3개씩 이동
+        }
+    };
 
     return (
         <div className={styles['div-wrapper']}>
@@ -33,16 +73,20 @@ export default function DynamicBarChart() {
                                 Text Description...<br />......................................................................................<br />..................................................................
                             </div>
                         </div>
-                        <div className={styles['group-3']}>
+                        <div className={styles['group-3']} style={{ position: 'relative' }}>
+
                             <div className={styles['overlap-group-wrapper']} style={{ display: 'flex', justifyContent: 'space-around', height: `${barMaxHeight}px`, position: 'relative' }}>
                                 <div className={styles['rectangle-2']}></div>
-                                {Object.keys(etfData).map((symbol, index) => {
-                                    const etf = etfData[symbol];
+
+                                {countryMapping.slice(offset, offset + 10).map((country, index) => {
+                                    const etf = etfData[country.symbol];
+                                    if (!etf || !etf.today_price || !etf.yesterday_price) return null;
+
                                     const todayValue = etf.today_price;
                                     const yesterdayValue = etf.yesterday_price;
 
                                     const percentageChange = ((todayValue - yesterdayValue) / yesterdayValue) * 100;
-                                    const barHeight = Math.abs((percentageChange / 3) * 100);  // -5% ~ 5% 범위
+                                    const barHeight = Math.abs((percentageChange / 3) * 100);
                                     const isPositiveChange = percentageChange >= 0;
 
                                     const gradient = isPositiveChange
@@ -108,12 +152,21 @@ export default function DynamicBarChart() {
                                                     lineHeight: 'normal'
                                                 }}
                                             >
-                                                {symbol}
+                                                {country.name}
                                             </div>
                                         </div>
                                     );
                                 })}
                             </div>
+                            {/* 왼쪽 화살표 버튼 */}
+                            <div className={styles['left-button']}>
+                                <LeftButtonComponent onClick={handlePrev} />
+                            </div>
+                            {/* 오른쪽 화살표 버튼 */}
+                            <div className={styles['right-button']}>
+                                <ButtonComponent onClick={handleNext} />
+                            </div>
+
                             <div className={styles['text-wrapper-11']}>Yesterday (100%)</div>
                         </div>
                     </div>
