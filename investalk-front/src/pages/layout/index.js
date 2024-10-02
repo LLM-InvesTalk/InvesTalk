@@ -6,8 +6,7 @@ import { useState } from "react";
 import NavBar from "../../components/detail/nav/NavBar";
 
 const LayoutPage = () => {
-  const [keyword, setKeyword] = useState("");
-  console.log("LayoutPage: ", keyword);
+  const [tickerSymbol, setTickerSymbol] = useState("");
   return (
     <div>
       <div className={styles["div-wrapper"]}>
@@ -61,8 +60,8 @@ const LayoutPage = () => {
             />
           </div>
           <div className={styles["rectangle"]}></div>
-          <NavBar keyword={keyword} setKeyword={setKeyword} />
-          <Outlet context={{ keyword }} />
+          <NavBar setTickerSymbol={setTickerSymbol} />
+          <Outlet context={{ tickerSymbol }} />
         </div>
       </div>
     </div>

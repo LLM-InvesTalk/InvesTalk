@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import Input from "@mui/joy/Input";
 import { IconButton } from "@mui/joy";
 import SearchIcon from "@mui/icons-material/Search";
@@ -6,22 +6,48 @@ import SearchIcon from "@mui/icons-material/Search";
 import styles from "./NavBar.module.css";
 
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const NavBar = (props) => {
-  const { keyword, setKeyword } = props;
+  const { setTickerSymbol } = props;
 
-  const [searchText, setSearchText] = useState();
+  const [searchText, setSearchText] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getSearchResult = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/search/${searchText}`
+        );
+        console.log("fetch search data: ", response.data);
+        setSearchResult(response.data);
+      } catch (error) {
+        console.error("Error fetching scraps:", error);
+      }
+    };
+    getSearchResult();
+  }, [searchText]);
 
   const onChange = useCallback((e) => {
     setSearchText(e.target.value);
   }, []);
 
   const onSearch = useCallback(() => {
-    setKeyword(searchText);
+    setTickerSymbol(searchText);
     setSearchText("");
+    setSearchResult([]);
     navigate(`/detail`);
-  }, [searchText, setKeyword, navigate]);
+  }, [searchText, setTickerSymbol, navigate]);
+
+  const onSelectResult = (result) => {
+    setTickerSymbol(result.ticker);
+    setSearchText("");
+    setSearchResult([]);
+    navigate(`/detail`);
+  };
 
   return (
     <div className={styles["frame-8"]}>
@@ -62,11 +88,17 @@ const NavBar = (props) => {
         }
       />
 
-      {searchText && (
+      {searchResult.length > 0 && (
         <div className={styles["rectangle-10"]}>
-          <div className={styles["text-wrapper-25"]}>Search Result 1</div>
-          <div className={styles["text-wrapper-26"]}>Search Result 2</div>
-          <div className={styles["text-wrapper-27"]}>Search Result 3</div>
+          {searchResult.map((result) => (
+            <div
+              className={styles["text-wrapper-25"]}
+              onClick={() => onSelectResult(result)}
+            >
+              {result.ticker} - {result["company name"]} ({result["short name"]}
+              )
+            </div>
+          ))}
         </div>
       )}
 

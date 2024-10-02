@@ -7,12 +7,11 @@ import Analyze from "../../components/detail/analyze/Analyze";
 import { useOutletContext } from "react-router-dom";
 
 const DetailPage = () => {
-  const { keyword } = useOutletContext();
-  console.log("DetailPage: ", keyword);
+  const { tickerSymbol } = useOutletContext();
   return (
     <div>
-      <FinancialStatements tickerSymbol={keyword} />
-      <StockInfoCard tickerSymbol={keyword} />
+      <FinancialStatements tickerSymbol={tickerSymbol} />
+      <StockInfoCard tickerSymbol={tickerSymbol} />
       <Recommend />
       <Analyze />
       <Chatting />
