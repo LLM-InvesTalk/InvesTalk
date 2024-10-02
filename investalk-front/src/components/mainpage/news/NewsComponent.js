@@ -10,13 +10,23 @@ const NewsComponent = () => {
             try {
                 const response = await fetch(`${API_URL}/api/get-news`);  // 백엔드 API 경로
                 const data = await response.json();
-                
+
+                // 에러가 있는 경우 처리
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // 데이터가 배열인지 확인
+                if (!Array.isArray(data)) {
+                    throw new Error("Unexpected response format");
+                }
+
                 // 상위 3개의 뉴스만 선택
                 const top3News = data.slice(0, 3);
 
                 setNews(top3News.map((article) => ({
                     title: article.title || "제목 없음",
-                    time: new Date(article.published_time).toLocaleString(),  // UNIX timestamp 변환
+                    time: new Date(article.published_time).toLocaleString(),  // 날짜 변환
                     imgSrc: article.thumbnail || "https://via.placeholder.com/150",  // 이미지가 없을 경우 기본 이미지
                     link: article.link  // 뉴스 링크
                 })));
@@ -40,7 +50,7 @@ const NewsComponent = () => {
                                     <img src={article.imgSrc} alt={article.title} className={styles['news-thumbnail']} />
                                     <div className={styles['news-content']}>
                                         <div className={styles['text-wrapper-14']}>
-                                            {article.title.length > 10 ? `${article.title.substring(0, 20)}...` : article.title}
+                                            {article.title.length > 20 ? `${article.title.substring(0, 20)}...` : article.title}
                                         </div>
                                         <div className={styles['text-wrapper-15']}>
                                             {article.time}

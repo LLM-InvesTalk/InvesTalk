@@ -10,13 +10,16 @@ load_dotenv()
 api_key = os.getenv('NEWS_API_KEY')
 
 # ETF 티커 리스트
-etf_list = ['SPY', 'EWJ', 'EWG', 'EWQ', 'EWC', 'EWA', 'EWU', 'EWL', 'EWK', 'EWD']
+etf_list = ['SPY', 'EWJ', 'EWG', 'EWQ', 'EWC', 'EWA', 'EWU', 'EWL', 'EWK', 'EWD', 'EWS', 'EWH', 'EWI', 'EWN', 'EWP', 'EWO', 'EWD', 'EWY', 'EWZ', 'EWT']
 
 # 뉴스 데이터를 가져오는 함수
 def get_news():
     etf_news = []
 
     try:
+        if not api_key:
+            return jsonify({'error': 'API key not found'}), 500
+
         # 각 ETF에 대해 상위 3개의 조회수 높은 뉴스 가져오기
         for etf in etf_list:
             url = f'https://newsapi.org/v2/everything?q={etf}&sortBy=popularity&pageSize=3&apiKey={api_key}'
@@ -38,8 +41,12 @@ def get_news():
                     'title': article['title'],
                     'link': article['url'],
                     'published_time': article['publishedAt'],
-                    'thumbnail': article.get('urlToImage', 'https://via.placeholder.com/150')  # 이미지가 없을 경우 기본 이미지 설정
+                    'thumbnail': article.get('urlToImage', 'https://via.placeholder.com/150')
                 })
+
+        # 빈 리스트인 경우
+        if not etf_news:
+            return jsonify({'error': 'No news articles available'}), 500
 
         return jsonify(etf_news)
 
