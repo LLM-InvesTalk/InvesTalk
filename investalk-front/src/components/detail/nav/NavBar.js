@@ -19,18 +19,21 @@ const NavBar = (props) => {
   useEffect(() => {
     const getSearchResult = async () => {
       try {
+        if (searchText.trim() === "") {
+          setSearchResult([]); // 빈 검색어일 때 검색 결과 비우기
+          return;
+        }
         const response = await axios.get(
           `http://localhost:5000/api/search/${searchText}`
         );
         console.log("fetch search data: ", response.data);
         setSearchResult(response.data);
       } catch (error) {
-        console.error("Error fetching scraps:", error);
+        console.error("Error fetching search results:", error);
       }
     };
     getSearchResult();
   }, [searchText]);
-
   const onChange = useCallback((e) => {
     setSearchText(e.target.value);
   }, []);
