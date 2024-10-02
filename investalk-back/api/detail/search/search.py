@@ -1,35 +1,51 @@
+from sqlalchemy import create_engine, Table, MetaData
+from sqlalchemy.exc import SQLAlchemyError
+from rapidfuzz import process, fuzz
 import pandas as pd
 import os
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-csv_file_path = os.path.join(current_dir, 'companies.csv')
-df = pd.read_csv(csv_file_path)
+# 데이터베이스 엔진 설정 (SQLite를 사용)
+engine = create_engine('sqlite:///companies.db')
 
-# df = pd.read_csv('/companies.csv')
-df = df[['ticker', 'company name', 'short name']]
+# 데이터베이스에서 데이터를 가져오는 함수
+def get_all_tickers_from_db():
+    metadata = MetaData() 
+    companies_table = Table('companies', metadata, autoload_with=engine)
 
-# print("df: ", df)
+    with engine.connect() as connection:
+        query_result = connection.execute(companies_table.select()).mappings().all()
 
+        df_from_db = pd.DataFrame(query_result)
+    return df_from_db
+
+# 검색 함수 구현 (대소문자 구분 없이 부분 일치 검색)
 def search(query):
-    # 검색어가 없는 경우 빈 리스트 반환
     if not query:
         return []
 
-    # 검색어와 매칭되는 데이터 필터링
-    results = df[df.apply(lambda row: row.astype(str).str.lower().str.contains(query.lower()).any(), axis=1)].copy()
+    query = query.lower()
 
-    # 유사도 계산: 검색어가 포함된 횟수를 기준으로 정렬
-    results['similarity'] = results.apply(lambda row: sum([query.lower() in str(value).lower() for value in row]), axis=1)
+    df_from_db = get_all_tickers_from_db()
 
-    # 유사도가 높은 상위 10개 항목만 선택
-    top_results = results.nlargest(3, 'similarity')
+    df_from_db['ticker_lower'] = df_from_db['ticker'].str.lower()
 
-    # 'similarity' 열을 제거하고 결과 반환
-    top_results = top_results.drop(columns=['similarity'])
-    suggestions = top_results.to_dict(orient='records')
+    # 'ticker_lower' 열에서 부분 일치 및 유사도 검색
+    choices = df_from_db['ticker_lower'].tolist()
+
+    # 부분 일치 검색 수행 
+    top_results = process.extract(query, choices, limit=4, scorer=fuzz.partial_ratio)
+
+    # 유사도가 낮은 항목은 필터링 (필요에 따라 유사도 기준을 조정할 수 있음)
+    filtered_results = [result for result in top_results if result[1] >= 50]
+
+    suggestions = df_from_db[df_from_db['ticker_lower'].isin([result[0] for result in filtered_results])].drop(columns=['ticker_lower']).to_dict(orient='records')
 
     return suggestions
 
-# 테스트
-print("A: ",search("A")) 
-print("AAP: ",search("AAP")) 
+# 초기 CSV 데이터를 데이터베이스에 저장 (처음에만 실행)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+csv_file_path = os.path.join(current_dir, 'companies.csv')
+
+# 검색 테스트
+print("A: ", search("A"))
+print("AAP: ", search("AAP"))
