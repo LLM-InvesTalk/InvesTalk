@@ -96,7 +96,11 @@ const NewsRecommend = () => {
                 >
                   {truncateText(news.title, 70)} {/* 70자 제한 */}
                 </a>
-                <div className={styles.newsTime}>
+                {/* 제목의 길이가 30자 이하일 경우 top을 20px로, 그렇지 않으면 41px로 설정 */}
+                <div
+                  className={styles.newsTime}
+                  style={{ top: news.title.length <= 30 ? "20px" : "41px" }}
+                >
                   {new Date(news.publishedAt).toLocaleString()}
                 </div>
               </div>
