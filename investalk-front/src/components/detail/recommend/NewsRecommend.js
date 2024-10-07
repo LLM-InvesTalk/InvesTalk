@@ -45,7 +45,7 @@ const NewsRecommend = () => {
     setIsEnterprise(true);
   };
 
-  // 제목을 80자 제한으로 자르고 '...' 추가하는 함수
+  // 제목을 70자 제한으로 자르고 '...' 추가하는 함수
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
       return text.slice(0, maxLength) + "...";
@@ -86,7 +86,7 @@ const NewsRecommend = () => {
           ) : (
             newsData.map((news, index) => (
               <div key={index} className={styles.newsItem}>
-                {/* 제목을 <a> 태그로 감싸서 링크로 이동, 80자 제한 */}
+                {/* 제목을 <a> 태그로 감싸서 링크로 이동, 70자 제한 */}
                 <a
                   href={news.url}
                   target="_blank"
@@ -94,7 +94,7 @@ const NewsRecommend = () => {
                   className={styles.newsText}
                   style={{ textDecoration: "none", color: "inherit" }} // 기본 스타일
                 >
-                  {truncateText(news.title, 75)} {/* 80자 제한 */}
+                  {truncateText(news.title, 70)} {/* 70자 제한 */}
                 </a>
                 <div className={styles.newsTime}>
                   {new Date(news.publishedAt).toLocaleString()}
