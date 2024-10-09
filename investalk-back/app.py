@@ -1,5 +1,6 @@
 import sys
 import os
+from dotenv import load_dotenv  # .env 파일을 불러오기 위해 추가
 
 # 프로젝트의 루트 디렉토리를 sys.path에 추가
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
@@ -12,12 +13,18 @@ from LLM import llm_model
 from flask_cors import CORS
 from flask_migrate import Migrate
 from seonga.models import db
+from seonga.config import Config  # Config 클래스 직접 불러오기
+
+# .env 파일의 환경 변수 로드
+load_dotenv()
 
 # Flask 앱 생성
 app = Flask(__name__)
 
-# 설정 파일 불러오기
-app.config.from_object('seonga.config')
+# 설정 파일 불러오기 (Config 클래스에서 설정 적용)
+app.config.from_object(Config)
+
+# 데이터베이스 초기화
 db.init_app(app)
 migrate = Migrate(app, db)
 
