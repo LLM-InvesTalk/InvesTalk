@@ -23,7 +23,7 @@ def print_recent_data():
     if market_open <= now <= market_close:
         # 현재 날짜의 9시 30분부터 데이터를 가져오기 위해 시작 시간을 명시합니다.
         start_date = datetime(now.year, now.month, now.day, 9, 30, tzinfo=eastern)
-        data = nvidia.history(interval="5m", start=start_date)
+        data = nvidia.history(interval="1m", start=start_date)
 
         # 데이터가 충분한지 확인합니다.
         if len(data) < 1:
