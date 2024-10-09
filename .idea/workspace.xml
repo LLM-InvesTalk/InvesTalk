@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4be2641c-979f-4d69-80e4-a23e3054fcb2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/investalk-back/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/investalk-back/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/investalk-back/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/investalk-back/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/investalk-back/seonga/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/investalk-back/seonga/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/investalk-back/seonga/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/investalk-back/seonga/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/investalk-back/seonga/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/investalk-back/seonga/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/investalk-back/seonga/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/investalk-back/seonga/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/investalk-front/src/components/mypage/stockTable/TableComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/investalk-front/src/components/mypage/stockTable/TableComponent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +66,8 @@
       <recent name="$PROJECT_DIR$/investalk-back" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/investalk-back/seonga" />
+      <recent name="$PROJECT_DIR$/investalk-back/seonga/mypagedto" />
       <recent name="$PROJECT_DIR$/investalk-back" />
     </key>
   </component>
@@ -98,6 +94,7 @@
       <workItem from="1727376058706" duration="19691000" />
       <workItem from="1727530231849" duration="3132000" />
       <workItem from="1727666284128" duration="31269000" />
+      <workItem from="1728141602883" duration="5491000" />
     </task>
     <servers />
   </component>

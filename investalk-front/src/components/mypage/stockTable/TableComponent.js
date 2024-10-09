@@ -35,14 +35,12 @@ const TableComponent = () => {
         return '▽';
     };
 
-    const getClassForChange = (todayValue, yesterdayValue) => {
-        const todayNum = parseFloat(todayValue.replace('%', '').replace('점', ''));
-        const yesterdayNum = parseFloat(yesterdayValue.replace('%', '').replace('점', ''));
 
-        if (todayNum > yesterdayNum) {
+    const getClassForChange = (direction) => {
+        if (direction === "up") {
             return styles['text-wrapper-4']; // 상승
         } else {
-            return styles['text-wrapper-6']; // 하락
+            return styles['text-wrapper-6']; // 하락 또는 변동 없음
         }
     };
 
