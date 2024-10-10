@@ -16,6 +16,12 @@ def print_recent_data():
     # 현재 시간을 어제로 설정
     now = datetime.now(eastern) - timedelta(days=1)
     
+    # 만약 주말(토, 일)일 경우, 마지막 거래일인 금요일로 이동합니다.
+    if now.weekday() == 5:  # 토요일
+        now -= timedelta(days=1)
+    elif now.weekday() == 6:  # 일요일
+        now -= timedelta(days=2)
+
     market_open = now.replace(hour=9, minute=30, second=0, microsecond=0)
     market_close = now.replace(hour=16, minute=0, second=0, microsecond=0)
     market_close_minus_1 = now.replace(hour=15, minute=59, second=0, microsecond=0)  # 어제 1분 전 시간 설정
@@ -40,8 +46,9 @@ def print_recent_data():
 
     else:
         # 장이 열리지 않았을 때, 그제 종가부터 어제 장 종료까지의 데이터를 가져옵니다.
-        start_date = now.replace(day=8, hour=15, minute=59, second=0, microsecond=0)
-        end_date = now.replace(day=9, hour=16, minute=0, second=0, microsecond=0)
+        start_date = now - timedelta(days=1)
+        start_date = start_date.replace(hour=15, minute=59, second=0, microsecond=0)
+        end_date = now.replace(hour=16, minute=0, second=0, microsecond=0)
 
         # NVIDIA 데이터 가져오기 (1분 간격)
         data = nvidia.history(interval="1m", start=start_date, end=end_date)
