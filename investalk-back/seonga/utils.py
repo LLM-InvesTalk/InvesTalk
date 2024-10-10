@@ -19,15 +19,16 @@ def is_market_open(now):
 def get_stock_data(symbol, desired_price=None):
     stock = yf.Ticker(symbol)
     ny_tz = pytz.timezone('America/New_York')
-    
-    # 현재 시간을 10월 9일 9시 35분으로 설정 (가정)
-    now = datetime(2024, 10, 10, 9, 35, 0, tzinfo=ny_tz)
+    now = datetime.now(ny_tz)
+
+    # # 현재 시간을 9월 2일 공휴일로 설정 (예시)
+    # now = datetime(2024, 10, 6, 7, 35, 0, tzinfo=ny_tz)
     
     yesterday = now - timedelta(days=1)
     
     # 장이 열려 있는지 확인
     if not is_market_open(now):
-        # 시장이 열려 있지 않으면 어제 날짜를 기준으로 전날 데이터를 가져옴
+        # 시장이 열려 있지 않으면 전 거래일 데이터를 가져옴
         previous_trading_day = get_previous_trading_day(now - timedelta(days=1))
     else:
         # 시장이 열려 있으면 오늘 데이터를 사용
@@ -38,44 +39,52 @@ def get_stock_data(symbol, desired_price=None):
     yesterday_end = previous_trading_day.replace(hour=16, minute=0, second=0)
     yesterday_data = stock.history(start=yesterday_start, end=yesterday_end, interval="1m")
 
-    # 오늘 장 중 데이터 가져오기 (시장 열려 있을 때만)
-    market_open = now.replace(hour=9, minute=30, second=0)
-    today_data = stock.history(start=market_open, end=now, interval="1m") if is_market_open(now) else None
-
     # 전날 시가 및 종가 계산
     if not yesterday_data.empty:
         open_price = yesterday_data['Open'].iloc[0]  # 시가
         last_yesterday_close = yesterday_data['Close'].iloc[-1]  # 종가
     else:
         open_price = 0
-        last_yesterday_close = 0
-
-    # 현재 가격 및 등락폭 계산
-    if today_data is not None and not today_data.empty:
-        current_price = today_data['Close'].iloc[-1]
-        # 전날 종가와 현재 가격(오늘 데이터)의 차이로 등락폭 계산
-        percentage_change = (current_price - last_yesterday_close) / last_yesterday_close * 100 if last_yesterday_close else 0
-        rises_and_falls = {"change": round(percentage_change, 2), "direction": "up" if percentage_change > 0 else "down"}
-        price_changes = list(today_data['Close'])  # 오늘 데이터를 기반으로 price_changes 생성
+        last_yesterday_close = 0  # 여기에 문제가 발생할 수 있으므로 수정
+    
+    # 만약 종가가 0이면, 데이터를 재확인하여 마지막 거래일의 종가를 가져옴
+    if last_yesterday_close == 0:
+        # 전날 데이터가 제대로 없을 경우 마지막 거래일 종가 가져오기
+        previous_day_data = stock.history(start=previous_trading_day, end=previous_trading_day + timedelta(days=1))
+        if not previous_day_data.empty:
+            last_yesterday_close = previous_day_data['Close'].iloc[-1]  # 전날 종가를 재설정
+    
+    # 장중일 경우 현재 가격 가져오기
+    if is_market_open(now):
+        current_price = stock.history(start=now - timedelta(minutes=1), end=now, interval="1m")['Close'].iloc[-1] if not stock.history(start=now - timedelta(minutes=1), end=now, interval="1m").empty else last_yesterday_close
     else:
-        # 수정된 부분: 전날(10월 9일) 종가와 그 전날(10월 8일) 종가의 차이를 비교하여 등락폭 계산
-        # 이때 last_yesterday_close는 10월 9일 종가, open_price는 10월 8일 종가를 의미
-        previous_day_close = last_yesterday_close  # 전날 종가 (예: 10월 9일 종가)
-        
-        # 전전날 종가를 가져오기 위해 새로운 거래일 계산
-        two_days_ago = get_previous_trading_day(previous_trading_day - timedelta(days=1))
-        two_days_ago_data = stock.history(start=two_days_ago.replace(hour=9, minute=30), end=two_days_ago.replace(hour=16, minute=0))
-        
-        if not two_days_ago_data.empty:
-            two_days_ago_close = two_days_ago_data['Close'].iloc[-1]  # 전전날(예: 10월 8일) 종가
-        else:
-            two_days_ago_close = 0  # 데이터가 없을 경우 기본값 설정
+        current_price = last_yesterday_close
 
-        # 전날 종가와 전전날 종가의 차이로 등락폭 계산
-        percentage_change = (previous_day_close - two_days_ago_close) / two_days_ago_close * 100 if two_days_ago_close else 0
-        rises_and_falls = {"change": round(percentage_change, 2), "direction": "up" if percentage_change > 0 else "down"}
-        price_changes = list(yesterday_data['Close']) if yesterday_data is not None and not yesterday_data.empty else []  # 전날 데이터를 기반으로 price_changes 생성
+    # 전전날 데이터 가져오기
+    two_days_ago = get_previous_trading_day(previous_trading_day - timedelta(days=1))
+    two_days_ago_data = stock.history(start=two_days_ago.replace(hour=9, minute=30), end=two_days_ago.replace(hour=16, minute=0))
+    
+    if not two_days_ago_data.empty:
+        two_days_ago_close = two_days_ago_data['Close'].iloc[-1]  # 전전날 종가
+    else:
+        two_days_ago_close = 0  # 데이터가 없을 경우 기본값 설정
 
+    # 장중일 때는 현재 가격과 전날 종가의 차이로 등락폭 계산
+    if is_market_open(now):
+        percentage_change = (current_price - last_yesterday_close) / last_yesterday_close * 100 if last_yesterday_close else 0
+    else:
+        # 장중이 아닐 때는 전날 종가와 전전날 종가의 차이로 등락폭 계산
+        percentage_change = (last_yesterday_close - two_days_ago_close) / two_days_ago_close * 100 if two_days_ago_close else 0
+
+    rises_and_falls = {
+        "change": round(percentage_change, 2), 
+        "direction": "up" if percentage_change > 0 else "down",
+        "from": last_yesterday_close if is_market_open(now) else two_days_ago_close,  # 기준 가격 설정
+        "to": current_price if is_market_open(now) else last_yesterday_close,  # 현재 가격이나 전날 종가
+        "time_from": previous_trading_day.replace(hour=16, minute=0).strftime("%Y-%m-%d %H:%M:%S") if is_market_open(now) else two_days_ago.replace(hour=16, minute=0).strftime("%Y-%m-%d %H:%M:%S"),
+        "time_to": now.strftime("%Y-%m-%d %H:%M:%S") if is_market_open(now) else previous_trading_day.replace(hour=16, minute=0).strftime("%Y-%m-%d %H:%M:%S")
+    }
+    
     # 실적 발표 날짜 처리
     earnings_calendar = stock.get_earnings_dates()
     if not earnings_calendar.empty:
@@ -85,16 +94,17 @@ def get_stock_data(symbol, desired_price=None):
         next_earnings_date = "정보 없음"
     
     # 데이터가 언제의 데이터인지 확인하여 반환
-    data_date = now.strftime("%Y년 %m월 %d일") if today_data is not None and not today_data.empty else previous_trading_day.strftime("%Y년 %m월 %d일")
+    data_date = now.strftime("%Y년 %m월 %d일") if yesterday_data is not None and not yesterday_data.empty else previous_trading_day.strftime("%Y년 %m월 %d일")
 
     # 모든 데이터를 한 번에 반환
     return {
         "종목": symbol,
-        "그래프": price_changes,  # 그래프에 필요한 price_changes 반환
+        "현재가격": current_price,  # 현재 가격 추가
+        "그래프": list(yesterday_data['Close']) if not yesterday_data.empty else [],  # 그래프 데이터 추가
         "등락폭": rises_and_falls,
         "안정성": "",  # 아직 구현되지 않음
         "실적발표날짜": next_earnings_date,
         "데이터날짜": data_date,  # 데이터의 날짜 추가
         "나의희망가격": desired_price,
         "ai기준가능성": ""  # 아직 구현되지 않음
-    }
+    } 
