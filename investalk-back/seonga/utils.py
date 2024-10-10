@@ -2,12 +2,12 @@ import yfinance as yf
 from datetime import datetime, timedelta
 import pytz
 
-# 이전 거래일 계산 함수
+# 이전 거래일 계산 함수 (단, 입력된 날짜도 거래일이면 그 날짜를 반환)
 def get_previous_trading_day(date):
     while True:
-        date -= timedelta(days=1)
         if yf.Ticker('AAPL').history(start=date, end=date + timedelta(days=1)).shape[0] > 0:
             return date
+        date -= timedelta(days=1)
 
 # 시장이 열려 있는지 확인하는 함수 (뉴욕 증권 거래소 기준)
 def is_market_open(now):
@@ -24,11 +24,11 @@ def get_stock_data(symbol, desired_price=None):
     
     # 장이 열려 있는지 확인
     if not is_market_open(now):
-        # 시장이 열려 있지 않으면 전날 데이터 사용
-        previous_trading_day = get_previous_trading_day(yesterday)
+        # 시장이 열려 있지 않으면 어제 날짜를 기준으로 전날 데이터를 가져옴
+        previous_trading_day = get_previous_trading_day(now - timedelta(days=1))
     else:
-        # 시장이 열려 있으면 오늘 데이터 사용
-        previous_trading_day = get_previous_trading_day(yesterday)
+        # 시장이 열려 있으면 오늘 데이터를 사용
+        previous_trading_day = get_previous_trading_day(now - timedelta(days=1))
     
     # 전날 장 중 데이터 가져오기
     yesterday_start = previous_trading_day.replace(hour=9, minute=30, second=0)
@@ -60,6 +60,9 @@ def get_stock_data(symbol, desired_price=None):
         next_earnings_date = min(future_earnings_dates).strftime("%Y년 %m월 %d일") if future_earnings_dates else "실적 발표 예정 없음"
     else:
         next_earnings_date = "정보 없음"
+    
+    # 데이터가 언제의 데이터인지 확인하여 반환
+    data_date = now.strftime("%Y년 %m월 %d일") if today_data is not None and not today_data.empty else previous_trading_day.strftime("%Y년 %m월 %d일")
 
     # 모든 데이터를 한 번에 반환
     return {
@@ -68,6 +71,7 @@ def get_stock_data(symbol, desired_price=None):
         "등락폭": rises_and_falls,
         "안정성": "",  # 아직 구현되지 않음
         "실적발표날짜": next_earnings_date,
+        "데이터날짜": data_date,  # 데이터의 날짜 추가
         "나의희망가격": desired_price,
         "ai기준가능성": ""  # 아직 구현되지 않음
     }
