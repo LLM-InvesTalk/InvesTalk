@@ -39,19 +39,26 @@ def get_stock_data(symbol, desired_price=None):
     market_open = now.replace(hour=9, minute=30, second=0)
     today_data = stock.history(start=market_open, end=now, interval="1m") if is_market_open(now) else None
 
-    # 전날 종가 계산
-    last_yesterday_close = yesterday_data['Close'].iloc[-1] if not yesterday_data.empty else 0
+    # 전날 시가 및 종가 계산
+    if not yesterday_data.empty:
+        open_price = yesterday_data['Open'].iloc[0]  # 시가
+        last_yesterday_close = yesterday_data['Close'].iloc[-1]  # 종가
+    else:
+        open_price = 0
+        last_yesterday_close = 0
 
     # 현재 가격 및 등락폭 계산
     if today_data is not None and not today_data.empty:
         current_price = today_data['Close'].iloc[-1]
         percentage_change = (current_price - last_yesterday_close) / last_yesterday_close * 100 if last_yesterday_close else 0
         rises_and_falls = {"change": round(percentage_change, 2), "direction": "up" if percentage_change > 0 else "down"}
+        price_changes = list(today_data['Close'])  # 오늘 데이터를 기반으로 price_changes 생성
     else:
         current_price = last_yesterday_close  # 장 마감 시 전날 종가로 설정
-        rises_and_falls = {"change": 0, "direction": "no_change"}  # 장이 닫혀있을 때는 변동 없음
-
-    price_changes = list(today_data['Close']) if today_data is not None and not today_data.empty else list(yesterday_data['Close'])
+        # 시가와 종가 차이를 이용한 등락폭 계산
+        percentage_change = (last_yesterday_close - open_price) / open_price * 100 if open_price else 0
+        rises_and_falls = {"change": round(percentage_change, 2), "direction": "up" if percentage_change > 0 else "down"}
+        price_changes = list(yesterday_data['Close']) if yesterday_data is not None and not yesterday_data.empty else []  # 전날 데이터를 기반으로 price_changes 생성
 
     # 실적 발표 날짜 처리
     earnings_calendar = stock.get_earnings_dates()
