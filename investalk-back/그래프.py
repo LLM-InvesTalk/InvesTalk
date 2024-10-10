@@ -18,7 +18,7 @@ def print_recent_data():
     
     market_open = now.replace(hour=9, minute=30, second=0, microsecond=0)
     market_close = now.replace(hour=16, minute=0, second=0, microsecond=0)
-    market_close_minus_1 = now.replace(hour=15, minute=59, second=0, microsecond=0)  # 1분 전 시간 설정
+    market_close_minus_1 = now.replace(hour=15, minute=59, second=0, microsecond=0)  # 어제 1분 전 시간 설정
 
     # 어제의 날짜를 구합니다.
     today_date = now.strftime('%Y-%m-%d')
@@ -37,10 +37,13 @@ def print_recent_data():
         # 데이터를 출력합니다.
         print("어제 3시 59분부터 장 종료까지 1분 간격의 NVIDIA 주식 데이터:")
         print(data)
+
     else:
-        # 어제 장이 열리지 않았을 때, 그제 종가부터 어제 장 종료까지의 데이터를 가져옵니다.
-        start_date = market_close_minus_1
-        end_date = market_close
+        # 장이 열리지 않았을 때, 그제 종가부터 어제 장 종료까지의 데이터를 가져옵니다.
+        start_date = now.replace(day=8, hour=15, minute=59, second=0, microsecond=0)
+        end_date = now.replace(day=9, hour=16, minute=0, second=0, microsecond=0)
+
+        # NVIDIA 데이터 가져오기 (1분 간격)
         data = nvidia.history(interval="1m", start=start_date, end=end_date)
 
         # 데이터가 충분한지 확인합니다.
@@ -49,7 +52,6 @@ def print_recent_data():
             return
         
         # 데이터를 출력합니다.
-        print("그제 3시 59분부터 어제 장 종료까지 1분 간격의 NVIDIA 주식 데이터:")
         print(data)
 
 if __name__ == "__main__":
