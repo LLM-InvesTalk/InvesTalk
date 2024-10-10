@@ -84,7 +84,10 @@ def get_stock_data(symbol, desired_price=None):
         "time_from": previous_trading_day.replace(hour=16, minute=0).strftime("%Y-%m-%d %H:%M:%S") if is_market_open(now) else two_days_ago.replace(hour=16, minute=0).strftime("%Y-%m-%d %H:%M:%S"),
         "time_to": now.strftime("%Y-%m-%d %H:%M:%S") if is_market_open(now) else previous_trading_day.replace(hour=16, minute=0).strftime("%Y-%m-%d %H:%M:%S")
     }
-    
+
+    # 그래프 데이터에 첫번째 가격을 from 값으로 삽입
+    graph_data = [rises_and_falls['from']] + list(yesterday_data['Close']) if not yesterday_data.empty else [rises_and_falls['from']]
+
     # 실적 발표 날짜 처리
     earnings_calendar = stock.get_earnings_dates()
     if not earnings_calendar.empty:
@@ -100,11 +103,11 @@ def get_stock_data(symbol, desired_price=None):
     return {
         "종목": symbol,
         "현재가격": current_price,  # 현재 가격 추가
-        "그래프": list(yesterday_data['Close']) if not yesterday_data.empty else [],  # 그래프 데이터 추가
+        "그래프": graph_data,  # 수정된 그래프 데이터 반환
         "등락폭": rises_and_falls,
         "안정성": "",  # 아직 구현되지 않음
         "실적발표날짜": next_earnings_date,
         "데이터날짜": data_date,  # 데이터의 날짜 추가
         "나의희망가격": desired_price,
         "ai기준가능성": ""  # 아직 구현되지 않음
-    } 
+    }
