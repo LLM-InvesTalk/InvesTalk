@@ -81,6 +81,13 @@ const StockInfoCard = (props) => {
                 </div>
               </div>
               <div className={styles["graph-group"]}>
+                <div className={styles["group-20"]}>
+                  <StockInfoChart
+                    tickerSymbol={tickerSymbol}
+                    period={period}
+                    setPercentageChange={setPercentageChange}
+                  ></StockInfoChart>
+                </div>
                 <div className={styles["group-19"]}>
                   <div className={styles["frame-29"]}>
                     <ButtonGroup
@@ -111,19 +118,12 @@ const StockInfoCard = (props) => {
                       </Button>
                     </ButtonGroup>
                   </div>
-                  <div className={styles["group-20"]}>
-                    <StockInfoChart
-                      tickerSymbol={tickerSymbol}
-                      period={period}
-                      setPercentageChange={setPercentageChange}
-                    ></StockInfoChart>
-                  </div>
-                </div>
-                <div className={styles["text-wrapper-group"]}>
-                  <div className={styles["text-wrapper-33"]}>
-                    {percentageChange > 0
-                      ? `+${percentageChange}%`
-                      : `${percentageChange}%`}
+                  <div className={styles["text-wrapper-group"]}>
+                    <div className={styles["text-wrapper-33"]}>
+                      {percentageChange > 0
+                        ? `+${percentageChange}%`
+                        : `${percentageChange}%`}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -150,7 +150,11 @@ const StockInfoCard = (props) => {
                   />
                 )}
                 <div className={styles["text-wrapper-35"]}>
-                  {stockInfo.name}
+                  {stockInfo.name
+                    ? stockInfo.name.length > 40
+                      ? stockInfo.name.substring(0, 40) + "..."
+                      : stockInfo.name
+                    : stockInfo.name}
                 </div>
               </div>
             </div>
