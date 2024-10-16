@@ -59,16 +59,21 @@ const TableComponent = () => {
         if (sortConfig.key) {
             const valueA = a[sortConfig.key];
             const valueB = b[sortConfig.key];
-
-            if (sortConfig.key !== '종목' && sortConfig.key !== '실적발표날짜') {
-                const numA = parseFloat(valueA.replace('%', '').replace('$', ''));
-                const numB = parseFloat(valueB.replace('%', '').replace('$', ''));
-                return sortConfig.direction === 'asc' ? numA - numB : numB - numA;
-            }
-
-            return sortConfig.direction === 'asc'
-                ? valueA.localeCompare(valueB)
-                : valueB.localeCompare(valueA);
+    
+            // 문자열인 경우에만 replace() 메서드 호출
+            const parseValue = (value) => {
+                if (typeof value === 'string') {
+                    return parseFloat(value.replace('%', '').replace('$', '')); // %나 $ 제거 후 숫자로 변환
+                } else if (typeof value === 'object' && value?.change) {
+                    return value.change; // 객체인 경우 change 값을 사용
+                }
+                return value || 0; // 그 외의 경우 숫자로 처리 (없으면 0)
+            };
+    
+            const numA = parseValue(valueA);
+            const numB = parseValue(valueB);
+    
+            return sortConfig.direction === 'asc' ? numA - numB : numB - numA;
         }
         return 0;
     });
