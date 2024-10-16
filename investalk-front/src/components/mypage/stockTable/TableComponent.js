@@ -60,12 +60,19 @@ const TableComponent = () => {
             const valueA = a[sortConfig.key];
             const valueB = b[sortConfig.key];
     
-            // 문자열인 경우에만 replace() 메서드 호출
+            // 문자열인 경우, 문자열 비교 (종목 등)
+            if (typeof valueA === 'string' && typeof valueB === 'string') {
+                return sortConfig.direction === 'asc'
+                    ? valueA.localeCompare(valueB)
+                    : valueB.localeCompare(valueA);
+            }
+    
+            // 숫자형 데이터 처리 (안전성, 나의 희망가격 등)
             const parseValue = (value) => {
                 if (typeof value === 'string') {
-                    // 날짜 형식인지 확인 후 Date 객체로 변환
-                    if (/\d{4}-\d{2}-\d{2}/.test(value)) {
-                        return new Date(value).getTime();
+                    if (/\d{4}년 \d{2}월 \d{2}일/.test(value)) {
+                        // 실적발표날짜를 Date 객체로 변환
+                        return new Date(value.replace('년 ', '-').replace('월 ', '-').replace('일', '')).getTime();
                     }
                     return parseFloat(value.replace('%', '').replace('$', '').replace('점', '')); // %나 $, 점 제거 후 숫자로 변환
                 } else if (typeof value === 'object' && value?.change) {
@@ -81,7 +88,7 @@ const TableComponent = () => {
         }
         return 0;
     });
-
+    
     return (
         <div className={styles['div-wrapper']}>
             <div className={styles['frame-wrapper']}>
