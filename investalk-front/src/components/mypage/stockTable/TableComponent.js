@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import styles from './TableComponentStyle.module.css';  // CSS 모듈로 가져옴
+import React, { useState, useEffect } from 'react';
+import styles from './TableComponentStyle.module.css'; // CSS 모듈로 가져옴
+import axios from 'axios';
 
 const yesterdayData = {
     'AAPL': { 등락폭: '2%', 안전성: '5.3점' },
@@ -7,18 +8,28 @@ const yesterdayData = {
     'GOOGL': { 등락폭: '4%', 안전성: '6.0점' },
     'TSLA': { 등락폭: '3%', 안전성: '5.0점' },
     'MSFT': { 등락폭: '5%', 안전성: '4.9점' },
+    'NVDA': { 등락폭: '5%', 안전성: '4.9점' },
 };
-
-const todayData = [
-    { 종목: 'AAPL', 등락폭: '3%', 안전성: '5.5점', 실적발표날짜: '2024년 8월 21일', 희망가격: '300$', ai기준가능성: '80%' },
-    { 종목: 'SSNLF', 등락폭: '1%', 안전성: '4.2점', 실적발표날짜: '2023년 7월 15일', 희망가격: '250$', ai기준가능성: '75%' },
-    { 종목: 'GOOGL', 등락폭: '5%', 안전성: '6.1점', 실적발표날짜: '2024년 10월 1일', 희망가격: '500$', ai기준가능성: '90%' },
-    { 종목: 'TSLA', 등락폭: '2%', 안전성: '4.8점', 실적발표날짜: '2023년 12월 12일', 희망가격: '400$', ai기준가능성: '85%' },
-    { 종목: 'MSFT', 등락폭: '4%', 안전성: '5.0점', 실적발표날짜: '2024년 6월 20일', 희망가격: '350$', ai기준가능성: '78%' },
-];
 
 const TableComponent = () => {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+    const [stockData, setStockData] = useState([]); // 백엔드 데이터를 저장할 state
+
+    // 백엔드에서 데이터 가져오기
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(
+                    `${process.env.REACT_APP_FLASK_API_URL}/api/user/1/favorite_stocks`
+                );
+                setStockData(response.data); // 백엔드에서 받은 데이터를 state에 저장
+            } catch (error) {
+                console.error('데이터를 가져오는 중 오류 발생:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleSort = (key) => {
         let direction = 'asc';
@@ -35,16 +46,16 @@ const TableComponent = () => {
         return '▽';
     };
 
-
     const getClassForChange = (direction) => {
-        if (direction === "up") {
+        if (direction === 'up') {
             return styles['text-wrapper-4']; // 상승
         } else {
             return styles['text-wrapper-6']; // 하락 또는 변동 없음
         }
     };
 
-    const sortedData = [...todayData].sort((a, b) => {
+    // 데이터 정렬
+    const sortedData = [...stockData].sort((a, b) => {
         if (sortConfig.key) {
             const valueA = a[sortConfig.key];
             const valueB = b[sortConfig.key];
@@ -106,13 +117,20 @@ const TableComponent = () => {
                         </p>
                         <div className={styles['frame-7']}>
                             {sortedData.map((item, index) => {
-                                const yesterdayValue = yesterdayData[item.종목].등락폭;
+                                const yesterdayValue = yesterdayData[item.종목]?.등락폭 || 'N/A';
+                                const changeData = item.등락폭;
+
+                                // 객체인 경우 change 값만 가져와서 표시, 없으면 어제 데이터 사용
+                                const changeText = typeof changeData === 'object'
+                                  ? `${changeData.change}%`
+                                  : changeData || yesterdayValue;
+
                                 return (
                                     <div
                                         key={index}
-                                        className={getClassForChange(item.등락폭, yesterdayValue)}
+                                        className={getClassForChange(changeData?.direction)}
                                     >
-                                        {item.등락폭}
+                                        {changeText}
                                     </div>
                                 );
                             })}
@@ -131,13 +149,13 @@ const TableComponent = () => {
                         </p>
                         <div className={styles['frame-3']}>
                             {sortedData.map((item, index) => {
-                                const yesterdayValue = yesterdayData[item.종목].안전성;
+                                const yesterdayValue = yesterdayData[item.종목]?.안전성 || 'N/A';
                                 return (
                                     <div
                                         key={index}
                                         className={getClassForChange(item.안전성, yesterdayValue)}
                                     >
-                                        {item.안전성}
+                                        {item.안전성 || yesterdayValue}
                                     </div>
                                 );
                             })}
@@ -173,7 +191,7 @@ const TableComponent = () => {
                         </p>
                         <div className={styles['frame-11']}>
                             {sortedData.map((item, index) => (
-                                <div key={index} className={styles['text-wrapper-2']}>{item.희망가격}</div>
+                                <div key={index} className={styles['text-wrapper-2']}>{item.나의희망가격}</div>
                             ))}
                         </div>
                     </div>
