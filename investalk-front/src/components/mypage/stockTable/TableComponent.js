@@ -3,26 +3,26 @@ import styles from './TableComponentStyle.module.css'; // CSS 모듈로 가져�
 import axios from 'axios';
 
 const yesterdayData = {
-    'AAPL': { 등락폭: '2%', 안전성: '5.3점' },
-    'SSNLF': { 등락폭: '2%', 안전성: '4.5점' },
-    'GOOGL': { 등락폭: '4%', 안전성: '6.0점' },
-    'TSLA': { 등락폭: '3%', 안전성: '5.0점' },
-    'MSFT': { 등락폭: '5%', 안전성: '4.9점' },
-    'NVDA': { 등락폭: '5%', 안전성: '4.9점' },
+    'AAPL': { 등락평: '2%', 안전성: '5.3' },
+    'SSNLF': { 등락평: '2%', 안전성: '4.5' },
+    'GOOGL': { 등락평: '4%', 안전성: '6.0' },
+    'TSLA': { 등락평: '3%', 안전성: '5.0' },
+    'MSFT': { 등락평: '5%', 안전성: '4.9' },
+    'NVDA': { 등락평: '5%', 안전성: '4.9' },
 };
 
 const TableComponent = () => {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-    const [stockData, setStockData] = useState([]); // 백엔드 데이터를 저장할 state
+    const [stockData, setStockData] = useState([]); // 백업넷 데이터를 저장할 state
 
-    // 백엔드에서 데이터 가져오기
+    // 백업넷에서 데이터 가져오기
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
                     `${process.env.REACT_APP_FLASK_API_URL}/api/user/1/favorite_stocks`
                 );
-                setStockData(response.data); // 백엔드에서 받은 데이터를 state에 저장
+                setStockData(response.data); // 백업넷에서 받은 데이터를 state에 저장
             } catch (error) {
                 console.error('데이터를 가져오는 중 오류 발생:', error);
             }
@@ -50,7 +50,7 @@ const TableComponent = () => {
         if (direction === 'up') {
             return styles['text-wrapper-4']; // 상승
         } else {
-            return styles['text-wrapper-6']; // 하락 또는 변동 없음
+            return styles['text-wrapper-6']; // 하루 또는 변동 없음
         }
     };
 
@@ -63,7 +63,11 @@ const TableComponent = () => {
             // 문자열인 경우에만 replace() 메서드 호출
             const parseValue = (value) => {
                 if (typeof value === 'string') {
-                    return parseFloat(value.replace('%', '').replace('$', '')); // %나 $ 제거 후 숫자로 변환
+                    // 날짜 형식인지 확인 후 Date 객체로 변환
+                    if (/\d{4}-\d{2}-\d{2}/.test(value)) {
+                        return new Date(value).getTime();
+                    }
+                    return parseFloat(value.replace('%', '').replace('$', '').replace('점', '')); // %나 $, 점 제거 후 숫자로 변환
                 } else if (typeof value === 'object' && value?.change) {
                     return value.change; // 객체인 경우 change 값을 사용
                 }
@@ -125,7 +129,7 @@ const TableComponent = () => {
                                 const yesterdayValue = yesterdayData[item.종목]?.등락폭 || 'N/A';
                                 const changeData = item.등락폭;
 
-                                // 객체인 경우 change 값만 가져와서 표시, 없으면 어제 데이터 사용
+                                // 객체인 경우 change 값만 가져와서 표시, 없으면 여전 데이터 사용
                                 const changeText = typeof changeData === 'object'
                                   ? `${changeData.change}%`
                                   : changeData || yesterdayValue;
@@ -158,7 +162,7 @@ const TableComponent = () => {
                                 return (
                                     <div
                                         key={index}
-                                        className={getClassForChange(item.안전성, yesterdayValue)}
+                                        className={getClassForChange(item.안전성)}
                                     >
                                         {item.안전성 || yesterdayValue}
                                     </div>
@@ -189,9 +193,9 @@ const TableComponent = () => {
                             <span className={styles['text-wrapper']}>나의 희망가격</span>
                             <span
                                 className={`${styles['span']} ${styles['arrow']}`}
-                                onClick={() => handleSort('희망가격')}
+                                onClick={() => handleSort('나의희망가격')}
                             >
-                                {getArrow('희망가격')}
+                                {getArrow('나의희망가격')}
                             </span>
                         </p>
                         <div className={styles['frame-11']}>
