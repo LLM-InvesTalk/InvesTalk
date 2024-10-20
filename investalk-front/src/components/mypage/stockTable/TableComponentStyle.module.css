@@ -212,17 +212,15 @@ a {
 
 .div-wrapper .text-wrapper-4 {
     align-self: stretch;
-    margin-top: -1.15px;
     margin-left: -0.15px;
     -webkit-text-stroke: 0.15px #6b89ff;
-    background: linear-gradient(180deg,
-            rgb(171.59, 179.93, 255) 0%,
-            rgb(182.75, 237.66, 255) 58%,
-            rgb(176.91, 255, 226.89) 100%);
-    -webkit-background-clip: text !important;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    /* 그라디언트 삭제 */
+    /* background: linear-gradient(180deg, rgb(171.59, 179.93, 255) 0%, rgb(182.75, 237.66, 255) 58%, rgb(176.91, 255, 226.89) 100%); */
+    /* 텍스트 색상을 단일 색상으로 변경 */
+    -webkit-background-clip: unset !important;
+    background-clip: unset;
+    -webkit-text-fill-color: rgb(171.59, 179.93, 255); /* 이 부분에서 색상 지정 */
+    color: rgb(171.59, 179.93, 255); /* 투명한 색 대신 단일 색상 사용 */
     position: relative;
     font-family: "Pretendard Variable-Regular", Helvetica;
     font-weight: 400;
@@ -237,14 +235,13 @@ a {
     align-self: stretch;
     margin-left: -0.15px;
     -webkit-text-stroke: 0.15px #6b89ff;
-    background: linear-gradient(180deg,
-            rgb(234.7, 255, 176.91) 0%,
-            rgb(255, 226.1, 182.75) 32%,
-            rgb(255, 171.59, 211.63) 100%);
-    -webkit-background-clip: text !important;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    /* 그라디언트 삭제 */
+    /* background: linear-gradient(180deg, rgb(234.7, 255, 176.91) 0%, rgb(255, 226.1, 182.75) 32%, rgb(255, 171.59, 211.63) 100%); */
+    /* 텍스트 색상을 단일 색상으로 변경 */
+    -webkit-background-clip: unset !important;
+    background-clip: unset;
+    -webkit-text-fill-color: rgb(255, 171.59, 211.63); /* 이 부분에서 색상 지정 */
+    color: rgb(255, 171.59, 211.63); /* 투명한 색 대신 단일 색상 사용 */
     position: relative;
     font-family: "Pretendard Variable-Regular", Helvetica;
     font-weight: 400;
@@ -254,6 +251,7 @@ a {
     line-height: normal;
     border-color: var(--x);
 }
+
 
 .div-wrapper .frame-8 {
     display: flex;
