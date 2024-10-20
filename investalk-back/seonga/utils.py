@@ -4,10 +4,11 @@ import pytz
 
 # 이전 거래일 계산 함수 (단, 입력된 날짜도 거래일이면 그 날짜를 반환)
 def get_previous_trading_day(date):
+    date -= timedelta(days=1)  # 주말이나 공휴일일 경우 전날로 바로 넘김
     while True:
         if yf.Ticker('AAPL').history(start=date, end=date + timedelta(days=1)).shape[0] > 0:
             return date
-        date -= timedelta(days=1)
+        date -= timedelta(days=1)  # 거래일이 아닌 경우 계속 이전 날을 탐색
 
 # 시장이 열려 있는지 확인하는 함수 (뉴욕 증권 거래소 기준)
 def is_market_open(now):
