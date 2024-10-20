@@ -124,8 +124,8 @@ const TableComponent = () => {
             <div className={styles["frame-5"]}>
               {sortedData.map((item, index) => (
                 <div key={index} className={styles["graph-wrapper"]}>
-                  {/* 그래프만 렌더링 */}
-                  <MyGraph data={item.graphData} />
+                  {/* 종목에 해당하는 그래프 데이터를 MyGraph에 전달 */}
+                  <MyGraph data={item.그래프} />
                 </div>
               ))}
             </div>

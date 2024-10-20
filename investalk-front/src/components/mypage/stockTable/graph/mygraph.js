@@ -2,34 +2,12 @@ import { AreaPlot, lineElementClasses } from "@mui/x-charts/LineChart";
 import { areaElementClasses } from "@mui/x-charts/LineChart";
 import { useYScale, useDrawingArea } from "@mui/x-charts/hooks";
 import { LinePlot } from "@mui/x-charts/LineChart";
-
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
 import { ChartsReferenceLine } from "@mui/x-charts/ChartsReferenceLine";
-import { colors } from "@mui/joy";
 
-const MyGraph = () => {
-  const dataset = [
-    { x: 0, y: 2000 },
-    { x: 10, y: 4000 },
-    { x: 20, y: 3000 },
-    { x: 30, y: 2000 },
-    { x: 40, y: 2780 },
-    { x: 50, y: -1890 },
-    { x: 60, y: 3490 },
-    { x: 80, y: -2000 },
-    { x: 90, y: 2780 },
-    { x: 100, y: 1890 },
-    { x: 110, y: 3490 },
-    { x: 120, y: 3490 },
-    { x: 130, y: 2780 },
-    { x: 140, y: 1890 },
-    { x: 150, y: 3490 },
-    { x: 160, y: 3490 },
-    { x: 170, y: 2780 },
-    { x: 180, y: 1890 },
-    { x: 190, y: 3490 },
-    { x: 200, y: 3490 },
-  ];
+const MyGraph = ({ data }) => {
+  // 그래프 데이터의 y값을 기반으로 x값을 자동으로 생성합니다.
+  const dataset = data.map((y, index) => ({ x: index, y }));
 
   const config = {
     dataset: dataset,
@@ -44,9 +22,9 @@ const MyGraph = () => {
         color: "#D2A5FF",
       },
     ],
-    width: 50, // 너비 조정
-    height: 50, // 높이 조정
-    margin: { top: 0, bottom: 30, left: 0, right: 0 }, // 그래프 여백 조정
+    width: 50,
+    height: 50,
+    margin: { top: 0, bottom: 30, left: 0, right: 0 },
     sx: {
       [`& .${areaElementClasses.root}`]: {
         fill: "url(#swich-color-id-1)",
