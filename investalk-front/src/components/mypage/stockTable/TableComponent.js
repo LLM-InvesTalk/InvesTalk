@@ -128,6 +128,7 @@ const TableComponent = () => {
               ))}
             </div>
           </div>
+          
           <div className={styles["frame-6"]}>
             <p className={styles["div-3"]}>
               <span className={styles["text-wrapper"]}>등락폭</span>

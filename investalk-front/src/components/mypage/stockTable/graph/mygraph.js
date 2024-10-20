@@ -21,6 +21,14 @@ const MyGraph = () => {
     { x: 100, y: 1890 },
     { x: 110, y: 3490 },
     { x: 120, y: 3490 },
+    { x: 130, y: 2780 },
+    { x: 140, y: 1890 },
+    { x: 150, y: 3490 },
+    { x: 160, y: 3490 },
+    { x: 170, y: 2780 },
+    { x: 180, y: 1890 },
+    { x: 190, y: 3490 },
+    { x: 200, y: 3490 },
   ];
 
   const config = {
@@ -36,9 +44,9 @@ const MyGraph = () => {
         color: "#D2A5FF",
       },
     ],
-    width: 130,
-    height: 130,
-    margin: { top: 0, bottom: 50, left: 0, right: 30 },
+    width: 50, // 너비 조정
+    height: 55, // 높이 조정
+    margin: { top: 0, bottom: 30, left: 0, right: 0 }, // 그래프 여백 조정
     sx: {
       [`& .${areaElementClasses.root}`]: {
         fill: "url(#swich-color-id-1)",
