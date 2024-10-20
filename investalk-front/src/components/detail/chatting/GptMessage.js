@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Chatting.module.css"; // 기존 CSS 모듈을 그대로 import
+import styles from "./GptMessage.module.css"; // 기존 CSS 모듈을 그대로 import
 
 const GptMessage = ({ message, time }) => {
   return (
