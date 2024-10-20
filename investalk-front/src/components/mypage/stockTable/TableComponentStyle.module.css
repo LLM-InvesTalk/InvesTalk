@@ -136,7 +136,7 @@ a {
     flex-direction: column;
     width: 60px;
     align-items: center;
-    gap: 48px;
+    gap: 60px;
     position: relative;
 }
 
@@ -158,7 +158,6 @@ a {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
     position: relative;
     align-self: stretch;
     width: 100%;
@@ -391,3 +390,7 @@ a {
     line-height: normal;
     white-space: nowrap;
 }
+.graph-wrapper {
+    display: flex;
+    justify-content: center; /* 그래프가 중앙에 정렬되도록 */
+  }

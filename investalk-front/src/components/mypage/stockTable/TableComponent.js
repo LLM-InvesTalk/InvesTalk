@@ -122,13 +122,15 @@ const TableComponent = () => {
               <span className={styles["text-wrapper"]}>그래프</span>
             </p>
             <div className={styles["frame-5"]}>
-              {/* 각 종목에 대한 MyGraph 컴포넌트 개별 호출 */}
               {sortedData.map((item, index) => (
-                <MyGraph key={index} data={item.graphData} /> // 종목 별로 그래프를 렌더링
+                <div key={index} className={styles["graph-wrapper"]}>
+                  {/* 그래프만 렌더링 */}
+                  <MyGraph data={item.graphData} />
+                </div>
               ))}
             </div>
           </div>
-          
+
           <div className={styles["frame-6"]}>
             <p className={styles["div-3"]}>
               <span className={styles["text-wrapper"]}>등락폭</span>

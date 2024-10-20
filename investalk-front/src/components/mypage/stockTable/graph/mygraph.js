@@ -45,7 +45,7 @@ const MyGraph = () => {
       },
     ],
     width: 50, // 너비 조정
-    height: 55, // 높이 조정
+    height: 50, // 높이 조정
     margin: { top: 0, bottom: 30, left: 0, right: 0 }, // 그래프 여백 조정
     sx: {
       [`& .${areaElementClasses.root}`]: {
