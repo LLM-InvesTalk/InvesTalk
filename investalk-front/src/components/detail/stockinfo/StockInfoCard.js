@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import styles from "./StockInfoCard.module.css";
 
 import StockInfoChart from "./chart";
@@ -6,9 +7,37 @@ import StockInfoChart from "./chart";
 import Button from "@mui/joy/Button";
 import ButtonGroup from "@mui/joy/ButtonGroup";
 
-const StockInfoCard = () => {
+const StockInfoCard = (props) => {
+  const { tickerSymbol } = props;
+
   const [variant, setVariant] = useState("outlined");
   const [isLike, setIsLike] = useState(false);
+
+  const [period, setPeriod] = useState("1d");
+
+  const [stockInfo, setStockInfo] = useState({});
+  const [analyzedStockScore, setAnalyedStockScore] = useState(0.0);
+
+  const [percentageChange, setPercentageChange] = useState(0);
+
+  useEffect(() => {
+    const getStockInfo = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/stockinfo/${tickerSymbol}`
+        );
+        console.log("fetch data: ", response.data);
+        setStockInfo(response.data);
+      } catch (error) {
+        console.error("Error fetching scraps:", error);
+      }
+    };
+    getStockInfo();
+  }, [tickerSymbol]);
+
+  const handlePeriodChange = (newPeriod) => {
+    setPeriod(newPeriod);
+  };
 
   return (
     <div>
@@ -17,8 +46,12 @@ const StockInfoCard = () => {
           <div className={styles["overlap-9"]}>
             <div className={styles["group-17"]}>
               <div className={styles["frame-25"]}>
-                <div className={styles["text-wrapper-28"]}>Semiconductor</div>
-                <div className={styles["text-wrapper-29"]}>Symbol: NVDA</div>
+                <div className={styles["text-wrapper-28"]}>
+                  {stockInfo.sector}
+                </div>
+                <div className={styles["text-wrapper-29"]}>
+                  Symbol: {stockInfo.symbol}
+                </div>
               </div>
               <div className={styles["frame-26"]}>
                 <div className={styles["frame-27"]}>
@@ -27,7 +60,9 @@ const StockInfoCard = () => {
                     src="https://c.animaapp.com/8Gc7c0uK/img/group-2@2x.png"
                     alt="icon"
                   />
-                  <div className={styles["text-wrapper-30"]}>0.00</div>
+                  <div className={styles["text-wrapper-30"]}>
+                    {analyzedStockScore}
+                  </div>
                 </div>
                 <div className={styles["frame-28"]}>
                   <img
@@ -39,30 +74,56 @@ const StockInfoCard = () => {
                     <div className={styles["text-wrapper-31"]}>
                       analyst rating
                     </div>
-                    <div className={styles["text-wrapper-31"]}>0.00</div>
+                    <div className={styles["text-wrapper-31"]}>
+                      {stockInfo.analyst_rating}
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className={styles["group-19"]}>
-                <div className={styles["frame-29"]}>
-                  <ButtonGroup
-                    className={styles["frame-30"]}
-                    variant={variant}
-                    size="xs"
-                    color="primary"
-                    aria-label="radius button group"
-                    sx={{ "--ButtonGroup-radius": "40px" }}
-                  >
-                    <Button className={styles["text-wrapper-32"]}>1일</Button>
-                    <Button className={styles["text-wrapper-32"]}>1달</Button>
-                    <Button className={styles["text-wrapper-32"]}>1년</Button>
-                  </ButtonGroup>
-                </div>
+              <div className={styles["graph-group"]}>
                 <div className={styles["group-20"]}>
-                  <StockInfoChart></StockInfoChart>
-                  <div>
-                    <div className={styles["text-wrapper-33"]}>+30%</div>
-                    <div className={styles["text-wrapper-34"]}>-30%</div>
+                  <StockInfoChart
+                    tickerSymbol={tickerSymbol}
+                    period={period}
+                    setPercentageChange={setPercentageChange}
+                  ></StockInfoChart>
+                </div>
+                <div className={styles["group-19"]}>
+                  <div className={styles["frame-29"]}>
+                    <ButtonGroup
+                      className={styles["frame-30"]}
+                      variant={variant}
+                      size="xs"
+                      color="primary"
+                      aria-label="radius button group"
+                      sx={{ "--ButtonGroup-radius": "40px" }}
+                    >
+                      <Button
+                        className={styles["text-wrapper-32"]}
+                        onClick={() => handlePeriodChange("1d")}
+                      >
+                        1일
+                      </Button>
+                      <Button
+                        className={styles["text-wrapper-32"]}
+                        onClick={() => handlePeriodChange("1m")}
+                      >
+                        1달
+                      </Button>
+                      <Button
+                        className={styles["text-wrapper-32"]}
+                        onClick={() => handlePeriodChange("1y")}
+                      >
+                        1년
+                      </Button>
+                    </ButtonGroup>
+                  </div>
+                  <div className={styles["text-wrapper-group"]}>
+                    <div className={styles["text-wrapper-33"]}>
+                      {percentageChange > 0
+                        ? `+${percentageChange}%`
+                        : `${percentageChange}%`}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -88,7 +149,13 @@ const StockInfoCard = () => {
                     }}
                   />
                 )}
-                <div className={styles["text-wrapper-35"]}>Nvidia</div>
+                <div className={styles["text-wrapper-35"]}>
+                  {stockInfo.name
+                    ? stockInfo.name.length > 40
+                      ? stockInfo.name.substring(0, 40) + "..."
+                      : stockInfo.name
+                    : stockInfo.name}
+                </div>
               </div>
             </div>
           </div>

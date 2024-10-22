@@ -1,25 +1,35 @@
 import React from "react";
-import styles from "./Chatting.module.css"; // 기존 CSS 모듈 import
+import styles from "./PieChartMessage.module.css"; // 기존 CSS 모듈 import
 
 const PieChartMessage = () => {
   return (
     <div className={styles.group6}>
-      <div className={styles.frame12}>
-        <p className={styles.p}>
-          파이차트용 메세지에요
-        </p>
-      </div>
       <div className={styles.frame13}>
         <div className={styles.frame14}>
           <div className={styles.group7}>
             <div className={styles.overlapGroup2}>
-              <img className={styles.ellipse} src="https://c.animaapp.com/8Gc7c0uK/img/ellipse-72.svg" alt="ellipse 72" />
-              <img className={styles.ellipse2} src="https://c.animaapp.com/8Gc7c0uK/img/ellipse-73.svg" alt="ellipse 73" />
-              <img className={styles.ellipse3} src="https://c.animaapp.com/8Gc7c0uK/img/ellipse-74.svg" alt="ellipse 74" />
+              <img
+                className={styles.ellipse}
+                src="https://c.animaapp.com/8Gc7c0uK/img/ellipse-72.svg"
+                alt="ellipse 72"
+              />
+              <img
+                className={styles.ellipse2}
+                src="https://c.animaapp.com/8Gc7c0uK/img/ellipse-73.svg"
+                alt="ellipse 73"
+              />
+              <img
+                className={styles.ellipse3}
+                src="https://c.animaapp.com/8Gc7c0uK/img/ellipse-74.svg"
+                alt="ellipse 74"
+              />
             </div>
           </div>
           <MenuList />
         </div>
+      </div>
+      <div className={styles.frame12}>
+        <p className={styles.p}>파이차트용 메세지에요</p>
       </div>
       <div className={styles.textWrapper15}>00:00</div>
     </div>

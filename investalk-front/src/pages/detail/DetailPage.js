@@ -4,12 +4,15 @@ import Chatting from "../../components/detail/chatting/Chatting";
 import SectorRecommend from "../../components/detail/recommend/SectorRecommend";
 import Analyze from "../../components/detail/analyze/Analyze";
 
+import { useOutletContext } from "react-router-dom";
+
 const DetailPage = () => {
+  const { tickerSymbol } = useOutletContext();
   return (
     <div>
-      <FinancialStatements />
-      <StockInfoCard />
-      <SectorRecommend />
+      <FinancialStatements tickerSymbol={tickerSymbol} />
+      <StockInfoCard tickerSymbol={tickerSymbol} />
+      <Recommend />
       <Analyze />
       <Chatting />
     </div>

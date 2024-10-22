@@ -1,36 +1,56 @@
-import { useCallback, useState, useEffect, useRef } from "react";
+import { useCallback, useState, useEffect } from "react";
 import Input from "@mui/joy/Input";
 import { IconButton } from "@mui/joy";
 import SearchIcon from "@mui/icons-material/Search";
 
 import styles from "./NavBar.module.css";
 
-const NavBar = () => {
-  const [keyword, setKeyword] = useState("");
-  const wrapperRef = useRef(null);
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-  // 예시 검색 결과 배열
-  const searchResults = [
-    "Search Result 1",
-    "Search Result 2",
-    "Search Result 3",
-  ];
+const NavBar = (props) => {
+  const { setTickerSymbol } = props;
 
-  const onChange = useCallback((e) => {
-    setKeyword(e.target.value);
-  }, []);
+  const [searchText, setSearchText] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setKeyword("");
+    const getSearchResult = async () => {
+      try {
+        if (searchText.trim() === "") {
+          setSearchResult([]); // 빈 검색어일 때 검색 결과 비우기
+          return;
+        }
+        const response = await axios.get(
+          `http://localhost:5000/api/search/${searchText}`
+        );
+        console.log("fetch search data: ", response.data);
+        setSearchResult(response.data);
+      } catch (error) {
+        console.error("Error fetching search results:", error);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [wrapperRef]);
+    getSearchResult();
+  }, [searchText]);
+  const onChange = useCallback((e) => {
+    setSearchText(e.target.value);
+  }, []);
+
+  const onSearch = useCallback(() => {
+    setTickerSymbol(searchText);
+    setSearchText("");
+    setSearchResult([]);
+    navigate(`/detail`);
+  }, [searchText, setTickerSymbol, navigate]);
+
+  const onSelectResult = (result) => {
+    setTickerSymbol(result.ticker);
+    setSearchText("");
+    setSearchResult([]);
+    navigate(`/detail`);
+  };
 
   return (
     <div className={styles["frame-8"]} ref={wrapperRef}>
@@ -42,7 +62,7 @@ const NavBar = () => {
       <Input
         className={styles["vector-wrapper"]}
         placeholder="Search..."
-        value={keyword}
+        value={searchText}
         onChange={onChange}
         sx={{
           borderRadius: "40px",
@@ -51,7 +71,7 @@ const NavBar = () => {
           <IconButton
             variant="plain"
             size="sm"
-            onClick={() => setKeyword("")}
+            onClick={onSearch}
             className={styles["custom-icon-button"]}
             sx={{
               backgroundColor: "transparent",
@@ -71,12 +91,15 @@ const NavBar = () => {
         }
       />
 
-      {/* 검색 결과가 있을 때만 렌더링 */}
-      {keyword && (
+      {searchResult.length > 0 && (
         <div className={styles["rectangle-10"]}>
-          {searchResults.map((result, index) => (
-            <div key={index} className={styles["text-wrapper"]}>
-              {result}
+          {searchResult.map((result) => (
+            <div
+              className={styles["text-wrapper-25"]}
+              onClick={() => onSelectResult(result)}
+            >
+              {result.ticker} - {result["company name"]} ({result["short name"]}
+              )
             </div>
           ))}
         </div>

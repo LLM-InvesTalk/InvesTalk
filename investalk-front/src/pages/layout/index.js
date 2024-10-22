@@ -1,10 +1,12 @@
 import styles from "./style.module.css";
 
 import { Outlet } from "react-router-dom";
+import { useState } from "react";
 
 import NavBar from "../../components/detail/nav/NavBar";
 
 const LayoutPage = () => {
+  const [tickerSymbol, setTickerSymbol] = useState("");
   return (
     <div>
       <div className={styles["div-wrapper"]}>
@@ -58,8 +60,8 @@ const LayoutPage = () => {
             />
           </div>
           <div className={styles["rectangle"]}></div>
-          <NavBar />
-          <Outlet />
+          <NavBar setTickerSymbol={setTickerSymbol} />
+          <Outlet context={{ tickerSymbol }} />
         </div>
       </div>
     </div>

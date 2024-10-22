@@ -1,0 +1,49 @@
+.group10 {
+  /* position: absolute; */
+  width: 264px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+}
+
+.overlap6 {
+  /* position: absolute; */
+  width: 262px;
+  height: 30px;
+  top: 35px;
+  left: 0;
+  border-radius: 15px;
+  border: 0.3px solid;
+  border-color: var(--x);
+  box-shadow: var(--);
+  background: linear-gradient(
+    180deg,
+    rgba(204.84, 212.1, 233.87, 0.25) 0%,
+    rgba(255, 255, 255, 0.2) 77.04%,
+    rgb(255, 255, 255) 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.textWrapper19 {
+  /* position: absolute; */
+  top: 6px;
+  left: 20px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a80;
+  font-size: 16px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.vector2 {
+  /* position: absolute; */
+  width: 12px;
+  height: 13px;
+  top: -1px;
+  left: 238px;
+}
