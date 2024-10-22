@@ -4,12 +4,16 @@ import styles from './SectorRecommend.module.css'; // CSS 모듈 import
 import "../css/DetailGlobals.css";   // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
 import EnterpriseRecommend from './EnterpriseRecommend'; // 새로운 컴포넌트 import
+import NewsRecommend from './NewsRecommend'; // 새로운 컴포넌트 import (추가)
+import ButtonComponent from './Button/ButtonComponent'; // 오른쪽 버튼 컴포넌트 import
+import LeftButtonComponent from './Button/LeftButtonComponent'; // 왼쪽 버튼 컴포넌트 import
 
 const Recommend = () => {
   const [sectors, setSectors] = useState([]); 
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
-  const [isEnterprise, setIsEnterprise] = useState(false); // 상태 추가
+  const [isEnterprise, setIsEnterprise] = useState(false); // 오른쪽 버튼 상태
+  const [isNews, setIsNews] = useState(false); // 왼쪽 버튼 상태 추가
 
   // .env에서 Flask API URL 가져오기
   const API_URL = process.env.REACT_APP_FLASK_API_URL;
@@ -29,28 +33,30 @@ const Recommend = () => {
       });
   }, [API_URL]);
 
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
+  // 컴포넌트 전환 함수 (오른쪽 버튼)
+  const handleSwitchEnterprise = () => {
+    setIsEnterprise((prev) => !prev); // Enterprise 상태 토글
+    setIsNews(false); // News는 꺼짐
+  };
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+  // 컴포넌트 전환 함수 (왼쪽 버튼)
+  const handleSwitchNews = () => {
+    setIsNews((prev) => !prev); // News 상태 토글
+    setIsEnterprise(false); // Enterprise는 꺼짐
+  };
 
   const numbers = ['01.', '02.', '03.', '04.', '05.'];
 
-  // 컴포넌트 전환 함수
-  const handleSwitchComponent = () => {
-    setIsEnterprise((prev) => !prev); // 상태 토글
-  };
-
   return (
     <div className={styles.divWrapper}>
-      {isEnterprise ? (
-        // 상태가 true면 EnterpriseRecommend 컴포넌트 표시
+      {isNews ? (
+        // 왼쪽 버튼을 누르면 NewsRecommend 컴포넌트 표시
+        <NewsRecommend />
+      ) : isEnterprise ? (
+        // 오른쪽 버튼을 누르면 EnterpriseRecommend 컴포넌트 표시
         <EnterpriseRecommend />
       ) : (
-        // 상태가 false면 기존 Recommend 컴포넌트 표시
+        // 기본적으로 Recommend 컴포넌트 표시
         <div className={styles.group11}>
           <div className={styles.overlap7}>
             <div className={styles.group12}>
@@ -76,31 +82,24 @@ const Recommend = () => {
                       ))}
                     </div>
                     <div className={styles.frame24}>
-                      {sectors.map((sector, index) => (
-                        <div key={index} className={styles.textWrapper26}>{sector}</div>
-                      ))}
+                      {loading ? (
+                        <div>Loading...</div> // 로딩 중일 때 섹터 데이터 대신 "Loading..." 표시
+                      ) : error ? (
+                        <div className={styles.errorMessage}>{error}</div> // 에러 발생 시 에러 메시지 표시
+                      ) : (
+                        sectors.map((sector, index) => (
+                          <div key={index} className={styles.textWrapper26}>{sector}</div>
+                        ))
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className={styles.group14}>
-              <div className={styles.overlap8}>
-                <div className={styles.ellipse4}></div>
-                <img
-                  className={styles.subtract}
-                  src="https://c.animaapp.com/8Gc7c0uK/img/subtract.svg"
-                  alt="Subtract"
-                  onClick={handleSwitchComponent} // 버튼 클릭 시 컴포넌트 교체
-                  style={{ cursor: 'pointer' }} // 버튼처럼 보이게 커서 스타일 추가
-                />
-                <img
-                  className={styles.vector3}
-                  src="https://c.animaapp.com/8Gc7c0uK/img/vector-2.svg"
-                  alt="Vector"
-                />
-              </div>
-            </div>
+            {/* 왼쪽 버튼 추가 (NewsRecommend로 전환) */}
+            <LeftButtonComponent onClick={handleSwitchNews} />
+            {/* 오른쪽 버튼 추가 (EnterpriseRecommend로 전환) */}
+            <ButtonComponent onClick={handleSwitchEnterprise} />
           </div>
         </div>
       )}
