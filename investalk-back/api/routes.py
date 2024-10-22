@@ -90,3 +90,4 @@ def getSearchResult(keyword):
         data = search(keyword)
         return jsonify(data)
     except Exception as e:
+        return jsonify({'error': str(e)}), 500

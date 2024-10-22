@@ -7,6 +7,22 @@ import os
 # 데이터베이스 엔진 설정 (SQLite를 사용)
 engine = create_engine('sqlite:///companies.db')
 
+# 데이터베이스에 테이블이 없을 경우 테이블을 생성하고 CSV 데이터를 삽입하는 함수
+def initialize_db_from_csv():
+    # 현재 디렉토리에서 CSV 파일 경로 설정
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_file_path = os.path.join(current_dir, 'companies.csv')
+
+    # CSV 파일에서 데이터 불러오기
+    if os.path.exists(csv_file_path):
+        df = pd.read_csv(csv_file_path)
+
+        # 데이터베이스에 테이블이 없으면 테이블을 생성하고 데이터를 삽입
+        df.to_sql('companies', con=engine, if_exists='replace', index=False)
+        print("Database initialized with CSV data.")
+    else:
+        print(f"CSV file not found at: {csv_file_path}")
+
 # 데이터베이스에서 데이터를 가져오는 함수
 def get_all_tickers_from_db():
     metadata = MetaData() 
@@ -42,9 +58,8 @@ def search(query):
 
     return suggestions
 
-# 초기 CSV 데이터를 데이터베이스에 저장 (처음에만 실행)
-current_dir = os.path.dirname(os.path.abspath(__file__))
-csv_file_path = os.path.join(current_dir, 'companies.csv')
+# 데이터베이스가 초기화되지 않은 경우 CSV 파일에서 초기화
+initialize_db_from_csv()
 
 # 검색 테스트
 print("A: ", search("A"))

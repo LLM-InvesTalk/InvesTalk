@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, useRef } from "react";
 import Input from "@mui/joy/Input";
 import { IconButton } from "@mui/joy";
 import SearchIcon from "@mui/icons-material/Search";
@@ -13,6 +13,9 @@ const NavBar = (props) => {
 
   const [searchText, setSearchText] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+  
+  // wrapperRef를 useRef로 정의
+  const wrapperRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -34,6 +37,7 @@ const NavBar = (props) => {
     };
     getSearchResult();
   }, [searchText]);
+
   const onChange = useCallback((e) => {
     setSearchText(e.target.value);
   }, []);
@@ -95,11 +99,11 @@ const NavBar = (props) => {
         <div className={styles["rectangle-10"]}>
           {searchResult.map((result) => (
             <div
+              key={result.ticker}
               className={styles["text-wrapper-25"]}
               onClick={() => onSelectResult(result)}
             >
-              {result.ticker} - {result["company name"]} ({result["short name"]}
-              )
+              {result.ticker} - {result["company name"]} ({result["short name"]})
             </div>
           ))}
         </div>
