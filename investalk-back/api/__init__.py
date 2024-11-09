@@ -1,11 +1,3 @@
-from flask import Flask
-from flask_cors import CORS
+from .routes import api_bp
 
-def create_app():
-    app = Flask(__name__)
-    CORS(app)
-    
-    from .routes import api_bp
-    app.register_blueprint(api_bp, url_prefix='/api')
-    
-    return app
+# api_bp만 정의하고, 실제 등록은 app.py에서 수행합니다.
