@@ -60,7 +60,7 @@ a {
 
 .vector-wrapper {
   position: relative;
-  width: 480px;
+  width: 650px;
   height: 34px;
   border: 0.3px solid;
   border-color: var(--x);
@@ -100,6 +100,8 @@ a {
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
+  margin-left: 50px;
+  cursor: pointer;
 }
 
 .text-wrapper-10 {
@@ -113,4 +115,12 @@ a {
   letter-spacing: 0;
   line-height: normal;
   white-space: nowrap;
+}
+
+.login-box-wrapper {
+  position: absolute;
+  top: 100%; /* 부모 요소 바로 아래 */
+  left: -110px;
+  margin-top: 10px; /* 간격을 두고 싶으면 조정 */
+  z-index: 10; /* 다른 요소 위에 나타나도록 설정 */
 }
