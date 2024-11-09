@@ -3,12 +3,12 @@ import styles from './NewsComponentStyle.module.css';  // 모듈화된 CSS
 
 const NewsComponent = () => {
     const [news, setNews] = useState([]);
-    const API_URL = process.env.REACT_APP_FLASK_API_URL;
+    const FLASK_URL = process.env.REACT_APP_FLASK_URL;
 
     useEffect(() => {
         const fetchNews = async () => {
             try {
-                const response = await fetch(`${API_URL}/api/get-news`);  // 백엔드 API 경로
+                const response = await fetch(`${FLASK_URL}/api/get-news`);  // 백엔드 API 경로
                 const data = await response.json();
 
                 // 에러가 있는 경우 처리
@@ -36,7 +36,7 @@ const NewsComponent = () => {
         };
 
         fetchNews();  // useEffect 안에서 뉴스 데이터를 가져오는 함수 실행
-    }, [API_URL]);
+    }, [FLASK_URL]);
 
     return (
         <div className={styles['div-wrapper']}>

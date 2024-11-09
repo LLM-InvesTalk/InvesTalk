@@ -8,7 +8,7 @@ export default function DynamicBarChart() {
     const [offset, setOffset] = useState(0);  // offset 상태 추가
     const [hoveredIndex, setHoveredIndex] = useState(null);  // 마우스 오버된 막대의 인덱스
     const [hoveredChange, setHoveredChange] = useState(null);  // 마우스 오버된 퍼센트 변경값
-    const API_URL = process.env.REACT_APP_FLASK_API_URL;
+    const FLASK_URL = process.env.REACT_APP_FLASK_URL;
 
 
     const barMaxHeight = 200;
@@ -40,7 +40,7 @@ export default function DynamicBarChart() {
     useEffect(() => {
         const fetchEtfData = async () => {
             try {
-                const response = await fetch(`${API_URL}/api/etf-data?offset=${offset}`);
+                const response = await fetch(`${FLASK_URL}/api/etf-data?offset=${offset}`);
                 const data = await response.json();
                 setEtfData(data);
             } catch (error) {
@@ -48,7 +48,7 @@ export default function DynamicBarChart() {
             }
         };
         fetchEtfData();
-    }, [API_URL, offset]);
+    }, [FLASK_URL, offset]);
 
     const handleNext = () => {
         if (offset + 10 < countryMapping.length) {
