@@ -6,7 +6,6 @@ import LogInBox from "../../login/LogInBox.js";
 import styles from "./NavBar.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const NavBar = (props) => {
@@ -14,7 +13,6 @@ const NavBar = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const loginBoxRef = useRef(null);
   const loginButtonRef = useRef(null);
-  const navigate = useNavigate();
   const location = useLocation();
   const { setTickerSymbol } = props;
 
