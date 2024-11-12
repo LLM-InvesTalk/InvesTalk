@@ -4,21 +4,24 @@ import os
 from flask import Blueprint, redirect, request, make_response, jsonify
 from dotenv import load_dotenv
 from requests_oauthlib import OAuth2Session
-from app import token_required
+from utils import token_required  # utils.py에서 token_required 가져오기
 import requests
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 login_bp = Blueprint('login', __name__)
 
+# Google OAuth 설정
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
 REDIRECT_URI = "http://localhost:5000/login/google/callback"
 
+# Google 제공자 구성 가져오기
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
 
+# OAuth2 세션 초기화
 auth_session = OAuth2Session(
     client_id=GOOGLE_CLIENT_ID,
     redirect_uri=REDIRECT_URI,
@@ -27,11 +30,13 @@ auth_session = OAuth2Session(
             "openid"]
 )
 
+# 로그인 상태 확인 라우트
 @login_bp.route('/status', methods=['GET'])
 @token_required
 def login_status():
     return jsonify({"loggedIn": True}), 200
 
+# Google 로그인 라우트
 @login_bp.route('/google', methods=['GET'])
 def google_login():
     authorization_url, state = auth_session.authorization_url(
@@ -39,6 +44,7 @@ def google_login():
     )
     return redirect(authorization_url)
 
+# Google Callback 라우트
 @login_bp.route('/google/callback', methods=['GET'])
 def google_callback():
     token = auth_session.fetch_token(
@@ -75,7 +81,8 @@ def google_callback():
         return response
     else:
         return "User email not verified by Google.", 400
-    
+
+# 로그아웃 라우트
 @login_bp.route('/logout', methods=['POST'])
 def logout():
     response = make_response(jsonify({'message': 'Logout successful'}))
