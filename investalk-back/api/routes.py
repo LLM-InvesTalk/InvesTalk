@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 from flask import Blueprint, jsonify,request  
 from .detail.recommend.sectorRecommend import get_ticker_sector, get_similar_sectors
 from .detail.recommend.enterpriseRecommend import calculate_average_growth
-from .detail.recommend.newsRecommend import get_related_news
+from .detail.recommend.NewsRecommend import get_related_news
 
 from .detail.financialstatements.financialstatements import get_quarterly_financials
 from .detail.stockinfo.stockinfo import get_stockInfo
