@@ -1,10 +1,11 @@
+from flask import Blueprint, redirect, request, make_response, jsonify
+from seonga.models import Users, db
+from utils import token_required  # token_required 데코레이터
 import jwt
 import datetime
 import os
-from flask import Blueprint, redirect, request, make_response, jsonify
 from dotenv import load_dotenv
 from requests_oauthlib import OAuth2Session
-from utils import token_required  # utils.py에서 token_required 가져오기
 import requests
 
 load_dotenv()
@@ -33,8 +34,9 @@ auth_session = OAuth2Session(
 # 로그인 상태 확인 라우트
 @login_bp.route('/status', methods=['GET'])
 @token_required
-def login_status():
-    return jsonify({"loggedIn": True}), 200
+def login_status(current_user):
+    return jsonify({"loggedIn": True, "user": current_user}), 200
+
 
 # Google 로그인 라우트
 @login_bp.route('/google', methods=['GET'])
@@ -55,32 +57,33 @@ def google_callback():
 
     userinfo_endpoint = get_google_provider_cfg()["userinfo_endpoint"]
     userinfo_response = auth_session.get(userinfo_endpoint)
-    
     userinfo = userinfo_response.json()
 
     if userinfo.get("email_verified"):
-        email = userinfo_response.json()["email"] # email 가져오기
-        # name = userinfo.get("name", "No Name") # 이름 가져오기(기본값: "No Name")
-        # given_name = userinfo.get("given_name", "No Given Name")  # 이름
-        # family_name = userinfo.get("family_name", "No Family Name")  # 성
-        # picture = userinfo.get("picture", "")  # 프로필 사진 URL
-        # gender = userinfo.get("gender", "Not Specified")  # 성별 (구글에서 더 이상 제공하지 않을 수 있음)
+        email = userinfo["email"]
+        name = userinfo.get("name", "Unknown")
+        platform = "Google"
+
+        # DB에 사용자 정보 저장
+        user = Users.query.filter_by(email=email).first()
+        if not user:
+            # 사용자 정보가 없으면 새로 추가
+            user = Users(name=name, email=email, platform=platform)
+            db.session.add(user)
+            db.session.commit()
 
         # JWT 생성
         token = jwt.encode({
-            'email': email,
-            # 'name': name,
-            # 'given_name': given_name,
-            # 'family_name': family_name,
-            # 'picture': picture,
+            'id': user.id,
+            'email': user.email,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
         }, SECRET_KEY, algorithm="HS256")
 
         response = make_response(redirect("http://localhost:3000"))
         response.set_cookie('jwt', token, httponly=True)
         return response
-    else:
-        return "User email not verified by Google.", 400
+
+    return "User email not verified by Google.", 400
 
 # 로그아웃 라우트
 @login_bp.route('/logout', methods=['POST'])
