@@ -11,7 +11,8 @@ class Users(db.Model):
     name = db.Column(db.String(100), unique=True, nullable=False)
     # 사용자의 이메일 (중복 불가)
     email = db.Column(db.String(150), unique=True, nullable=False)
-
+    # 로그인 플랫폼 추가
+    platform = db.Column(db.String(50), nullable=True)
     # 관심 종목 리스트에 대한 관계 정의
     favorite_stocks = db.relationship('FavoriteStocks', backref='user', lazy=True)
 
