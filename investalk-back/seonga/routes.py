@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify, request
 from .models import Users, FavoriteStocks, db
+from utils import token_required  # token_required 가져오기
 from .utils import get_stock_data
 from .dtos import UserDTO, FavoriteStockDTO
 
 # 블루프린트 생성
 main_bp = Blueprint('main', __name__)
+
 
 # 메인 화면
 @main_bp.route('/')
@@ -13,7 +15,8 @@ def index():
 
 # 전체 사용자 목록 조회
 @main_bp.route('/api/users', methods=['GET'])
-def get_users():
+@token_required
+def get_users(current_user):
     users = Users.query.all()
     user_dtos = [UserDTO(user.id, user.name, user.email) for user in users]
     return jsonify([user.to_dict() for user in user_dtos])
@@ -37,7 +40,8 @@ def create_user():
 
 # 사용자 조회
 @main_bp.route('/api/users/<int:user_id>', methods=['GET'])
-def get_user(user_id):
+@token_required
+def get_user(current_user, user_id):
     user = Users.query.get(user_id)
     if not user:
         return jsonify({"error": "사용자를 찾을 수 없습니다."}), 404
@@ -47,7 +51,8 @@ def get_user(user_id):
 
 # 사용자 수정
 @main_bp.route('/api/users/<int:user_id>', methods=['PUT'])
-def update_user(user_id):
+@token_required
+def update_user(current_user, user_id):
     user = Users.query.get(user_id)
     if not user:
         return jsonify({"error": "사용자를 찾을 수 없습니다."}), 404
@@ -64,7 +69,8 @@ def update_user(user_id):
 
 # 사용자 삭제
 @main_bp.route('/api/users/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
+@token_required
+def delete_user(current_user, user_id):
     user = Users.query.get(user_id)
     if not user:
         return jsonify({"error": "사용자를 찾을 수 없습니다."}), 404
@@ -75,94 +81,110 @@ def delete_user(user_id):
 
     return jsonify({"message": "사용자가 삭제되었습니다."})
 
-# 전체 사용자 관심 종목 조회
-@main_bp.route('/api/favorite_stocks', methods=['GET'])
-def get_all_favorite_stocks():
-    favorite_stocks = FavoriteStocks.query.all()
-    stocks_data = []
-    for stock in favorite_stocks:
-        user = Users.query.get(stock.user_id)
-        stock_dto = FavoriteStockDTO(user.id, user.name, stock.symbol, stock.desired_price)
-        stocks_data.append(stock_dto.to_dict())
-
-    return jsonify(stocks_data)
+# 로그인된 사용자 정보(ID) 조회
+@main_bp.route('/api/user_info', methods=['GET'])
+@token_required
+def get_user_info(current_user):
+    return jsonify({
+        "id": current_user["id"],
+        "name": current_user["name"],
+        "email": current_user["email"]
+    })
 
 # 사용자 관심 종목 목록 및 데이터 조회
-@main_bp.route('/api/user/<int:user_id>/favorite_stocks', methods=['GET'])
-def get_favorite_stocks_with_data(user_id):
-    user = Users.query.get(user_id)
-    if not user:
-        return jsonify({"error": "사용자를 찾을 수 없습니다."}), 404
+@main_bp.route('/api/user/favorite_stocks', methods=['GET'])
+@token_required
+def get_favorite_stocks_with_data(current_user):
+    try:
+        # 디버깅용 출력
+        print(f"Fetching favorite stocks for user: {current_user}")
 
-    favorite_stocks = FavoriteStocks.query.filter_by(user_id=user_id).all()
-    stocks_data = []
+        favorite_stocks = FavoriteStocks.query.filter_by(user_id=current_user['id']).all()
+        if not favorite_stocks:
+            return jsonify([])  # 빈 배열 반환
 
-    for favorite in favorite_stocks:
-        symbol = favorite.symbol
-        stock_info = get_stock_data(symbol)
+        stocks_data = []
+        for favorite in favorite_stocks:
+            symbol = favorite.symbol
+            stock_info = get_stock_data(symbol)
 
-        # 기존 stock_info에 나의희망가격 추가
-        stock_info["나의희망가격"] = favorite.desired_price  # desired_price를 나의희망가격으로 추가
+            # 'Earnings Date' 키를 안전하게 처리
+            earnings_date = stock_info.get('Earnings Date', 'N/A')
+            stock_info["실적발표날짜"] = earnings_date
 
-        # 원하는 필드만 포함하여 stocks_data에 추가
-        stocks_data.append(stock_info)
+            stock_info["나의희망가격"] = favorite.desired_price
+            stocks_data.append(stock_info)
 
-    return jsonify(stocks_data)
+        return jsonify(stocks_data)
+    except Exception as e:
+        print(f"Error in get_favorite_stocks_with_data: {e}")
+        return jsonify({"error": "Internal Server Error"}), 500
+
 
 # 사용자 관심 종목 추가
-@main_bp.route('/api/user/<int:user_id>/add_favorite', methods=['POST'])
-def add_favorite_stock(user_id):
-    symbol = request.json.get('symbol')
-    desired_price = request.json.get('desired_price')
+@main_bp.route('/api/user/add_favorite', methods=['POST'])
+@token_required
+def add_favorite_stock(current_user):
+    try:
+        symbol = request.json.get('symbol')
+        desired_price = request.json.get('desired_price')
 
-    user = Users.query.get(user_id)
-    if not user:
-        return jsonify({"error": "사용자를 찾을 수 없습니다."}), 404
+        if not symbol:
+            return jsonify({"error": "symbol 값이 필요합니다."}), 400
 
-    # 이미 관심 종목에 존재하는지 확인
-    existing_favorite = FavoriteStocks.query.filter_by(user_id=user_id, symbol=symbol).first()
-    if existing_favorite:
-        return jsonify({"error": f"{symbol} 종목은 이미 관심 목록에 있습니다."}), 400
+        # 이미 관심 종목인지 확인
+        existing_favorite = FavoriteStocks.query.filter_by(user_id=current_user['id'], symbol=symbol).first()
+        if existing_favorite:
+            return jsonify({"error": f"{symbol} 종목은 이미 관심 목록에 있습니다."}), 400
 
-    # 새로운 관심 종목 추가
-    new_favorite = FavoriteStocks(user_id=user_id, symbol=symbol, desired_price=desired_price)
-    db.session.add(new_favorite)
-    db.session.commit()
+        new_favorite = FavoriteStocks(user_id=current_user['id'], symbol=symbol, desired_price=desired_price)
+        db.session.add(new_favorite)
+        db.session.commit()
 
-    stock_dto = FavoriteStockDTO(user.id, user.name, new_favorite.symbol, new_favorite.desired_price)
-    return jsonify(stock_dto.to_dict()), 201
+        return jsonify({
+            "id": current_user["id"],
+            "symbol": symbol,
+            "desired_price": desired_price
+        }), 201
+    except Exception as e:
+        print(f"Error in add_favorite_stock: {e}")
+        return jsonify({"error": "Internal Server Error"}), 500
 
 # 사용자 희망 가격 업데이트
-@main_bp.route('/api/user/<int:user_id>/update_price', methods=['POST'])
-def update_desired_price(user_id):
-    data = request.json
-    symbol = data.get('symbol')
-    desired_price = data.get('desired_price')
+@main_bp.route('/api/user/update_price', methods=['POST'])
+@token_required
+def update_desired_price(current_user):
+    try:
+        symbol = request.json.get('symbol')
+        desired_price = request.json.get('desired_price')
 
-    # 해당 유저의 관심 종목을 찾음
-    favorite_stock = FavoriteStocks.query.filter_by(user_id=user_id, symbol=symbol).first()
+        favorite_stock = FavoriteStocks.query.filter_by(user_id=current_user['id'], symbol=symbol).first()
+        if not favorite_stock:
+            return jsonify({"error": "종목을 찾을 수 없습니다."}), 404
 
-    if favorite_stock:
-        favorite_stock.desired_price = desired_price  # 희망 가격 업데이트
+        favorite_stock.desired_price = desired_price
         db.session.commit()
-        return jsonify({"message": f"{symbol}의 희망 가격이 {desired_price}로 수정되었습니다."}), 200
 
-    return jsonify({"error": "종목을 찾을 수 없습니다."}), 404
+        return jsonify({"message": f"{symbol}의 희망 가격이 {desired_price}로 수정되었습니다."}), 200
+    except Exception as e:
+        print(f"Error in update_desired_price: {e}")
+        return jsonify({"error": "Internal Server Error"}), 500
 
 # 관심 종목 삭제
-@main_bp.route('/api/user/<int:user_id>/remove_favorite', methods=['DELETE'])
-def remove_favorite_stock(user_id):
-    symbol = request.json.get('symbol')
+@main_bp.route('/api/user/remove_favorite', methods=['DELETE'])
+@token_required
+def remove_favorite_stock(current_user):
+    try:
+        symbol = request.json.get('symbol')
 
-    user = Users.query.get(user_id)
-    if not user:
-        return jsonify({"error": "사용자를 찾을 수 없습니다."}), 404
+        favorite_stock = FavoriteStocks.query.filter_by(user_id=current_user['id'], symbol=symbol).first()
+        if not favorite_stock:
+            return jsonify({"error": "종목을 찾을 수 없습니다."}), 404
 
-    favorite_stock = FavoriteStocks.query.filter_by(user_id=user_id, symbol=symbol).first()
-    if not favorite_stock:
-        return jsonify({"error": "관심 종목을 찾을 수 없습니다."}), 404
+        db.session.delete(favorite_stock)
+        db.session.commit()
 
-    db.session.delete(favorite_stock)
-    db.session.commit()
-
-    return jsonify({"message": f"{symbol}가 관심 종목에서 삭제되었습니다."})
+        return jsonify({"message": f"{symbol}가 관심 종목에서 삭제되었습니다."})
+    except Exception as e:
+        print(f"Error in remove_favorite_stock: {e}")
+        return jsonify({"error": "Internal Server Error"}), 500
