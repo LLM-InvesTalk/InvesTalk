@@ -1,30 +1,12 @@
 import { AreaPlot, lineElementClasses } from "@mui/x-charts/LineChart";
 import { areaElementClasses } from "@mui/x-charts/LineChart";
-import { useYScale, useDrawingArea } from "@mui/x-charts/hooks";
 import { LinePlot } from "@mui/x-charts/LineChart";
-
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
 import { ChartsReferenceLine } from "@mui/x-charts/ChartsReferenceLine";
-import { colors } from "@mui/joy";
 
-const MyGraph = () => {
-  const dataset = [
-    { x: 0, y: 2000 },
-    { x: 10, y: 4000 },
-    { x: 20, y: 3000 },
-    { x: 30, y: 2000 },
-    { x: 40, y: 2780 },
-    { x: 50, y: -1890 },
-    { x: 60, y: 3490 },
-    { x: 80, y: -2000 },
-    { x: 90, y: 2780 },
-    { x: 100, y: 1890 },
-    { x: 110, y: 3490 },
-    { x: 120, y: 3490 },
-  ];
-
+const MyGraph = ({ data = [] }) => {
   const config = {
-    dataset: dataset,
+    dataset: data.map((value, index) => ({ x: index, y: value })), // 데이터를 x, y 형태로 변환
     xAxis: [{ dataKey: "x" }],
     series: [
       {
@@ -50,25 +32,11 @@ const MyGraph = () => {
   };
 
   function ColorSwich({ threshold, color1, color2, id }) {
-    const { top, height, bottom } = useDrawingArea();
-    const svgHeight = top + bottom + height;
-
-    const scale = useYScale();
-    const y0 = scale(threshold);
-    const off = y0 !== undefined ? y0 / svgHeight : 0;
-
     return (
       <defs>
-        <linearGradient
-          id={id}
-          x1="0"
-          x2="0"
-          y1="0"
-          y2={`${svgHeight}px`}
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset={off} stopColor={color1} stopOpacity={1} />
-          <stop offset={off} stopColor={color2} stopOpacity={1} />
+        <linearGradient id={id} x1="0" x2="0" y1="0" y2="100%">
+          <stop offset="50%" stopColor={color1} stopOpacity={1} />
+          <stop offset="50%" stopColor={color2} stopOpacity={1} />
         </linearGradient>
       </defs>
     );

@@ -84,6 +84,7 @@ def getQuarterlyFinancials(ticker_symbol):
 def getStockInfo(ticker_symbol):
     try:
         data = get_stockInfo(ticker_symbol)
+        print(data)
         return jsonify(data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500

@@ -3,6 +3,7 @@ from .models import Users, FavoriteStocks, db
 from utils import token_required  # token_required 가져오기
 from .utils import get_stock_data
 from .dtos import UserDTO, FavoriteStockDTO
+import json
 
 # 블루프린트 생성
 main_bp = Blueprint('main', __name__)
@@ -96,29 +97,45 @@ def get_user_info(current_user):
 @token_required
 def get_favorite_stocks_with_data(current_user):
     try:
-        # 디버깅용 출력
         print(f"Fetching favorite stocks for user: {current_user}")
 
+        # 관심 종목 조회
         favorite_stocks = FavoriteStocks.query.filter_by(user_id=current_user['id']).all()
         if not favorite_stocks:
-            return jsonify([])  # 빈 배열 반환
+            return jsonify([])  # 관심 종목이 없으면 빈 배열 반환
 
         stocks_data = []
+
         for favorite in favorite_stocks:
-            symbol = favorite.symbol
-            stock_info = get_stock_data(symbol)
+            try:
+                # 관심 종목 딕셔너리 변환 및 주식 데이터 가져오기
+                favorite_data = favorite.to_dict()
+                stock_info = get_stock_data(favorite.symbol)
+                
+                # "나의희망가격" 추가 및 데이터 병합
+                stock_info["나의희망가격"] = favorite.desired_price
+                combined_data = {**favorite_data, **stock_info}
 
-            # 'Earnings Date' 키를 안전하게 처리
-            earnings_date = stock_info.get('Earnings Date', 'N/A')
-            stock_info["실적발표날짜"] = earnings_date
+                stocks_data.append(combined_data)
+            except Exception as e:
+                # 개별 종목에서 오류 발생 시 처리
+                print(f"Error fetching data for symbol {favorite.symbol}: {e}")
+                stocks_data.append({
+                    "id": favorite.id,
+                    "symbol": favorite.symbol,
+                    "error": "Stock data unavailable"
+                })
 
-            stock_info["나의희망가격"] = favorite.desired_price
-            stocks_data.append(stock_info)
+        # 디버깅용 출력: 완성된 stocks_data
+        print("Final stocks_data:")
+        print(json.dumps(stocks_data, ensure_ascii=False, indent=4))
 
         return jsonify(stocks_data)
+
     except Exception as e:
         print(f"Error in get_favorite_stocks_with_data: {e}")
         return jsonify({"error": "Internal Server Error"}), 500
+
 
 
 # 사용자 관심 종목 추가

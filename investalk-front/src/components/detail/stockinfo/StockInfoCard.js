@@ -42,7 +42,7 @@ const StockInfoCard = (props) => {
         // 즐겨찾기 목록에서 현재 tickerSymbol 존재 여부 확인
         const favoriteStocks = response.data;
         console.log("Favorite Stocks:", favoriteStocks); // 디버깅 로그 추가
-        const isFavorite = favoriteStocks.some((stock) => stock.Symbol === tickerSymbol);
+        const isFavorite = favoriteStocks.some((stock) => stock.symbol === tickerSymbol);
 
         setIsLike(isFavorite); // 상태 업데이트
       } catch (error) {
