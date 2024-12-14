@@ -13,6 +13,7 @@ from .detail.financialstatements.financialstatements import get_quarterly_financ
 from .detail.stockinfo.stockinfo import get_stockInfo
 from .detail.stockinfo.stockinfochart import get_stockInfo_chart
 from .detail.search.search import search
+from .detail.chatting.chatting import chatting
 
 # Blueprint 생성
 from api.mainpage.dailygraph.dailyGraph import get_daily_graph_data
@@ -100,6 +101,14 @@ def getStockInfoChart(ticker_symbol,period):
 def getSearchResult(keyword):
     try:
         data = search(keyword)
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+@api_bp.route('/chat/<message>', methods=['GET'])
+def getChatting(message):
+    try:
+        data = chatting(message)
         return jsonify(data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
