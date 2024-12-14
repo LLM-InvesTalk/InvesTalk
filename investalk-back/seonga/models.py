@@ -11,9 +11,18 @@ class Users(db.Model):
     name = db.Column(db.String(100), unique=True, nullable=False)
     # 사용자의 이메일 (중복 불가)
     email = db.Column(db.String(150), unique=True, nullable=False)
-
+    # 로그인 플랫폼 추가
+    platform = db.Column(db.String(50), nullable=True)
     # 관심 종목 리스트에 대한 관계 정의
     favorite_stocks = db.relationship('FavoriteStocks', backref='user', lazy=True)
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+            "platform": self.platform
+        }
 
 # 관심 종목 모델
 class FavoriteStocks(db.Model):
@@ -27,3 +36,11 @@ class FavoriteStocks(db.Model):
     symbol = db.Column(db.String(10), nullable=False)
     # 사용자가 설정한 희망 가격
     desired_price = db.Column(db.Float, nullable=True)
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "symbol": self.symbol,
+            "desired_price": self.desired_price
+        }

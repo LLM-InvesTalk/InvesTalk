@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./StockInfoCard.module.css";
-
 import StockInfoChart from "./chart";
-
 import Button from "@mui/joy/Button";
 import ButtonGroup from "@mui/joy/ButtonGroup";
 
@@ -11,29 +9,83 @@ const StockInfoCard = (props) => {
   const { tickerSymbol } = props;
 
   const [variant, setVariant] = useState("outlined");
-  const [isLike, setIsLike] = useState(false);
-
+  const [isLike, setIsLike] = useState(false); // 즐겨찾기 상태
   const [period, setPeriod] = useState("1d");
-
   const [stockInfo, setStockInfo] = useState({});
-  const [analyzedStockScore, setAnalyedStockScore] = useState(0.0);
-
   const [percentageChange, setPercentageChange] = useState(0);
 
+  // Axios 기본 설정: 쿠키 자동 전송
+  axios.defaults.withCredentials = true;
+
+  // 환경 변수에서 Flask URL 가져오기
+  const FLASK_URL = process.env.REACT_APP_FLASK_URL;
+
+  // 종목 정보 가져오기
   useEffect(() => {
     const getStockInfo = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/stockinfo/${tickerSymbol}`
-        );
-        console.log("fetch data: ", response.data);
+        const response = await axios.get(`${FLASK_URL}/api/stockinfo/${tickerSymbol}`);
         setStockInfo(response.data);
       } catch (error) {
-        console.error("Error fetching scraps:", error);
+        console.error("Error fetching stock info:", error);
       }
     };
     getStockInfo();
-  }, [tickerSymbol]);
+  }, [tickerSymbol, FLASK_URL]);
+
+  // 즐겨찾기 상태 확인
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      try {
+        const response = await axios.get(`${FLASK_URL}/api/user/favorite_stocks`);
+
+        // 즐겨찾기 목록에서 현재 tickerSymbol 존재 여부 확인
+        const favoriteStocks = response.data;
+        console.log("Favorite Stocks:", favoriteStocks); // 디버깅 로그 추가
+        const isFavorite = favoriteStocks.some((stock) => stock.symbol === tickerSymbol);
+
+        setIsLike(isFavorite); // 상태 업데이트
+      } catch (error) {
+        console.error("Error checking favorite status:", error);
+      }
+    };
+    checkFavoriteStatus();
+  }, [tickerSymbol, FLASK_URL]);
+
+
+  // 즐겨찾기 토글 처리
+  const handleFavoriteToggle = async () => {
+    try {
+      const desiredPrice = 100; // 기본 희망 가격 예시
+      if (isLike) {
+        // 즐겨찾기에서 제거
+        await axios.delete(`${FLASK_URL}/api/user/remove_favorite`, {
+          data: { symbol: tickerSymbol },
+        });
+        setIsLike(false); // 상태 업데이트
+      } else {
+        // 즐겨찾기에 추가
+        await axios.post(
+          `${FLASK_URL}/api/user/add_favorite`,
+          {
+            symbol: tickerSymbol,
+            desired_price: desiredPrice, // 희망 가격 전달
+          },
+          { withCredentials: true }
+        );
+        setIsLike(true); // 상태 업데이트
+      }
+    } catch (error) {
+      console.error("Error updating favorite status:", error);
+      if (error.response && error.response.status === 401) {
+        alert("로그인을 먼저 해주세요.");
+      } else if (error.response && error.response.status === 500) {
+        alert("서버에서 문제가 발생했습니다.");
+      } else {
+        alert("네트워크 오류가 발생했습니다.");
+      }
+    }
+  };
 
   const handlePeriodChange = (newPeriod) => {
     setPeriod(newPeriod);
@@ -61,7 +113,7 @@ const StockInfoCard = (props) => {
                     alt="icon"
                   />
                   <div className={styles["text-wrapper-30"]}>
-                    {analyzedStockScore}
+                    {stockInfo.price || "N/A"}
                   </div>
                 </div>
                 <div className={styles["frame-28"]}>
@@ -75,7 +127,7 @@ const StockInfoCard = (props) => {
                       analyst rating
                     </div>
                     <div className={styles["text-wrapper-31"]}>
-                      {stockInfo.analyst_rating}
+                      {stockInfo.analyst_rating || "N/A"}
                     </div>
                   </div>
                 </div>
@@ -86,7 +138,7 @@ const StockInfoCard = (props) => {
                     tickerSymbol={tickerSymbol}
                     period={period}
                     setPercentageChange={setPercentageChange}
-                  ></StockInfoChart>
+                  />
                 </div>
                 <div className={styles["group-19"]}>
                   <div className={styles["frame-29"]}>
@@ -130,23 +182,19 @@ const StockInfoCard = (props) => {
             </div>
             <div className={styles["group-22"]}>
               <div className={styles["overlap-group-4"]}>
-                {isLike === false ? (
-                  <img
-                    className={styles["vector-4"]}
-                    src="https://c.animaapp.com/8Gc7c0uK/img/vector-3.svg"
-                    alt="icon"
-                    onClick={() => {
-                      setIsLike(true);
-                    }}
-                  />
-                ) : (
+                {isLike ? (
                   <img
                     className={styles["vector-5"]}
                     src="https://c.animaapp.com/8Gc7c0uK/img/vector-4.svg"
                     alt="icon"
-                    onClick={() => {
-                      setIsLike(false);
-                    }}
+                    onClick={handleFavoriteToggle}
+                  />
+                ) : (
+                  <img
+                    className={styles["vector-4"]}
+                    src="https://c.animaapp.com/8Gc7c0uK/img/vector-3.svg"
+                    alt="icon"
+                    onClick={handleFavoriteToggle}
                   />
                 )}
                 <div className={styles["text-wrapper-35"]}>

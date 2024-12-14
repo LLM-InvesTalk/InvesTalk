@@ -3,27 +3,20 @@ import styles from "./TableComponentStyle.module.css"; // CSS 모듈로 가져�
 import axios from "axios";
 import MyGraph from "./graph/mygraph"; // MyGraph 경로에 따라 수정
 
-const yesterdayData = {
-  AAPL: { 등락평: "2%", 안전성: "5.3" },
-  SSNLF: { 등락평: "2%", 안전성: "4.5" },
-  GOOGL: { 등락평: "4%", 안전성: "6.0" },
-  TSLA: { 등락평: "3%", 안전성: "5.0" },
-  MSFT: { 등락평: "5%", 안전성: "4.9" },
-  NVDA: { 등락평: "5%", 안전성: "4.9" },
-};
+axios.defaults.withCredentials = true;
+const FLASK_URL = process.env.REACT_APP_FLASK_URL;
 
 const TableComponent = () => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [stockData, setStockData] = useState([]); // 백업넷 데이터를 저장할 state
 
-  // 백업넷에서 데이터 가져오기
+  // 백엔드에서 데이터 가져오기
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_FLASK_API_URL}/api/user/1/favorite_stocks`
-        );
-        setStockData(response.data); // 백업넷에서 받은 데이터를 state에 저장
+        const response = await axios.get(`${FLASK_URL}/api/user/favorite_stocks`);
+        console.log("API 응답 데이터:", response.data); // 데이터 구조 확인
+        setStockData(response.data); // 백엔드에서 받은 데이터를 state에 저장
       } catch (error) {
         console.error("데이터를 가져오는 중 오류 발생:", error);
       }
@@ -51,7 +44,7 @@ const TableComponent = () => {
     if (direction === "up") {
       return styles["text-wrapper-4"]; // 상승
     } else {
-      return styles["text-wrapper-6"]; // 하루 또는 변동 없음
+      return styles["text-wrapper-6"]; // 하락
     }
   };
 
@@ -103,15 +96,15 @@ const TableComponent = () => {
               <span className={styles["text-wrapper"]}>종목</span>
               <span
                 className={`${styles["span"]} ${styles["arrow"]}`}
-                onClick={() => handleSort("종목")}
+                onClick={() => handleSort("symbol")}
               >
-                {getArrow("종목")}
+                {getArrow("symbol")}
               </span>
             </p>
             <div className={styles["frame-3"]}>
               {sortedData.map((item, index) => (
                 <div key={index} className={styles["text-wrapper-2"]}>
-                  {item.종목}
+                  {item.symbol}
                 </div>
               ))}
             </div>
@@ -143,15 +136,11 @@ const TableComponent = () => {
             </p>
             <div className={styles["frame-7"]}>
               {sortedData.map((item, index) => {
-                const yesterdayValue =
-                  yesterdayData[item.종목]?.등락폭 || "N/A";
                 const changeData = item.등락폭;
-
-                // 객체인 경우 change 값만 가져와서 표시, 없으면 여전 데이터 사용
                 const changeText =
                   typeof changeData === "object"
                     ? `${changeData.change}%`
-                    : changeData || yesterdayValue;
+                    : changeData || "N/A";
 
                 return (
                   <div
@@ -176,15 +165,11 @@ const TableComponent = () => {
               </span>
             </p>
             <div className={styles["frame-3"]}>
-              {sortedData.map((item, index) => {
-                const yesterdayValue =
-                  yesterdayData[item.종목]?.안전성 || "N/A";
-                return (
-                  <div key={index} className={getClassForChange(item.안전성)}>
-                    {item.안전성 || yesterdayValue}
-                  </div>
-                );
-              })}
+              {sortedData.map((item, index) => (
+                <div key={index} className={getClassForChange(item.안전성)}>
+                  {item.안전성 || "N/A"}
+                </div>
+              ))}
             </div>
           </div>
 
