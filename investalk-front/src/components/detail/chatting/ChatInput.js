@@ -1,11 +1,38 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styles from "./ChatInput.module.css"; // 기존 CSS 모듈을 그대로 import
 
-const ChatInput = ({ scrollToTop, showScrollToTop }) => {
+const ChatInput = ({
+  scrollToTop,
+  showScrollToTop,
+  chatText,
+  setChatText,
+  sendMessage,
+}) => {
+  const onChange = useCallback((e) => {
+    setChatText(e.target.value);
+  }, []);
+
+  const onKeyPress = useCallback(
+    (e) => {
+      if (e.key === "Enter" && chatText.trim() !== "") {
+        sendMessage(chatText); // 메시지 전송
+        setChatText(""); // 입력 필드 초기화
+        e.preventDefault(); // 기본 Enter 동작 방지 (예: 폼 제출)
+      }
+    },
+    [chatText, sendMessage, setChatText]
+  );
+
   return (
     <div className={styles.group10}>
       <div className={styles.overlap6}>
-        <div className={styles.textWrapper19}>채팅채팅채팅채팅</div>
+        <input
+          className={styles.textWrapper19}
+          value={chatText}
+          onChange={onChange}
+          onKeyPress={onKeyPress} // Enter 이벤트 연결
+          placeholder="메세지를 입력해 주세요."
+        />
       </div>
       {showScrollToTop && (
         <img
