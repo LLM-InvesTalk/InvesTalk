@@ -62,5 +62,5 @@ def search(query):
 initialize_db_from_csv()
 
 # 검색 테스트
-print("A: ", search("A"))
-print("AAP: ", search("AAP"))
+# print("A: ", search("A"))
+# print("AAP: ", search("AAP"))
