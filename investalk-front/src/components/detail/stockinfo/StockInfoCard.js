@@ -24,7 +24,9 @@ const StockInfoCard = (props) => {
   useEffect(() => {
     const getStockInfo = async () => {
       try {
-        const response = await axios.get(`${FLASK_URL}/api/stockinfo/${tickerSymbol}`);
+        const response = await axios.get(
+          `${FLASK_URL}/api/stockinfo/${tickerSymbol}`
+        );
         setStockInfo(response.data);
       } catch (error) {
         console.error("Error fetching stock info:", error);
@@ -37,12 +39,16 @@ const StockInfoCard = (props) => {
   useEffect(() => {
     const checkFavoriteStatus = async () => {
       try {
-        const response = await axios.get(`${FLASK_URL}/api/user/favorite_stocks`);
+        const response = await axios.get(
+          `${FLASK_URL}/api/user/favorite_stocks`
+        );
 
         // 즐겨찾기 목록에서 현재 tickerSymbol 존재 여부 확인
         const favoriteStocks = response.data;
         console.log("Favorite Stocks:", favoriteStocks); // 디버깅 로그 추가
-        const isFavorite = favoriteStocks.some((stock) => stock.symbol === tickerSymbol);
+        const isFavorite = favoriteStocks.some(
+          (stock) => stock.symbol === tickerSymbol
+        );
 
         setIsLike(isFavorite); // 상태 업데이트
       } catch (error) {
@@ -51,7 +57,6 @@ const StockInfoCard = (props) => {
     };
     checkFavoriteStatus();
   }, [tickerSymbol, FLASK_URL]);
-
 
   // 즐겨찾기 토글 처리
   const handleFavoriteToggle = async () => {
@@ -127,7 +132,9 @@ const StockInfoCard = (props) => {
                       analyst rating
                     </div>
                     <div className={styles["text-wrapper-31"]}>
-                      {stockInfo.analyst_rating || "N/A"}
+                      {stockInfo.analyst_rating
+                        ? parseFloat(stockInfo.analyst_rating).toFixed(2)
+                        : "N/A"}
                     </div>
                   </div>
                 </div>
