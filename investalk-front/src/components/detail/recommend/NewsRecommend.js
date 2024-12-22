@@ -94,7 +94,7 @@ const NewsRecommend = () => {
                   className={styles.newsText}
                   style={{ textDecoration: "none", color: "inherit" }} // 기본 스타일
                 >
-                  {truncateText(news.title, 70)} {/* 70자 제한 */}
+                  {truncateText(news.title, 68)} {/* 70자 제한 */}
                 </a>
                 {/* 제목의 길이가 30자 이하일 경우 top을 20px로, 그렇지 않으면 41px로 설정 */}
                 <div
