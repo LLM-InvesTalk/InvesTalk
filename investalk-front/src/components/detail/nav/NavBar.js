@@ -18,7 +18,7 @@ const NavBar = (props) => {
 
   const [searchText, setSearchText] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  
+
   // wrapperRef를 useRef로 정의
   const wrapperRef = useRef(null);
 
@@ -50,9 +50,12 @@ const NavBar = (props) => {
   // 백엔드에서 로그인 상태 확인
   const checkLoginStatus = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_FLASK_URL}/login/status`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_FLASK_URL}/login/status`,
+        {
+          credentials: "include",
+        }
+      );
       setIsLoggedIn(response.ok);
     } catch (error) {
       setIsLoggedIn(false);
@@ -68,9 +71,12 @@ const NavBar = (props) => {
     if (location.pathname === "/mypage") {
       const verifyToken = async () => {
         try {
-          const response = await fetch(`${process.env.REACT_APP_FLASK_URL}/login/status`, {
-            credentials: "include",
-          });
+          const response = await fetch(
+            `${process.env.REACT_APP_FLASK_URL}/login/status`,
+            {
+              credentials: "include",
+            }
+          );
           if (!response.ok) {
             alert("로그인을 먼저 해주세요!");
             navigate("/");
@@ -90,7 +96,7 @@ const NavBar = (props) => {
       credentials: "include",
     });
     setIsLoggedIn(false);
-    navigate('/');
+    navigate("/");
   };
 
   // 로그인 박스를 닫는 함수
@@ -142,6 +148,8 @@ const NavBar = (props) => {
         className={styles["frame-9"]}
         src="https://c.animaapp.com/8Gc7c0uK/img/frame-130.svg"
         alt="Frame"
+        onClick={() => navigate("/")} // 클릭 시 기본 경로("/")로 이동
+        style={{ cursor: "pointer" }} // 클릭 가능하도록 커서 변경
       />
       <Input
         className={styles["vector-wrapper"]}
@@ -183,7 +191,8 @@ const NavBar = (props) => {
               className={styles["text-wrapper-25"]}
               onClick={() => onSelectResult(result)}
             >
-              {result.ticker} - {result["company name"]} ({result["short name"]})
+              {result.ticker} - {result["company name"]} ({result["short name"]}
+              )
             </div>
           ))}
         </div>
@@ -203,13 +212,17 @@ const NavBar = (props) => {
             LogOut
           </div>
         ) : (
-          <div className={styles["text-wrapper-9"]} onClick={() => navigate("/mypage")}>
+          <div
+            className={styles["text-wrapper-9"]}
+            onClick={() => navigate("/mypage")}
+          >
             MyPage
           </div>
         )}
         {showLoginBox && (
           <div ref={loginBoxRef} className={styles["login-box-wrapper"]}>
-            <LogInBox onLoginSuccess={handleLoginSuccess} /> {/* 로그인 성공 시 호출 */}
+            <LogInBox onLoginSuccess={handleLoginSuccess} />{" "}
+            {/* 로그인 성공 시 호출 */}
           </div>
         )}
       </div>
