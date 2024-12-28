@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react';
 import styles from './GraphComponentStyle.module.css';
 import ButtonComponent from './Button/ButtonComponent';
 import LeftButtonComponent from './Button/LeftButtonComponent';
+import { useFetcher } from 'react-router-dom';
 
 export default function DynamicBarChart() {
-    const [etfData, setEtfData] = useState([]); // ETF 데이터 상태
-    const [offset, setOffset] = useState(0); // 페이지 오프셋 상태
+    const [etfData, setEtfData] = useState([]); // 전체 ETF 데이터를 저장
+    const [offset, setOffset] = useState(0); // 현재 화면의 오프셋
     const [hoveredIndex, setHoveredIndex] = useState(null); // 마우스 오버된 막대의 인덱스
-    const [hoveredChange, setHoveredChange] = useState(null); // 마우스 오버된 퍼센트 값
-    const [maxChange, setMaxChange] = useState(1); // 최대 변동률 상태
+    const [hoveredChange, setHoveredChange] = useState(null); // 마우스 오버된 변동률
+    const [maxChange, setMaxChange] = useState(1); // 최대 변동률
     const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+    const [loadingText, setLoadingText] = useState('Loading'); // 로딩 텍스트 상태
     const FLASK_URL = process.env.REACT_APP_FLASK_URL;
 
-    const barMaxHeight = 200; // 막대 최대 높이
+    const barMaxHeight = 200; // 막대의 최대 높이
 
     const countryMapping = [
         { symbol: 'SPY', name: '미국' },
@@ -34,40 +36,65 @@ export default function DynamicBarChart() {
         { symbol: 'EWD', name: '덴마크' },
         { symbol: 'EWY', name: '대한민국' },
         { symbol: 'EWZ', name: '브라질' },
-        { symbol: 'EWT', name: '대만' }
+        { symbol: 'EWT', name: '대만' },
     ];
 
     useEffect(() => {
-        const fetchEtfData = async () => {
+        const fetchAllEtfData = async () => {
             try {
-                setIsLoading(true); // 로딩 시작
+                setIsLoading(true);
                 const response = await fetch(`${FLASK_URL}/api/etf-data?offset=${offset}`);
                 const data = await response.json();
 
+                console.log('Fetched ETF Data:', data); // 모든 데이터를 콘솔에 출력
+
+                const formattedData = countryMapping.map((country) => {
+                    const etf = data[country.symbol];
+                    if (!etf || !etf.today_price || !etf.yesterday_price) {
+                        return { ...country, percentageChange: 0 };
+                    }
+
+                    const todayValue = etf.today_price;
+                    const yesterdayValue = etf.yesterday_price;
+                    const percentageChange = ((todayValue - yesterdayValue) / yesterdayValue) * 100;
+
+                    return { ...country, percentageChange };
+                });
+
+                console.log('Formatted Data:', formattedData); // 변환된 데이터를 콘솔에 출력
+
                 const maxChange = Math.max(
-                    ...countryMapping.map(country => {
-                        const etf = data[country.symbol];
-                        if (!etf || !etf.today_price || !etf.yesterday_price) return 0;
-                        const todayValue = etf.today_price;
-                        const yesterdayValue = etf.yesterday_price;
-                        return Math.abs(((todayValue - yesterdayValue) / yesterdayValue) * 100);
-                    }).filter(change => change !== 0) // 값이 0이 아닌 것만 포함
+                    ...formattedData.map((entry) => Math.abs(entry.percentageChange))
                 );
 
-                setEtfData(data);
+                setEtfData(formattedData);
                 setMaxChange(maxChange);
             } catch (error) {
                 console.error('Error fetching ETF data:', error);
             } finally {
-                setIsLoading(false); // 로딩 종료
+                setIsLoading(false);
             }
         };
 
-        fetchEtfData();
+        fetchAllEtfData();
     }, [FLASK_URL, offset]);
 
+    useEffect(() => {
+        if (!isLoading) return;
+
+        const interval = setInterval(() => {
+            setLoadingText((prev) => {
+                if (prev === 'Loading...') return "Loading";
+                if (prev === 'Loading..') return "Loading...";
+                return 'Loading..';
+            });
+        }, 500);
+
+        return () => clearInterval(interval);
+    }, [isLoading]);
+
     const handleNext = () => {
-        if (offset + 10 < countryMapping.length) {
+        if (offset + 10 < etfData.length) {
             setOffset(offset + 3); // 3개씩 이동
         }
     };
@@ -77,6 +104,7 @@ export default function DynamicBarChart() {
             setOffset(offset - 3); // 3개씩 이동
         }
     };
+
 
     return (
         <div className={styles['div-wrapper']}>
@@ -92,7 +120,23 @@ export default function DynamicBarChart() {
                             </div>
                         </div>
                         <div className={styles['group-3']} style={{ position: 'relative' }}>
-
+                            {/* 로딩 상태 표시 */}
+                            {isLoading && (
+                                <div
+                                    style={{
+                                        position: 'absolute',
+                                        top: '39%',
+                                        left: '55%',
+                                        transform: 'translate(-50%, -50%)',
+                                        fontSize: '18px',
+                                        fontWeight: 'bold',
+                                        color: '#000',
+                                        zIndex: 1000
+                                    }}
+                                >
+                                    {loadingText}
+                                </div>
+                            )}
 
                             <div
                                 className={styles['overlap-group-wrapper']}
@@ -100,44 +144,20 @@ export default function DynamicBarChart() {
                                     display: 'flex',
                                     justifyContent: 'space-around',
                                     height: `${barMaxHeight}px`,
-                                    position: 'relative'
+                                    position: 'relative',
                                 }}
                             >
                                 {/* 그래프 하단 선 */}
                                 <div className={styles['rectangle-2']}></div>
-                                {isLoading
-                                    ? countryMapping.slice(offset, offset + 10).map((_, index) => (
-                                        <div
-                                            key={index}
-                                            style={{
-                                                width: '50px',
-                                                display: 'flex',
-                                                justifyContent: 'center'
-                                            }}
-                                        >
-                                            <div
-                                                className={styles['bar']}
-                                                style={{
-                                                    height: '0px', // 로딩 중일 때 막대 높이는 0
-                                                    background: 'transparent'
-                                                }}
-                                            ></div>
-                                        </div>
-                                    ))
-                                    : countryMapping.slice(offset, offset + 10).map((country, index) => {
-                                        const etf = etfData[country.symbol];
-                                        if (!etf || !etf.today_price || !etf.yesterday_price) return null;
+                                {!isLoading &&
+                                    etfData.slice(offset, offset + 10).map((entry, index) => {
+                                        const barHeight =
+                                            maxChange > 0
+                                                ? (Math.abs(entry.percentageChange) / maxChange) *
+                                                (barMaxHeight / 2.5)
+                                                : 0;
 
-                                        const todayValue = etf.today_price;
-                                        const yesterdayValue = etf.yesterday_price;
-
-                                        const percentageChange = ((todayValue - yesterdayValue) / yesterdayValue) * 100;
-
-                                        const barHeight = maxChange > 0
-                                            ? (Math.abs(percentageChange) / maxChange) * (barMaxHeight / 2.5)
-                                            : 0;
-
-                                        const isPositiveChange = percentageChange >= 0;
+                                        const isPositiveChange = entry.percentageChange >= 0;
                                         const gradient = isPositiveChange
                                             ? 'linear-gradient(180deg, rgb(171.59, 179.93, 255) 0%, rgb(182.75, 237.66, 255) 58%, rgb(176.91, 255, 226.89) 100%)'
                                             : 'linear-gradient(rgb(234.7, 255, 176.91) 0%, rgb(255, 226.1, 182.75) 32%, rgb(255, 171.59, 211.63) 100%)';
@@ -149,11 +169,11 @@ export default function DynamicBarChart() {
                                                     position: 'relative',
                                                     width: '50px',
                                                     display: 'flex',
-                                                    justifyContent: 'center'
+                                                    justifyContent: 'center',
                                                 }}
                                                 onMouseEnter={() => {
                                                     setHoveredIndex(index);
-                                                    setHoveredChange(percentageChange.toFixed(2));
+                                                    setHoveredChange(entry.percentageChange.toFixed(2));
                                                 }}
                                                 onMouseLeave={() => {
                                                     setHoveredIndex(null);
@@ -167,12 +187,12 @@ export default function DynamicBarChart() {
                                                         background: gradient,
                                                         width: '21px',
                                                         position: 'absolute',
-                                                        bottom: isPositiveChange ? `calc(50% + 14px)` : `calc(50% - ${barHeight}px + 14px)`,
+                                                        bottom: isPositiveChange
+                                                            ? `calc(50% + 14px)`
+                                                            : `calc(50% - ${barHeight}px + 14px)`,
                                                         borderRadius: '22.39px',
                                                     }}
                                                 ></div>
-
-                                                {/* 툴팁 */}
                                                 {hoveredIndex === index && (
                                                     <div
                                                         style={{
@@ -182,7 +202,6 @@ export default function DynamicBarChart() {
                                                                 : `calc(50% - ${barHeight}px - 20px)`,
                                                             padding: '5px',
                                                             borderRadius: '5px',
-                                                            fontFamily: '"Pretendard Variable-Bold", Helvetica',
                                                             fontSize: '10px',
                                                             color: isPositiveChange
                                                                 ? 'rgb(171.59, 179.93, 255)'
@@ -190,34 +209,29 @@ export default function DynamicBarChart() {
                                                             textAlign: 'center',
                                                         }}
                                                     >
-                                                        {hoveredChange}% {isPositiveChange ? '상승' : '하락'}
+                                                        {hoveredChange}%{' '}
+                                                        {isPositiveChange ? '상승' : '하락'}
                                                     </div>
                                                 )}
-
                                                 <div
                                                     style={{
                                                         position: 'absolute',
                                                         bottom: '-14px',
                                                         width: '100%',
-                                                        height: 'auto',
-                                                        color: '#38465a',
+                                                        textAlign: 'center',
                                                         fontSize: '10px',
-                                                        textAlign: 'center'
+                                                        color: '#38465a',
                                                     }}
                                                 >
-                                                    {country.name}
+                                                    {entry.name}
                                                 </div>
                                             </div>
                                         );
                                     })}
                             </div>
-
-                            {/* 왼쪽 화살표 버튼 */}
                             <div className={styles['left-button']}>
                                 <LeftButtonComponent onClick={handlePrev} />
                             </div>
-
-                            {/* 오른쪽 화살표 버튼 */}
                             <div className={styles['right-button']}>
                                 <ButtonComponent onClick={handleNext} />
                             </div>

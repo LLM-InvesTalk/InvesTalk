@@ -1,7 +1,5 @@
 from flask import jsonify
 import yfinance as yf
-from flask import request
-from datetime import datetime, timedelta
 
 # 상위 20개 OECD 국가의 대표 ETF 티커 심볼 리스트
 ETF_SYMBOLS = [
@@ -51,18 +49,10 @@ def fetch_etf_data():
     return etf_data
 
 
-
-
 def get_daily_graph_data():
     try:
-        offset = int(request.args.get('offset', 0))  # 쿼리 매개변수로부터 offset 값 가져오기
-        limit = 10  # 한 번에 가져올 데이터 수
         data = fetch_etf_data()  # ETF 데이터 가져오기
-
-        # 상위 20개 중 offset에서 시작하여 limit만큼 슬라이싱
-        sliced_data = dict(list(data.items())[offset:offset + limit])
-
-        return jsonify(sliced_data), 200  # JSON 형식으로 반환
+        return jsonify(data), 200  # 모든 데이터를 JSON 형식으로 반환
     except Exception as e:
         print(f"Server Error: {str(e)}")  # 오류 로그 출력
         return jsonify({"error": str(e)}), 500
