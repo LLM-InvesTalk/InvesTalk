@@ -1,66 +1,132 @@
 import React, { useState, useEffect } from 'react';
 import styles from './NewsComponentStyle.module.css';  // 모듈화된 CSS
+import ButtonComponent from './Button/ButtonComponent';
+import LeftButtonComponent from './Button/LeftButtonComponent';
+
+const LoadingAnimation = () => (
+    <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+    }}>
+        <div style={{
+            display: 'flex',
+            gap: '4px',
+        }}>
+            <div style={{
+                width: '10px',
+                height: '10px',
+                backgroundColor: '#888',
+                borderRadius: '50%',
+                animation: 'bounce 1.5s infinite ease-in-out',
+                animationDelay: '0s'
+            }}></div>
+            <div style={{
+                width: '10px',
+                height: '10px',
+                backgroundColor: '#888',
+                borderRadius: '50%',
+                animation: 'bounce 1.5s infinite ease-in-out',
+                animationDelay: '0.2s'
+            }}></div>
+            <div style={{
+                width: '10px',
+                height: '10px',
+                backgroundColor: '#888',
+                borderRadius: '50%',
+                animation: 'bounce 1.5s infinite ease-in-out',
+                animationDelay: '0.4s'
+            }}></div>
+        </div>
+        <style>{`
+            @keyframes bounce {
+                0%, 80%, 100% {
+                    transform: scale(0);
+                }
+                40% {
+                    transform: scale(1);
+                }
+            }
+        `}</style>
+    </div>
+);
 
 const NewsComponent = () => {
     const [news, setNews] = useState([]);
+    const [offset, setOffset] = useState(0); // 현재 offset
+    const [isLoading, setIsLoading] = useState(true); // 로딩 상태
     const FLASK_URL = process.env.REACT_APP_FLASK_URL;
 
-    useEffect(() => {
-        const fetchNews = async () => {
-            try {
-                const response = await fetch(`${FLASK_URL}/api/get-news`);  // 백엔드 API 경로
-                const data = await response.json();
+    const fetchNews = async () => {
+        try {
+            setIsLoading(true);
+            const response = await fetch(`${FLASK_URL}/api/get-news?offset=${offset}&limit=3`);
+            const data = await response.json();
 
-                // 에러가 있는 경우 처리
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-
-                // 데이터가 배열인지 확인
-                if (!Array.isArray(data)) {
-                    throw new Error("Unexpected response format");
-                }
-
-                // 상위 3개의 뉴스만 선택
-                const top3News = data.slice(0, 3);
-
-                setNews(top3News.map((article) => ({
-                    title: article.title || "제목 없음",
-                    time: new Date(article.published_time).toLocaleString(),  // 날짜 변환
-                    imgSrc: article.thumbnail || "https://via.placeholder.com/150",  // 이미지가 없을 경우 기본 이미지
-                    link: article.link  // 뉴스 링크
-                })));
-            } catch (error) {
-                console.error('뉴스 데이터를 가져오는 중 오류 발생:', error);
+            if (data.error) {
+                throw new Error(data.error);
             }
-        };
 
-        fetchNews();  // useEffect 안에서 뉴스 데이터를 가져오는 함수 실행
-    }, [FLASK_URL]);
+            setNews(data);
+        } catch (error) {
+            console.error('뉴스 데이터를 가져오는 중 오류 발생:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchNews();
+    }, [offset]);
+
+    const handleNext = () => {
+        setOffset((prevOffset) => prevOffset + 3); // 3개씩 이동
+    };
+
+    const handlePrev = () => {
+        setOffset((prevOffset) => Math.max(prevOffset - 3, 0)); // 3개씩 이동, 최소 0
+    };
 
     return (
         <div className={styles['div-wrapper']}>
             <div className={styles['group-14']}>
                 <div className={styles['group-15']}>
                     <div className={styles['text-wrapper-13']}>News</div>
-                    <div className={styles['frame-2']}>
-                        {news.map((article, index) => (
-                            <a href={article.link} target="_blank" rel="noopener noreferrer" className={styles['news-item']} key={index}>
-                                <div className={styles['group-16']}>
-                                    <img src={article.imgSrc} alt={article.title} className={styles['news-thumbnail']} />
-                                    <div className={styles['news-content']}>
-                                        <div className={styles['text-wrapper-14']}>
-                                            {article.title.length > 20 ? `${article.title.substring(0, 20)}...` : article.title}
+                    {isLoading ? (
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '230px', // 전체 컴포넌트 높이 지정
+                        }}>
+                            <LoadingAnimation />
+                        </div>
+                    ) : (
+                        <div className={styles['frame-2']}>
+                            {news.map((article, index) => (
+                                <div className={styles['news-item']} key={index}>
+                                    <a href={article.link} target="_blank" rel="noopener noreferrer">
+                                        <div className={styles['group-16']}>
+                                            <img src={article.imgSrc} alt={article.title} className={styles['news-thumbnail']} />
+                                            <div className={styles['news-content']}>
+                                                <div className={styles['text-wrapper-14']}>
+                                                    {article.title.length > 20 ? `${article.title.substring(0, 20)}...` : article.title}
+                                                </div>
+                                                <div className={styles['text-wrapper-15']}>
+                                                    {article.time}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className={styles['text-wrapper-15']}>
-                                            {article.time}
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
-                            </a>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
+                {/* 왼쪽 및 오른쪽 버튼 컴포넌트 */}
+                <LeftButtonComponent onClick={handlePrev} />
+                <ButtonComponent onClick={handleNext} />
             </div>
         </div>
     );
