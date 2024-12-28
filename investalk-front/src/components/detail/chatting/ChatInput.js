@@ -2,8 +2,8 @@ import React, { useCallback } from "react";
 import styles from "./ChatInput.module.css"; // 기존 CSS 모듈을 그대로 import
 
 const ChatInput = ({
-  scrollToTop,
-  showScrollToTop,
+  scrollToBottom, // 맨 아래로 스크롤 함수
+  showScrollToBottom, // 맨 아래로 이동 화살표 표시 여부
   chatText,
   setChatText,
   sendMessage,
@@ -34,12 +34,12 @@ const ChatInput = ({
           placeholder="메세지를 입력해 주세요."
         />
       </div>
-      {showScrollToTop && (
+      {showScrollToBottom && (
         <img
           className={styles.vector2}
           src="https://c.animaapp.com/8Gc7c0uK/img/vector-1.svg"
           alt="vector"
-          onClick={() => scrollToTop()}
+          onClick={() => scrollToBottom()}
         />
       )}
     </div>

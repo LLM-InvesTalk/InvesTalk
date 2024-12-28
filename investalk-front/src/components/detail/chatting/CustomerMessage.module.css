@@ -1,39 +1,29 @@
 .group4 {
-  width: 118px;
-  height: 38px;
   display: flex;
   flex-direction: column;
-  align-self: flex-end;
+  align-items: flex-end; /* 오른쪽 정렬 */
   margin-bottom: 10px;
 }
 
 .frame10 {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
+  justify-content: flex-end;
+  max-width: 70%;
   padding: 6px 16px;
-  /* position: absolute;
-    right: 0; */
   background-color: #ffffff;
   border-radius: 14px 14px 0px 14px;
-  border: 0.15px solid;
-  border-color: var(--x);
-  box-shadow: var(--);
+  border: 0.15px solid #ccc;
+  word-break: break-word;
+  white-space: pre-wrap;
 }
 
 .textWrapper11 {
-  position: relative;
-  width: fit-content;
-  margin-top: -0.15px;
   font-family: "Pretendard Variable-Regular", Helvetica;
-  font-weight: 400;
-  color: #38465a;
   font-size: 12px;
-  letter-spacing: 0;
-  line-height: normal;
-  white-space: nowrap;
+  color: #38465a;
 }
+
 
 .textWrapper12 {
   /* position: absolute;

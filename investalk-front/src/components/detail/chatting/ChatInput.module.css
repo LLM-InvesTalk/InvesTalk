@@ -38,12 +38,28 @@
   white-space: nowrap;
   letter-spacing: 0;
   line-height: normal;
+  border: none;
+  outline: none;
 }
 
+
 .vector2 {
-  /* position: absolute; */
-  width: 12px;
-  height: 13px;
-  top: -1px;
-  left: 238px;
+  position: absolute; /* 위치를 절대값으로 설정 */
+  width: 30px; /* 동그라미 크기 */
+  height: 30px; /* 동그라미 크기 */
+  top: 610px; /* 위치 조정 */
+  left: 140px; /* 위치 조정 */
+  z-index: 1000; /* 다른 요소 위에 표시 */
+  cursor: pointer; /* 클릭 가능한 포인터 표시 */
+
+  /* 동그란 배경 */
+  background-color: rgb(228, 247, 255); /* 연한 회색 배경 */
+  border: 1.5px solid rgb(0, 0, 0, 0.2);
+  border-radius: 50%; /* 동그란 모양 */
+  display: flex; /* 중앙 정렬을 위한 flex */
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: center; /* 수평 가운데 정렬 */
+  transform: rotate(180deg); /* 아래쪽으로 회전 */
+  padding: 9px;
 }
+
