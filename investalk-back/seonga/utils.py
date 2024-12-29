@@ -77,10 +77,10 @@ def get_stock_data(symbol, desired_price=None):
     to_price = current_price if is_market_open(now) else last_yesterday_close
 
     percentage_change = (
-        (to_price - from_price) / from_price
+        (to_price - from_price) / from_price * 100  # 100을 곱해서 퍼센트로 변환
     )
     rises_and_falls = {
-        "change": round(percentage_change, 3),
+        "change": round(percentage_change, 2),  # 소수점 둘째 자리까지 반올림
         "direction": "up" if percentage_change > 0 else "down",
         "from": from_price,
         "to": to_price,
