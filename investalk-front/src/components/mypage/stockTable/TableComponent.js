@@ -11,7 +11,7 @@ const TableComponent = () => {
   const [stockData, setStockData] = useState([]); // 백엔드 데이터를 저장할 state
   const [loading, setLoading] = useState(false); // 로딩 상태
 
-  // [추가] "나의 희망가격" 편집 상태를 위한 state
+  // "나의 희망가격" 편집 상태를 위한 state
   /* editingIndex: 현재 편집 중인 row의 index
      tempHopePrice: 임시로 입력받을 "나의 희망가격" 값 */
   const [editingIndex, setEditingIndex] = useState(null); // 주석: 현재 편집 중인 종목의 index
@@ -100,7 +100,7 @@ const TableComponent = () => {
     return 0;
   });
 
-  // [추가] "나의 희망가격" 편집 모드 진입 핸들러
+  // "나의 희망가격" 편집 모드 진입 핸들러
   /* 주석: 클릭 시 editingIndex를 현재 index로 세팅하고
            tempHopePrice에는 기존 "나의희망가격"을 넣어줌 */
   const handleHopePriceClick = (index, currentHopePrice) => {
@@ -108,7 +108,7 @@ const TableComponent = () => {
     setTempHopePrice(currentHopePrice || "");
   };
 
-  // [추가] "나의 희망가격" 입력 후 엔터 처리 핸들러
+  //  "나의 희망가격" 입력 후 엔터 처리 핸들러
   /* 주석: 엔터키를 누르면 stockData를 업데이트하고 편집모드를 종료함 */
   const handleHopePriceKeyDown = async (e, index) => {
     if (e.key === "Enter") {
