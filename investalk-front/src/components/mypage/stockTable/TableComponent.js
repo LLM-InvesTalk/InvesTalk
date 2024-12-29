@@ -8,8 +8,14 @@ const FLASK_URL = process.env.REACT_APP_FLASK_URL;
 
 const TableComponent = () => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
-  const [stockData, setStockData] = useState([]); // 백업넷 데이터를 저장할 state
+  const [stockData, setStockData] = useState([]); // 백엔드 데이터를 저장할 state
   const [loading, setLoading] = useState(false); // 로딩 상태
+
+  // [추가] "나의 희망가격" 편집 상태를 위한 state
+  /* editingIndex: 현재 편집 중인 row의 index
+     tempHopePrice: 임시로 입력받을 "나의 희망가격" 값 */
+  const [editingIndex, setEditingIndex] = useState(null); // 주석: 현재 편집 중인 종목의 index
+  const [tempHopePrice, setTempHopePrice] = useState(""); // 주석: 임시로 입력받을 희망가격
 
   // 백엔드에서 데이터 가져오기
   useEffect(() => {
@@ -93,6 +99,48 @@ const TableComponent = () => {
     }
     return 0;
   });
+
+  // [추가] "나의 희망가격" 편집 모드 진입 핸들러
+  /* 주석: 클릭 시 editingIndex를 현재 index로 세팅하고
+           tempHopePrice에는 기존 "나의희망가격"을 넣어줌 */
+  const handleHopePriceClick = (index, currentHopePrice) => {
+    setEditingIndex(index);
+    setTempHopePrice(currentHopePrice || "");
+  };
+
+  // [추가] "나의 희망가격" 입력 후 엔터 처리 핸들러
+  /* 주석: 엔터키를 누르면 stockData를 업데이트하고 편집모드를 종료함 */
+  const handleHopePriceKeyDown = async (e, index) => {
+    if (e.key === "Enter") {
+      const symbol = stockData[index].symbol; 
+      const updatedStockData = [...stockData];
+  
+      try {
+        // 2) 백엔드로 POST 요청: /api/user/update_price
+        await axios.post(`${FLASK_URL}/api/user/update_price`, {
+          symbol: symbol,
+          desired_price: tempHopePrice
+        }, {
+          withCredentials: true // 쿠키 사용 시 필수
+        });
+  
+        // 3) 응답이 성공이면, 프론트엔드 스테이트 갱신
+        updatedStockData[index] = {
+          ...updatedStockData[index],
+          나의희망가격: tempHopePrice,
+        };
+  
+        setStockData(updatedStockData);
+        setEditingIndex(null);
+        setTempHopePrice("");
+        
+      } catch (error) {
+        console.error("희망가격 업데이트 중 오류:", error);
+        // 필요 시 사용자 알림 로직 추가
+      }
+    }
+  };
+  
 
   return (
     <div className={styles["div-wrapper"]}>
@@ -218,7 +266,7 @@ const TableComponent = () => {
           </div>
 
           {/* --------------------------------------------------- 
-               6) 나의 희망가격 
+               6) 나의 희망가격 (클릭 시 인풋으로 전환)
           --------------------------------------------------- */}
           <div className={styles["frame-10"]}>
             <p className={styles["div-6"]}>
@@ -232,8 +280,26 @@ const TableComponent = () => {
             </p>
             <div className={styles["frame-11"]}>
               {sortedData.map((item, index) => (
-                <div key={index} className={styles["text-wrapper-2"]}>
-                  {item.나의희망가격}
+                <div key={index}>
+                  {/* 주석: 편집 중인 행이면 input, 아니면 일반 div 표시 */}
+                  {editingIndex === index ? (
+                    <input
+                      type="text"
+                      value={tempHopePrice}
+                      onChange={(e) => setTempHopePrice(e.target.value)}
+                      onKeyDown={(e) => handleHopePriceKeyDown(e, index)}
+                      style={{ width: "60px" }}
+                    />
+                  ) : (
+                    <div
+                      className={styles["text-wrapper-2"]}
+                      onClick={() =>
+                        handleHopePriceClick(index, item.나의희망가격)
+                      }
+                    >
+                      {item.나의희망가격}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
