@@ -106,9 +106,10 @@ def getSearchResult(keyword):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
-@api_bp.route('/chat/<message>', methods=['GET'])
-def getChatting(message):
+@api_bp.route('/chat', methods=['GET'])
+def getChatting():
     try:
+        message = request.args.get('message')  # 쿼리 파라미터로 메시지 수신
         data = chatting(message)
         return jsonify(data)
     except Exception as e:
