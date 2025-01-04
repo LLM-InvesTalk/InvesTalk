@@ -30,7 +30,12 @@ const Chatting = () => {
   
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/chat/${encodeURIComponent(message)}`
+        `http://localhost:5000/api/chat`, 
+        {
+          params: {
+            message: message, // 쿼리 파라미터에 메시지 추가
+          },
+        }
       );
   
       if (response.status === 200 && response.data) {
