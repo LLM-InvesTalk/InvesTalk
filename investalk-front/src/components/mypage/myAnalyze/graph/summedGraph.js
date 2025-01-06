@@ -6,9 +6,25 @@ import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer
 import { ChartsReferenceLine } from "@mui/x-charts/ChartsReferenceLine";
 
 const SummedGraph = ({ data = [] }) => {
+  // [1] 데이터의 최소값과 최대값 구하기
+  const dataMin = Math.min(...data);
+  const dataMax = Math.max(...data);
+
+  // [2] 최소-최대값 사이에 여백(padding)을 주어 y축 범위를 조금 더 넓게 잡기
+  const padding = (dataMax - dataMin) * 0.01; // 1% 정도 여유를 줌
+
+  // [3] @mui/x-charts 설정
   const config = {
     dataset: data.map((value, index) => ({ x: index, y: value })), // 데이터를 x, y 형태로 변환
     xAxis: [{ dataKey: "x" }],
+    // **여기서 yAxis 도메인을 직접 설정해 줍니다.**
+    yAxis: [
+      {
+        dataKey: "y",
+        min: dataMin - padding,
+        max: dataMax + padding,
+      },
+    ],
     series: [
       {
         type: "line",
