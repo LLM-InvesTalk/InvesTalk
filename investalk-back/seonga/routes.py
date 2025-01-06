@@ -205,3 +205,79 @@ def remove_favorite_stock(current_user):
     except Exception as e:
         print(f"Error in remove_favorite_stock: {e}")
         return jsonify({"error": "Internal Server Error"}), 500
+    
+# 종합 그래프 생성
+@main_bp.route('/api/user/favorite_stocks/summed_graph', methods=['GET'])
+@token_required
+def get_summed_graph(current_user):
+    """
+    # 각 종목 그래프 배열의 동일 인덱스끼리 값을 합산하여
+    # 새로운 리스트(합산 그래프)를 반환하는 API
+    """
+    try:
+        print(f"Fetching favorite stocks for user: {current_user}")
+
+        # 1) 관심 종목 조회
+        favorite_stocks = FavoriteStocks.query.filter_by(user_id=current_user['id']).all()
+        if not favorite_stocks:
+            # 관심 종목이 없으면 빈 리스트 반환
+            return jsonify({"summed_graph": []})
+
+        stocks_data = []
+
+        for favorite in favorite_stocks:
+            try:
+                # 관심 종목 딕셔너리 변환
+                favorite_data = favorite.to_dict()
+
+                # 주식 데이터 가져오기
+                stock_info = get_stock_data(favorite.symbol)
+
+                # "나의희망가격" 추가
+                stock_info["나의희망가격"] = favorite.desired_price
+
+                # 원하는 형태로 데이터 병합
+                combined_data = {**favorite_data, **stock_info}
+                stocks_data.append(combined_data)
+
+            except Exception as e:
+                # 개별 종목에서 오류 발생 시 처리
+                print(f"Error fetching data for symbol {favorite.symbol}: {e}")
+                # 오류가 났어도 해당 종목을 표시해주도록 처리
+                stocks_data.append({
+                    "id": favorite.id,
+                    "symbol": favorite.symbol,
+                    "error": "Stock data unavailable",
+                    "그래프": []
+                })
+
+        # 2) 모든 종목의 '그래프'에서 해당 인덱스끼리 값을 더하여 새 그래프 생성
+        #    (최대 길이를 구해서 그 길이만큼 반복)
+        max_length = max(len(stock["그래프"]) for stock in stocks_data if "그래프" in stock)
+        summed_graph = []
+
+        for i in range(max_length):
+            sum_value = 0.0
+            for stock in stocks_data:
+                graph_values = stock.get("그래프", [])
+                if i < len(graph_values):
+                    sum_value += graph_values[i]
+            summed_graph.append(sum_value)
+
+        # 3) 최종 반환: 합산 그래프만 반환하거나,
+        #    종목별 데이터(stocks_data)와 함께 반환할 수도 있음
+        #    여기서는 요청대로 합산 그래프만 리턴
+        response_data = {
+            "summed_graph": summed_graph
+        }
+
+        # 디버깅용 출력
+        print("Final summed_graph:")
+        print(json.dumps(response_data, ensure_ascii=False, indent=4))
+
+        return jsonify(response_data)
+
+    except Exception as e:
+        print(f"Error in get_summed_graph: {e}")
+        return jsonify({"error": "Internal Server Error"}), 500
+
