@@ -210,10 +210,6 @@ def remove_favorite_stock(current_user):
 @main_bp.route('/api/user/favorite_stocks/summed_graph', methods=['GET'])
 @token_required
 def get_summed_graph(current_user):
-    """
-    # 각 종목 그래프 배열의 동일 인덱스끼리 값을 합산하여
-    # 새로운 리스트(합산 그래프)를 반환하는 API
-    """
     try:
         print(f"Fetching favorite stocks for user: {current_user}")
 
@@ -225,14 +221,15 @@ def get_summed_graph(current_user):
 
         stocks_data = []
 
+        # 2) 종목별 주식 데이터 수집
         for favorite in favorite_stocks:
             try:
                 # 관심 종목 딕셔너리 변환
                 favorite_data = favorite.to_dict()
-
+                
                 # 주식 데이터 가져오기
                 stock_info = get_stock_data(favorite.symbol)
-
+                
                 # "나의희망가격" 추가
                 stock_info["나의희망가격"] = favorite.desired_price
 
@@ -243,7 +240,7 @@ def get_summed_graph(current_user):
             except Exception as e:
                 # 개별 종목에서 오류 발생 시 처리
                 print(f"Error fetching data for symbol {favorite.symbol}: {e}")
-                # 오류가 났어도 해당 종목을 표시해주도록 처리
+                # 오류가 났어도 최소한의 정보(그래프는 빈 리스트)
                 stocks_data.append({
                     "id": favorite.id,
                     "symbol": favorite.symbol,
@@ -251,22 +248,20 @@ def get_summed_graph(current_user):
                     "그래프": []
                 })
 
-        # 2) 모든 종목의 '그래프'에서 해당 인덱스끼리 값을 더하여 새 그래프 생성
-        #    (최대 길이를 구해서 그 길이만큼 반복)
-        max_length = max(len(stock["그래프"]) for stock in stocks_data if "그래프" in stock)
+        # 3) '그래프' 중 *가장 짧은 길이*를 구해서 그 범위까지만 합산
+        #    -> 모든 종목이 공통으로 가지고 있는 인덱스까지만 합산
+        #       (즉, 그래프 배열이 없는 종목이 있으면 길이 0 처리)
+        min_length = min(len(stock.get("그래프", [])) for stock in stocks_data if "그래프" in stock)
+        
         summed_graph = []
-
-        for i in range(max_length):
+        for i in range(min_length):
             sum_value = 0.0
             for stock in stocks_data:
                 graph_values = stock.get("그래프", [])
-                if i < len(graph_values):
-                    sum_value += graph_values[i]
+                # 그래프가 min_length 이상이라면 i번째 값을 더함
+                sum_value += graph_values[i]  
             summed_graph.append(sum_value)
 
-        # 3) 최종 반환: 합산 그래프만 반환하거나,
-        #    종목별 데이터(stocks_data)와 함께 반환할 수도 있음
-        #    여기서는 요청대로 합산 그래프만 리턴
         response_data = {
             "summed_graph": summed_graph
         }
