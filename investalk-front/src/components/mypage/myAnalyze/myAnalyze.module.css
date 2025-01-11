@@ -65,3 +65,6 @@
   top: 12px;
   left: 0;
 }
+.loadingText {
+  margin-left: 65px; /* 왼쪽에 10px 간격 */
+}

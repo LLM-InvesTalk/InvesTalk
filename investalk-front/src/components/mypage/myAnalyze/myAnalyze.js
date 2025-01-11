@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styles from "./myAnalyze.module.css";
-import "../css/DetailGlobals.css";
-import "../css/DetailStyleguide.css";
+import "../css/DetailGlobals.css"; // 글로벌 css
+import "../css/DetailStyleguide.css"; // 글로벌 css
 import SummedGraph from "./graph/summedGraph";
 
 const FLASK_URL = process.env.REACT_APP_FLASK_URL;
 
 const MyAnalyze = () => {
+  // summation 그래프 데이터 상태
   const [summedGraphData, setSummedGraphData] = useState([]);
 
   useEffect(() => {
@@ -40,7 +41,15 @@ const MyAnalyze = () => {
     <div className={styles.divWrapper}>
       <div className={styles.group2}>
         <div className={styles.vector}>
-          <SummedGraph data={summedGraphData} />
+          {/* 
+            // 데이터 받아오는 동안 Loading... 표시
+            // 데이터가 존재하면 SummedGraph 표시
+          */}
+          {summedGraphData.length === 0 ? (
+            <p className={styles.loadingText}>Loading...</p> /* 왼쪽 10px 간격 추가 */
+          ) : (
+            <SummedGraph data={summedGraphData} />
+          )}
         </div>
 
         <div className={styles.group3}>
