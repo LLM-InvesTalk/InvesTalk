@@ -23,7 +23,7 @@ const MyGraph = ({ data = [] }) => {
     margin: { top: 25, bottom: 5, left: 0, right: 30 },
     sx: {
       [`& .${areaElementClasses.root}`]: {
-        fill: "url(#swich-color-id-1)",
+        fill: "url(#switch-color-id-1)",
       },
       [`& .${lineElementClasses.root}`]: {
         strokeWidth: 1,
@@ -31,7 +31,7 @@ const MyGraph = ({ data = [] }) => {
     },
   };
 
-  function ColorSwich({ threshold, color1, color2, id }) {
+  function ColorSwitch({ threshold, color1, color2, id }) {
     return (
       <defs>
         <linearGradient id={id} x1="0" x2="0" y1="0" y2="100%">
@@ -47,11 +47,11 @@ const MyGraph = ({ data = [] }) => {
       <LinePlot />
       <AreaPlot />
       <ChartsReferenceLine y={0} />
-      <ColorSwich
+      <ColorSwitch
         color1="rgb(225, 247, 255)"
         color2="rgb(247, 239, 255)"
         threshold={0}
-        id="swich-color-id-1"
+        id="switch-color-id-1"
       />
     </ResponsiveChartContainer>
   );
