@@ -39,8 +39,7 @@ const Chatting = () => {
       );
   
       if (response.status === 200 && response.data) {
-        // GPT 응답 데이터에서 "출력" 부분만 추출
-        const output = response.data.generated_text?.split("출력:")[1]?.trim() || "응답을 가져오는 데 실패했습니다.";
+        const output = response.data.generated_text || "응답을 가져오는 데 실패했습니다.";
   
         setIsLoading(false); // 로딩 상태 비활성화 (타이핑 시작 전에 종료)
         await simulateTyping(output);
