@@ -1,32 +1,74 @@
-import React from "react";
-import styles from "./myAnalyze.module.css"; // CSS Modules를 사용한 스타일 임포트
-import "../css/DetailGlobals.css";   // 글로벌 스타일
-import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
+import React, { useState, useEffect } from "react";
+import styles from "./myAnalyze.module.css";
+import "../css/DetailGlobals.css"; // 글로벌 css
+import "../css/DetailStyleguide.css"; // 글로벌 css
+import SummedGraph from "./graph/summedGraph";
 
-// StockInfoChart 컴포넌트 임포트 추가
-import MyGraph from "./graph/mygraph";
+const FLASK_URL = process.env.REACT_APP_FLASK_URL;
 
 const MyAnalyze = () => {
+  // summation 그래프 데이터 상태
+  const [summedGraphData, setSummedGraphData] = useState([]);
+
+  useEffect(() => {
+    const fetchSummedGraph = async () => {
+      try {
+        // fetch API 사용 시 쿠키(세션) 정보를 포함하려면:
+        const response = await fetch(`${FLASK_URL}/api/user/favorite_stocks/summed_graph`, {
+          method: "GET",
+          // key option
+          credentials: "include", // 쿠키 전송 허용
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        
+        const { summed_graph } = await response.json();
+        setSummedGraphData(summed_graph);
+      } catch (error) {
+        console.error("Error fetching summed graph data:", error);
+      }
+    };
+
+    fetchSummedGraph();
+  }, []);
+
   return (
-    <div className={styles.divWrapper}> {/* 클래스 네임 변경 */}
+    <div className={styles.divWrapper}>
       <div className={styles.group2}>
-        {/* 이미지 부분을 StockInfoChart 컴포넌트로 변경 */}
         <div className={styles.vector}>
-          <MyGraph />
+          {/* 
+            // 데이터 받아오는 동안 Loading... 표시
+            // 데이터가 존재하면 SummedGraph 표시
+          */}
+          {summedGraphData.length === 0 ? (
+            <p className={styles.loadingText}>Loading...</p> /* 왼쪽 10px 간격 추가 */
+          ) : (
+            <SummedGraph data={summedGraphData} />
+          )}
         </div>
 
         <div className={styles.group3}>
-          {/* 자산 설명 텍스트 */}
           <p className={styles.element}>
             000님의 보유 자산은 ~~ 하고 ~~ 되고 있습니다. ~~~~~~~~~~~~~~~~~~~~~~<br />
             블라블라블라블라...<br />
             000님의 보유 자산은 ~~ 하고 ~~ 되고 있습니다.
           </p>
-
           <div className={styles.overlapGroup2}>
-            {/* 겹쳐진 이미지들 */}
-            <img className={styles.burstPucker4} src="https://c.animaapp.com/99LNnW64/img/burst-pucker-2-3.svg" alt="Pucker Icon 1" />
-            <img className={styles.burstPucker5} src="https://c.animaapp.com/99LNnW64/img/burst-pucker-2-4.svg" alt="Pucker Icon 2" />
+            <img
+              className={styles.burstPucker4}
+              src="https://c.animaapp.com/99LNnW64/img/burst-pucker-2-3.svg"
+              alt="Pucker Icon 1"
+            />
+            <img
+              className={styles.burstPucker5}
+              src="https://c.animaapp.com/99LNnW64/img/burst-pucker-2-4.svg"
+              alt="Pucker Icon 2"
+            />
           </div>
         </div>
       </div>

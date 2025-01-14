@@ -40,7 +40,7 @@ const MyGraph = ({ data }) => {
     margin: { top: 0, bottom: 0, left: 0, right: 0 },
     sx: {
       [`& .${areaElementClasses.root}`]: {
-        fill: "url(#swich-color-id-1)",
+        fill: "url(#switch-color-mygraph)",
       },
       [`& .${lineElementClasses.root}`]: {
         strokeWidth: 1,
@@ -48,7 +48,7 @@ const MyGraph = ({ data }) => {
     },
   };
 
-  function ColorSwich({ threshold, color1, color2, id }) {
+  function ColorSwitch({ threshold, color1, color2, id }) {
     const { top, height, bottom } = useDrawingArea();
     const svgHeight = top + bottom + height;
 
@@ -79,11 +79,11 @@ const MyGraph = ({ data }) => {
       <AreaPlot />
       {/* 필요에 따라 레퍼런스 라인 제거 */}
       {/* <ChartsReferenceLine y={0} /> */}
-      <ColorSwich
+      <ColorSwitch
         color1="rgb(225, 247, 255)"
         color2="rgb(247, 239, 255)"
         threshold={yMean}
-        id="swich-color-id-1"
+        id="switch-color-mygraph"
       />
     </ResponsiveChartContainer>
   );
