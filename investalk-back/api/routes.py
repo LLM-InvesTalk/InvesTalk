@@ -14,6 +14,7 @@ from .detail.stockinfo.stockinfo import get_stockInfo
 from .detail.stockinfo.stockinfochart import get_stockInfo_chart
 from .detail.search.search import search
 from .detail.chatting.chatting import chatting
+from .detail.analyze.assistockAnalyze import chat_with_gpt
 
 # Blueprint 생성
 from api.mainpage.dailygraph.dailyGraph import get_daily_graph_data
@@ -111,6 +112,17 @@ def getChatting():
     try:
         message = request.args.get('message')  # 쿼리 파라미터로 메시지 수신
         data = chatting(message)
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+@api_bp.route('/chat/analyze/<ticker_symbol>', methods=['GET'])
+def getAnalyze(ticker_symbol):
+    try:
+        if not ticker_symbol:
+            return jsonify({"error": "ticker_symbol is required"}), 400
+        
+        data = chat_with_gpt(ticker_symbol)
         return jsonify(data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
