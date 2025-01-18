@@ -13,7 +13,7 @@ const DetailPage = () => {
       <FinancialStatements tickerSymbol={tickerSymbol} />
       <StockInfoCard tickerSymbol={tickerSymbol} />
       <SectorRecommend />
-      <Analyze />
+      <Analyze tickerSymbol={tickerSymbol}/>
       <Chatting />
     </div>
   );
