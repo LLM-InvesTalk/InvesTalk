@@ -4,23 +4,33 @@ import styles from './SectorRecommend.module.css'; // CSS 모듈 import
 import "../css/DetailGlobals.css";   // 글로벌 스타일
 import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
 import EnterpriseRecommend from './EnterpriseRecommend'; // 새로운 컴포넌트 import
-import NewsRecommend from './NewsRecommend'; // 새로운 컴포넌트 import (추가)
+import NewsRecommend from './NewsRecommend'; // 새로운 컴포넌트 import (수정된 버전)
 import ButtonComponent from './Button/ButtonComponent'; // 오른쪽 버튼 컴포넌트 import
 import LeftButtonComponent from './Button/LeftButtonComponent'; // 왼쪽 버튼 컴포넌트 import
 
-const Recommend = () => {
+const Recommend = (props) => {
+  // FinancialStatements처럼 tickerSymbol을 props로 받음
+  const { tickerSymbol } = props;
+
   const [sectors, setSectors] = useState([]); 
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
   const [isEnterprise, setIsEnterprise] = useState(false); // 오른쪽 버튼 상태
-  const [isNews, setIsNews] = useState(false); // 왼쪽 버튼 상태 추가
+  const [isNews, setIsNews] = useState(false); // 왼쪽 버튼 상태
 
   // .env에서 Flask API URL 가져오기
   const API_URL = process.env.REACT_APP_FLASK_API_URL;
 
   useEffect(() => {
-    // Flask API 호출
-    axios.get(`${API_URL}/api/recommend-sectors`)
+    // URL의 끝에 슬래시가 있으면 제거
+    const baseUrl = API_URL.endsWith('/')
+      ? API_URL.slice(0, -1)
+      : API_URL;
+  
+    const finalUrl = `${baseUrl}/api/recommend-sectors/${tickerSymbol}`;
+    console.log("Final request URL:", finalUrl);
+  
+    axios.get(finalUrl)
       .then(response => {
         const { similar_sectors } = response.data;
         setSectors(similar_sectors);
@@ -31,8 +41,7 @@ const Recommend = () => {
         setError('섹터 데이터를 가져오는 데 실패했습니다.');
         setLoading(false);
       });
-  }, [API_URL]);
-
+  }, [API_URL, tickerSymbol]);
   // 컴포넌트 전환 함수 (오른쪽 버튼)
   const handleSwitchEnterprise = () => {
     setIsEnterprise((prev) => !prev); // Enterprise 상태 토글
@@ -51,9 +60,11 @@ const Recommend = () => {
     <div className={styles.divWrapper}>
       {isNews ? (
         // 왼쪽 버튼을 누르면 NewsRecommend 컴포넌트 표시
-        <NewsRecommend />
+        // tickerSymbol을 넘겨줘서 해당 종목 뉴스 표시
+        <NewsRecommend tickerSymbol={tickerSymbol} />
       ) : isEnterprise ? (
         // 오른쪽 버튼을 누르면 EnterpriseRecommend 컴포넌트 표시
+        // 필요한 경우 tickerSymbol도 넘길 수 있음
         <EnterpriseRecommend />
       ) : (
         // 기본적으로 Recommend 컴포넌트 표시
@@ -96,9 +107,9 @@ const Recommend = () => {
                 </div>
               </div>
             </div>
-            {/* 왼쪽 버튼 추가 (NewsRecommend로 전환) */}
+            {/* 왼쪽 버튼 (NewsRecommend로 전환) */}
             <LeftButtonComponent onClick={handleSwitchNews} />
-            {/* 오른쪽 버튼 추가 (EnterpriseRecommend로 전환) */}
+            {/* 오른쪽 버튼 (EnterpriseRecommend로 전환) */}
             <ButtonComponent onClick={handleSwitchEnterprise} />
           </div>
         </div>

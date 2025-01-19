@@ -30,14 +30,25 @@ def get_etf_data():
 @api_bp.route('/get-news', methods=['GET'])
 def fetch_news():
     return get_news()
-@api_bp.route('/recommend-sectors', methods=['GET'])
-def recommend_sectors():
-    nvidia_ticker = "NVDA"
-    nvidia_sector = get_ticker_sector(nvidia_ticker)
-    similar_sectors = get_similar_sectors(nvidia_sector)
+
+@api_bp.route('/recommend-sectors/<ticker_symbol>', methods=['GET'])
+def recommend_sectors(ticker_symbol):
+    """
+    1) ticker_symbol을 path param으로 받음 (예: /recommend-sectors/AAPL)
+    2) 해당 ticker_symbol로 섹터 및 유사 섹터들을 조회
+    """
+    sector = get_ticker_sector(ticker_symbol)
+    # 섹터 정보가 없을 경우 처리
+    if sector == 'N/A':
+        return jsonify({
+            'error': f"섹터 정보를 찾을 수 없습니다. (ticker: {ticker_symbol})"
+        }), 404
+    
+    similar_sectors = get_similar_sectors(sector)
     
     return jsonify({
-        'nvidia_sector': nvidia_sector,
+        'ticker': ticker_symbol,
+        'sector': sector,
         'similar_sectors': similar_sectors
     })
 
