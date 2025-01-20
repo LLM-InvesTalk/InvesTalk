@@ -4,10 +4,13 @@ import { LinePlot } from "@mui/x-charts/LineChart";
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import LoadingAnimation from "../../../loading/LoadingAnimation";
 
 const StockInfoChart = (props) => {
   const { tickerSymbol, period, setPercentageChange } = props;
   const [data, setData] = useState(null);
+  const [error, setError] = useState(null); // 오류 상태 추가
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
     axios
@@ -17,11 +20,15 @@ const StockInfoChart = (props) => {
         setData(response.data);
         setPercentageChange(response.data.percentage_change);
       })
-      .catch((error) => console.error("Error fetching data:", error));
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setError("차트 데이터를 불러오는 중 오류가 발생했습니다.");
+      }) // 오류 메시지 설
+      .finally(() => setLoading(false))
   }, [tickerSymbol, period]);
 
   const config = {
-    dataset: data ? data.data : [], // 데이터가 없을 때 빈 배열로 처리
+    dataset: data?.data || [], // 데이터가 없을 때 빈 배열로 처리
     xAxis: [
       {
         dataKey: "x",
@@ -64,14 +71,26 @@ const StockInfoChart = (props) => {
 
   return (
     <div>
-      {data ? (
+      {loading ? (
+        <div style={{
+          position: 'relative',
+          top: '15px',
+          left: '80px',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 1000
+        }}>
+          <LoadingAnimation />
+        </div>
+      ) : error ? (
+        <p>{error}</p>
+      ) : data && data.data && data.data.length > 0 ? (
         <ResponsiveChartContainer {...config}>
           <LinePlot />
           <AreaPlot />
           <ColorSwich id="swich-color-id-1" />
         </ResponsiveChartContainer>
       ) : (
-        <p>Loading data...</p> // 데이터 로딩 중 메시지
+        <p>데이터가 없습니다.</p>
       )}
     </div>
   );

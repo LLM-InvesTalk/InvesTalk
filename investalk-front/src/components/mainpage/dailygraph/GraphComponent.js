@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './GraphComponentStyle.module.css';
 import ButtonComponent from './Button/ButtonComponent';
 import LeftButtonComponent from './Button/LeftButtonComponent';
-import { useFetcher } from 'react-router-dom';
+import LoadingAnimation from '../../loading/LoadingAnimation';
 
 export default function DynamicBarChart() {
     const [etfData, setEtfData] = useState([]); // 전체 ETF 데이터를 저장
@@ -11,7 +11,6 @@ export default function DynamicBarChart() {
     const [hoveredChange, setHoveredChange] = useState(null); // 마우스 오버된 변동률
     const [maxChange, setMaxChange] = useState(1); // 최대 변동률
     const [isLoading, setIsLoading] = useState(true); // 로딩 상태
-    const [loadingText, setLoadingText] = useState('Loading'); // 로딩 텍스트 상태
     const FLASK_URL = process.env.REACT_APP_FLASK_URL;
 
     const barMaxHeight = 200; // 막대의 최대 높이
@@ -46,8 +45,6 @@ export default function DynamicBarChart() {
                 const response = await fetch(`${FLASK_URL}/api/etf-data?offset=${offset}`);
                 const data = await response.json();
 
-                console.log('Fetched ETF Data:', data); // 모든 데이터를 콘솔에 출력
-
                 const formattedData = countryMapping.map((country) => {
                     const etf = data[country.symbol];
                     if (!etf || !etf.today_price || !etf.yesterday_price) {
@@ -60,8 +57,6 @@ export default function DynamicBarChart() {
 
                     return { ...country, percentageChange };
                 });
-
-                console.log('Formatted Data:', formattedData); // 변환된 데이터를 콘솔에 출력
 
                 const maxChange = Math.max(
                     ...formattedData.map((entry) => Math.abs(entry.percentageChange))
@@ -79,20 +74,6 @@ export default function DynamicBarChart() {
         fetchAllEtfData();
     }, [FLASK_URL, offset]);
 
-    useEffect(() => {
-        if (!isLoading) return;
-
-        const interval = setInterval(() => {
-            setLoadingText((prev) => {
-                if (prev === 'Loading...') return "Loading";
-                if (prev === 'Loading..') return "Loading...";
-                return 'Loading..';
-            });
-        }, 500);
-
-        return () => clearInterval(interval);
-    }, [isLoading]);
-
     const handleNext = () => {
         if (offset + 10 < etfData.length) {
             setOffset(offset + 3); // 3개씩 이동
@@ -104,7 +85,6 @@ export default function DynamicBarChart() {
             setOffset(offset - 3); // 3개씩 이동
         }
     };
-
 
     return (
         <div className={styles['div-wrapper']}>
@@ -120,37 +100,29 @@ export default function DynamicBarChart() {
                             </div>
                         </div>
                         <div className={styles['group-3']} style={{ position: 'relative' }}>
-                            {/* 로딩 상태 표시 */}
-                            {isLoading && (
+                            {isLoading ? (
+                                <div style={{
+                                    position: 'relative',
+                                    top: '39%',
+                                    left: '55%',
+                                    transform: 'translate(-50%, -50%)',
+                                    zIndex: 1000
+                                }}>
+                                    <LoadingAnimation />
+                                </div>
+                            ) : (
                                 <div
+                                    className={styles['overlap-group-wrapper']}
                                     style={{
-                                        position: 'absolute',
-                                        top: '39%',
-                                        left: '55%',
-                                        transform: 'translate(-50%, -50%)',
-                                        fontSize: '18px',
-                                        fontWeight: 'bold',
-                                        color: '#000',
-                                        zIndex: 1000
+                                        display: 'flex',
+                                        justifyContent: 'space-around',
+                                        height: `${barMaxHeight}px`,
+                                        position: 'relative',
                                     }}
                                 >
-                                    {loadingText}
-                                </div>
-                            )}
-
-                            <div
-                                className={styles['overlap-group-wrapper']}
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-around',
-                                    height: `${barMaxHeight}px`,
-                                    position: 'relative',
-                                }}
-                            >
-                                {/* 그래프 하단 선 */}
-                                <div className={styles['rectangle-2']}></div>
-                                {!isLoading &&
-                                    etfData.slice(offset, offset + 10).map((entry, index) => {
+                                    {/* 그래프 하단 선 */}
+                                    <div className={styles['rectangle-2']}></div>
+                                    {etfData.slice(offset, offset + 10).map((entry, index) => {
                                         const barHeight =
                                             maxChange > 0
                                                 ? (Math.abs(entry.percentageChange) / maxChange) *
@@ -228,7 +200,8 @@ export default function DynamicBarChart() {
                                             </div>
                                         );
                                     })}
-                            </div>
+                                </div>
+                            )}
                             <div className={styles['left-button']}>
                                 <LeftButtonComponent onClick={handlePrev} />
                             </div>

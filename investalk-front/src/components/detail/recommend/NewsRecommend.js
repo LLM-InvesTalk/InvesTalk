@@ -7,6 +7,7 @@ import SectorRecommend from "./SectorRecommend"; // SectorRecommend 컴포넌트
 import EnterpriseRecommend from "./EnterpriseRecommend"; // EnterpriseRecommend 컴포넌트 import
 import ButtonComponent from "./Button/ButtonComponent"; // 오른쪽 버튼 컴포넌트 import
 import LeftButtonComponent from "./Button/LeftButtonComponent"; // 왼쪽 버튼 컴포넌트 import 추가
+import LoadingAnimation from "../../loading/LoadingAnimation";
 
 const NewsRecommend = () => {
   const [isSector, setIsSector] = useState(false);
@@ -80,7 +81,15 @@ const NewsRecommend = () => {
         {/* 뉴스 목록 */}
         <div className={styles.newsList}>
           {loading ? (
-            <div>Loading...</div> // 로딩 중일 때 표시
+            <div style={{
+              position: 'relative',
+              top: '70px',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 1000
+            }}>
+              <LoadingAnimation />
+            </div> // 로딩 중일 때 표시
           ) : error ? (
             <div className={styles.errorMessage}>{error}</div> // 에러 발생 시 표시
           ) : (
