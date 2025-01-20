@@ -3,6 +3,7 @@ import styles from "./myAnalyze.module.css";
 import "../css/DetailGlobals.css"; // 글로벌 css
 import "../css/DetailStyleguide.css"; // 글로벌 css
 import SummedGraph from "./graph/summedGraph";
+import LoadingAnimation from "../../loading/LoadingAnimation";
 
 const FLASK_URL = process.env.REACT_APP_FLASK_URL;
 
@@ -26,7 +27,7 @@ const MyAnalyze = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        
+
         const { summed_graph } = await response.json();
         setSummedGraphData(summed_graph);
       } catch (error) {
@@ -46,7 +47,17 @@ const MyAnalyze = () => {
             // 데이터가 존재하면 SummedGraph 표시
           */}
           {summedGraphData.length === 0 ? (
-            <p className={styles.loadingText}>Loading...</p> /* 왼쪽 10px 간격 추가 */
+            <div className={styles.loadingWrapper}>
+              <div style={{
+                position: 'relative',
+                top: '60px',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 1000
+              }}>
+                <LoadingAnimation />
+              </div>
+            </div>
           ) : (
             <SummedGraph data={summedGraphData} />
           )}

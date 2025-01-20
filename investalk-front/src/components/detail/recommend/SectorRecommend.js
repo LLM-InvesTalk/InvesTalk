@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './SectorRecommend.module.css'; // CSS 모듈 import
 import "../css/DetailGlobals.css";   // 글로벌 스타일
@@ -7,11 +7,12 @@ import EnterpriseRecommend from './EnterpriseRecommend'; // 새로운 컴포넌�
 import NewsRecommend from './NewsRecommend'; // 새로운 컴포넌트 import (추가)
 import ButtonComponent from './Button/ButtonComponent'; // 오른쪽 버튼 컴포넌트 import
 import LeftButtonComponent from './Button/LeftButtonComponent'; // 왼쪽 버튼 컴포넌트 import
+import LoadingAnimation from '../../loading/LoadingAnimation';
 
 const Recommend = () => {
-  const [sectors, setSectors] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
+  const [sectors, setSectors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isEnterprise, setIsEnterprise] = useState(false); // 오른쪽 버튼 상태
   const [isNews, setIsNews] = useState(false); // 왼쪽 버튼 상태 추가
 
@@ -83,7 +84,15 @@ const Recommend = () => {
                     </div>
                     <div className={styles.frame24}>
                       {loading ? (
-                        <div>Loading...</div> // 로딩 중일 때 섹터 데이터 대신 "Loading..." 표시
+                        <div style={{
+                          position: 'relative',
+                          top: '50%',
+                          left: '115px',
+                          transform: 'translate(-50%, -50%)',
+                          zIndex: 1000
+                        }}>
+                          <LoadingAnimation />
+                        </div>
                       ) : error ? (
                         <div className={styles.errorMessage}>{error}</div> // 에러 발생 시 에러 메시지 표시
                       ) : (

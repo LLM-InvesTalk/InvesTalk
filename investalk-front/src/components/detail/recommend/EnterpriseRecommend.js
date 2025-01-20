@@ -7,6 +7,7 @@ import NewsRecommend from "./NewsRecommend"; // NewsRecommend 컴포넌트 impor
 import SectorRecommend from "./SectorRecommend"; // SectorRecommend 컴포넌트 import 추가
 import ButtonComponent from "./Button/ButtonComponent"; // 오른쪽 버튼 컴포넌트 import
 import LeftButtonComponent from "./Button/LeftButtonComponent"; // 왼쪽 버튼 컴포넌트 import 추가
+import LoadingAnimation from "../../loading/LoadingAnimation";
 
 const EnterpriseRecommend = () => {
   const [isNewsRecommend, setIsNewsRecommend] = useState(false);
@@ -90,7 +91,15 @@ const EnterpriseRecommend = () => {
               <div className={styles.metricValueText}>
                 {averageGrowth.revenueGrowth !== null
                   ? `${averageGrowth.revenueGrowth.toFixed(2)}%`
-                  : "Loading..."}
+                  : <div style={{
+                    position: 'relative',
+                    top: '20px',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 1000
+                  }}>
+                    <LoadingAnimation />
+                  </div>}
               </div>
             </div>
           </div>
@@ -113,7 +122,15 @@ const EnterpriseRecommend = () => {
             <div className={styles.metricValueText}>
               {averageGrowth.cashFlowGrowth !== null
                 ? `${averageGrowth.cashFlowGrowth.toFixed(2)}%`
-                : "Loading..."}
+                : <div style={{
+                  position: 'relative',
+                  top: '20px',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: 1000
+                }}>
+                  <LoadingAnimation />
+                </div>}
             </div>
           </div>
         </div>

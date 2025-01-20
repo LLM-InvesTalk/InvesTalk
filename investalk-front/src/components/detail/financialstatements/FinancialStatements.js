@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./FinancialStatements.module.css";
 import axios from "axios";
+import LoadingAnimation from "../../loading/LoadingAnimation";
 
 const FinancialStatements = (props) => {
   const { tickerSymbol } = props;
@@ -55,7 +56,15 @@ const FinancialStatements = (props) => {
           <div className={styles.frame}>
             {/* 로딩 중일 때는 "Loading..." 표시, 완료되면 데이터 맵핑 */}
             {loading ? (
-              <div>Loading...</div>
+              <div style={{
+                position: 'relative',
+                top: '75px',
+                left: '220px',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 1000
+              }}>
+                <LoadingAnimation />
+              </div>
             ) : (
               Object.keys(categories).map((category, index) => (
                 <div className={styles["frame-wrapper"]} key={index}>
