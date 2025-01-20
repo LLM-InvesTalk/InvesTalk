@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./TableComponentStyle.module.css"; // CSS 모듈로 가져옴
 import axios from "axios";
 import MyGraph from "./graph/mygraph"; // MyGraph 경로에 따라 수정
+import LoadingAnimation from "../../loading/LoadingAnimation";
 
 axios.defaults.withCredentials = true;
 const FLASK_URL = process.env.REACT_APP_FLASK_URL;
@@ -112,9 +113,9 @@ const TableComponent = () => {
   /* 주석: 엔터키를 누르면 stockData를 업데이트하고 편집모드를 종료함 */
   const handleHopePriceKeyDown = async (e, index) => {
     if (e.key === "Enter") {
-      const symbol = stockData[index].symbol; 
+      const symbol = stockData[index].symbol;
       const updatedStockData = [...stockData];
-  
+
       try {
         // 2) 백엔드로 POST 요청: /api/user/update_price
         await axios.post(`${FLASK_URL}/api/user/update_price`, {
@@ -123,24 +124,24 @@ const TableComponent = () => {
         }, {
           withCredentials: true // 쿠키 사용 시 필수
         });
-  
+
         // 3) 응답이 성공이면, 프론트엔드 스테이트 갱신
         updatedStockData[index] = {
           ...updatedStockData[index],
           나의희망가격: tempHopePrice,
         };
-  
+
         setStockData(updatedStockData);
         setEditingIndex(null);
         setTempHopePrice("");
-        
+
       } catch (error) {
         console.error("희망가격 업데이트 중 오류:", error);
         // 필요 시 사용자 알림 로직 추가
       }
     }
   };
-  
+
 
   return (
     <div className={styles["div-wrapper"]}>
@@ -178,7 +179,15 @@ const TableComponent = () => {
             </p>
             <div className={styles["frame-5"]}>
               {loading ? (
-                <div>Loading...</div>
+                <div style={{
+                  position: 'absolute',
+                  top: '130px',
+                  left: '250px',
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: 1000
+                }}>
+                  <LoadingAnimation />
+                </div>
               ) : (
                 sortedData.map((item, index) => (
                   <div key={index} className={styles["graph-wrapper"]}>

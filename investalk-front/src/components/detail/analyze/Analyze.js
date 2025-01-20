@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import styles from "./Analyze.module.css"; // CSS 모듈 import
 import axios from "axios";
+import LoadingAnimation from "../../loading/LoadingAnimation";
 
 const Analyze = (props) => {
   const { tickerSymbol } = props;
@@ -17,7 +18,7 @@ const Analyze = (props) => {
           `http://localhost:5000/api/chat/analyze/${tickerSymbol}`
         );
         console.log("fetch data: ", response.data);
-  
+
         setAssistockAnalyze(response.data);
       } catch (error) {
         console.error("Error fetching scraps:", error);
@@ -34,9 +35,17 @@ const Analyze = (props) => {
         <div className={styles.overlap3}>
           <div className={styles.textWrapper}>Assistock 분석서</div>
           <div className={styles.textDescription}>
-          {loading ? (
-              <div>Loading...</div>
-            ) :( assistockAnalyze.reply ? assistockAnalyze.reply : "데이터가 없습니다.")}
+            {loading ? (
+              <div style={{
+                position: 'relative',
+                top: '55%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 1000
+              }}>
+                <LoadingAnimation />
+              </div>
+            ) : (assistockAnalyze.reply ? assistockAnalyze.reply : "데이터가 없습니다.")}
           </div>
         </div>
       </div>
