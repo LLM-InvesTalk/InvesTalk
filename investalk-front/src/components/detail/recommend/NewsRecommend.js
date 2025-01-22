@@ -6,42 +6,50 @@ import "../css/DetailStyleguide.css"; // 추천 섹터 스타일
 import SectorRecommend from "./SectorRecommend"; // SectorRecommend 컴포넌트 import
 import EnterpriseRecommend from "./EnterpriseRecommend"; // EnterpriseRecommend 컴포넌트 import
 import ButtonComponent from "./Button/ButtonComponent"; // 오른쪽 버튼 컴포넌트 import
-import LeftButtonComponent from "./Button/LeftButtonComponent"; // 왼쪽 버튼 컴포넌트 import 추가
+import LeftButtonComponent from "./Button/LeftButtonComponent"; // 왼쪽 버튼 컴포넌트 import
 import LoadingAnimation from "../../loading/LoadingAnimation";
 
-const NewsRecommend = () => {
+const NewsRecommend = (props) => {
+  // ** Recommend.jsx에서 넘겨준 tickerSymbol 받음 **
+  const { tickerSymbol } = props;
+
   const [isSector, setIsSector] = useState(false);
-  const [isEnterprise, setIsEnterprise] = useState(false); // EnterpriseRecommend 전환 상태 추가
-  const [newsData, setNewsData] = useState([]); // 뉴스 데이터를 저장할 상태
-  const [loading, setLoading] = useState(true); // 로딩 상태
-  const [error, setError] = useState(null); // 에러 상태
+  const [isEnterprise, setIsEnterprise] = useState(false); 
+  const [newsData, setNewsData] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
 
   // 뉴스 데이터를 가져오는 함수
   const fetchNewsData = async () => {
     try {
+      // ** tickerSymbol을 활용해 API 호출 **
       const response = await axios.get(
-        `${process.env.REACT_APP_FLASK_API_URL}/api/recommend-news?ticker=NVDA`
+        `${process.env.REACT_APP_FLASK_API_URL}/api/recommend-news?ticker=${tickerSymbol}`
       );
-      setNewsData(response.data); // 가져온 데이터를 상태에 저장
-      setLoading(false); // 로딩 완료
+      setNewsData(response.data);
+      setLoading(false);
     } catch (error) {
       console.error("뉴스 데이터를 가져오는 데 실패했습니다.", error);
       setError("뉴스 데이터를 가져오는 데 실패했습니다.");
-      setLoading(false); // 에러 발생 시 로딩 중지
+      setLoading(false);
     }
   };
 
   // 컴포넌트가 처음 렌더링될 때 뉴스 데이터를 가져옴
   useEffect(() => {
     fetchNewsData();
-  }, []);
+    // eslint-disable-next-line
+  }, [tickerSymbol]);
+  /*
+    ↑ tickerSymbol이 바뀔 때마다 다시 fetch하고 싶다면 tickerSymbol을 의존성 배열에 넣어줍니다.
+  */
 
   // SectorRecommend로 전환하는 함수
   const handleSwitchToSector = () => {
     setIsSector(true);
   };
 
-  // EnterpriseRecommend로 전환하는 함수 (왼쪽 버튼 클릭 시)
+  // EnterpriseRecommend로 전환하는 함수
   const handleSwitchToEnterprise = () => {
     setIsEnterprise(true);
   };
@@ -56,11 +64,13 @@ const NewsRecommend = () => {
 
   // 현재 상태에 따라 렌더링할 컴포넌트 결정
   if (isSector) {
-    return <SectorRecommend />;
+    // ** tickerSymbol 그대로 넘겨서 SectorRecommend에서도 사용 가능하도록 함 **
+    return <SectorRecommend tickerSymbol={tickerSymbol} />;
   }
 
   if (isEnterprise) {
-    return <EnterpriseRecommend />;
+    // ** tickerSymbol 그대로 넘겨서 EnterpriseRecommend에서도 사용 가능하도록 함 **
+    return <EnterpriseRecommend tickerSymbol={tickerSymbol} />;
   }
 
   return (
@@ -89,9 +99,9 @@ const NewsRecommend = () => {
               zIndex: 1000
             }}>
               <LoadingAnimation />
-            </div> // 로딩 중일 때 표시
+            </div>
           ) : error ? (
-            <div className={styles.errorMessage}>{error}</div> // 에러 발생 시 표시
+            <div className={styles.errorMessage}>{error}</div>
           ) : (
             newsData.map((news, index) => (
               <div key={index} className={styles.newsItem}>
@@ -101,11 +111,11 @@ const NewsRecommend = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.newsText}
-                  style={{ textDecoration: "none", color: "inherit" }} // 기본 스타일
+                  style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  {truncateText(news.title, 68)} {/* 70자 제한 */}
+                  {truncateText(news.title, 68)}
                 </a>
-                {/* 제목의 길이가 30자 이하일 경우 top을 20px로, 그렇지 않으면 41px로 설정 */}
+                {/* 제목의 길이가 30자 이하일 경우 top을 20px, 그렇지 않으면 41px 설정 */}
                 <div
                   className={styles.newsTime}
                   style={{ top: news.title.length <= 30 ? "20px" : "41px" }}
@@ -118,7 +128,7 @@ const NewsRecommend = () => {
         </div>
       </div>
 
-      {/* 왼쪽 버튼 추가: EnterpriseRecommend로 이동 */}
+      {/* 왼쪽 버튼: EnterpriseRecommend로 이동 */}
       <LeftButtonComponent onClick={handleSwitchToEnterprise} />
 
       {/* 오른쪽 버튼: SectorRecommend로 이동 */}

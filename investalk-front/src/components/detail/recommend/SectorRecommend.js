@@ -11,7 +11,7 @@ import LoadingAnimation from '../../loading/LoadingAnimation';
 
 const Recommend = (props) => {
   // FinancialStatements처럼 tickerSymbol을 props로 받음
-  const { tickerSymbol } = props;
+  const { tickerSymbol } = props;  // <-- 티커심볼을 받아옴
 
   const [sectors, setSectors] = useState([]); 
   const [loading, setLoading] = useState(true); 
@@ -43,16 +43,17 @@ const Recommend = (props) => {
         setLoading(false);
       });
   }, [API_URL, tickerSymbol]);
-  // 컴포넌트 전환 함수 (오른쪽 버튼)
+  
+  // 컴포넌트 전환 함수 (오른쪽 버튼 - Enterprise)
   const handleSwitchEnterprise = () => {
-    setIsEnterprise((prev) => !prev); // Enterprise 상태 토글
-    setIsNews(false); // News는 꺼짐
+    setIsEnterprise((prev) => !prev); 
+    setIsNews(false);
   };
 
-  // 컴포넌트 전환 함수 (왼쪽 버튼)
+  // 컴포넌트 전환 함수 (왼쪽 버튼 - News)
   const handleSwitchNews = () => {
-    setIsNews((prev) => !prev); // News 상태 토글
-    setIsEnterprise(false); // Enterprise는 꺼짐
+    setIsNews((prev) => !prev); 
+    setIsEnterprise(false);
   };
 
   const numbers = ['01.', '02.', '03.', '04.', '05.'];
@@ -61,12 +62,12 @@ const Recommend = (props) => {
     <div className={styles.divWrapper}>
       {isNews ? (
         // 왼쪽 버튼을 누르면 NewsRecommend 컴포넌트 표시
-        // tickerSymbol을 넘겨줘서 해당 종목 뉴스 표시
+        // ** tickerSymbol을 넘겨줌 (중요) **
         <NewsRecommend tickerSymbol={tickerSymbol} />
       ) : isEnterprise ? (
         // 오른쪽 버튼을 누르면 EnterpriseRecommend 컴포넌트 표시
-        // 필요한 경우 tickerSymbol도 넘길 수 있음
-        <EnterpriseRecommend />
+        // ** tickerSymbol을 넘겨줌 (필요하다면) **
+        <EnterpriseRecommend tickerSymbol={tickerSymbol}/>
       ) : (
         // 기본적으로 Recommend 컴포넌트 표시
         <div className={styles.group11}>
