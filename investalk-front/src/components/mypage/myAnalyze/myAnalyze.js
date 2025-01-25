@@ -21,6 +21,10 @@ const MyAnalyze = () => {
   // ChatGPT API 응답 상태
   const [chatGPTResponse, setChatGPTResponse] = useState("");
 
+  // [!] Recommend 컴포넌트와 마찬가지로 로딩, 에러 상태 추가
+  const [loading, setLoading] = useState(true);  // 로딩 상태
+  const [error, setError] = useState(null);      // 에러 상태
+
   useEffect(() => {
     // [1] 종합 그래프 데이터 받아오는 함수
     const fetchSummedGraph = async () => {
@@ -43,10 +47,13 @@ const MyAnalyze = () => {
         // 디버깅용: 백엔드 응답 로그
         console.log("백엔드 응답 data:", { summed_graph, tickers, averaged_graph });
 
-        // 데이터 반환 (Promise)
+        // 정상적으로 응답을 받으면 반환
         return { summed_graph, tickers, averaged_graph };
+
       } catch (error) {
         console.error("Error fetching summed graph data:", error);
+        // [!] 에러 상태 업데이트
+        setError("데이터를 불러오지 못했습니다.");
         // 에러 시 빈 데이터 반환
         return { summed_graph: [], tickers: [], averaged_graph: [] };
       }
@@ -89,8 +96,14 @@ const MyAnalyze = () => {
 
         const result = response.choices[0].message.content;
         setChatGPTResponse(result);
+
       } catch (error) {
         console.error("Error calling ChatGPT API:", error);
+        // [!] ChatGPT API 오류 시 에러 상태 업데이트
+        setError("ChatGPT API 호출에 실패했습니다.");
+      } finally {
+        // [!] 모든 작업이 끝나면 로딩을 종료
+        setLoading(false);
       }
     };
 
@@ -110,11 +123,12 @@ const MyAnalyze = () => {
     <div className={styles.divWrapper}>
       <div className={styles.group2}>
         <div className={styles.vector}>
-          {/*
-            // 데이터 받아오는 동안 Loading... 표시
-            // 데이터가 존재하면 SummedGraph 표시
+          {/* 
+            로딩 중이라면 로딩 애니메이션 표시,
+            에러가 있다면 에러 메시지 표시,
+            둘 다 아니면 SummedGraph 데이터 표시
           */}
-          {summedGraphData.length === 0 ? (
+          {loading ? (
             <div className={styles.loadingWrapper}>
               <div
                 style={{
@@ -127,6 +141,10 @@ const MyAnalyze = () => {
               >
                 <LoadingAnimation />
               </div>
+            </div>
+          ) : error ? (
+            <div style={{ color: "red", fontWeight: "bold" }}>
+              {error}
             </div>
           ) : (
             <SummedGraph data={summedGraphData} />
