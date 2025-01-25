@@ -217,7 +217,7 @@ def get_summed_graph(current_user):
         favorite_stocks = FavoriteStocks.query.filter_by(user_id=current_user['id']).all()
         if not favorite_stocks:
             # 관심 종목이 없으면 빈 리스트 반환
-            return jsonify({"summed_graph": []})
+            return jsonify({"summed_graph": [], "tickers": []})
 
         stocks_data = []
 
@@ -261,11 +261,15 @@ def get_summed_graph(current_user):
                 # 그래프가 min_length 이상이라면 i번째 값을 더함
                 sum_value += graph_values[i]
             
-            # 소수점 아래 둘째 자리만 반영
-            summed_graph.append(round(sum_value, 2))  # <-- 여기서 round()
+            # 소수점 아래 둘째 자리까지 반영
+            summed_graph.append(round(sum_value, 2))
+
+        # 관심 종목 티커 리스트 추출
+        tickers_list = [stock.symbol for stock in favorite_stocks]
 
         response_data = {
-            "summed_graph": summed_graph
+            "summed_graph": summed_graph,
+            "tickers": tickers_list
         }
 
         # 디버깅용 출력
