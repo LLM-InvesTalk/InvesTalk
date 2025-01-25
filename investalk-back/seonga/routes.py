@@ -259,8 +259,10 @@ def get_summed_graph(current_user):
             for stock in stocks_data:
                 graph_values = stock.get("그래프", [])
                 # 그래프가 min_length 이상이라면 i번째 값을 더함
-                sum_value += graph_values[i]  
-            summed_graph.append(sum_value)
+                sum_value += graph_values[i]
+            
+            # 소수점 아래 둘째 자리만 반영
+            summed_graph.append(round(sum_value, 2))  # <-- 여기서 round()
 
         response_data = {
             "summed_graph": summed_graph
