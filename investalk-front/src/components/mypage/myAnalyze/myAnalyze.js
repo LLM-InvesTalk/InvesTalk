@@ -14,13 +14,17 @@ const MyAnalyze = () => {
   // summation 그래프 데이터 상태
   const [summedGraphData, setSummedGraphData] = useState([]);
 
+  // 백엔드에서 받아올 ticker, averagedGraph도 상태로 관리
+  const [tickers, setTickers] = useState([]);
+  const [averagedGraph, setAveragedGraph] = useState([]);
+
   // ChatGPT API 응답 상태
   const [chatGPTResponse, setChatGPTResponse] = useState("");
 
   useEffect(() => {
+    // [1] 종합 그래프 데이터 받아오는 함수
     const fetchSummedGraph = async () => {
       try {
-        // fetch API 사용 시 쿠키(세션) 정보를 포함하려면:
         const response = await fetch(`${FLASK_URL}/api/user/favorite_stocks/summed_graph`, {
           method: "GET",
           credentials: "include", // 쿠키 전송 허용
@@ -33,34 +37,52 @@ const MyAnalyze = () => {
           throw new Error("Network response was not ok");
         }
 
-        const { summed_graph } = await response.json();
-        setSummedGraphData(summed_graph);
+        // 백엔드에서 받은 summed_graph, tickers, averaged_graph를 디스트럭처링
+        const { summed_graph, tickers, averaged_graph } = await response.json();
+
+        // 디버깅용: 백엔드 응답 로그
+        console.log("백엔드 응답 data:", { summed_graph, tickers, averaged_graph });
+
+        // 데이터 반환 (Promise)
+        return { summed_graph, tickers, averaged_graph };
       } catch (error) {
         console.error("Error fetching summed graph data:", error);
+        // 에러 시 빈 데이터 반환
+        return { summed_graph: [], tickers: [], averaged_graph: [] };
       }
     };
 
-    // ChatGPT API 요청 함수
-    const fetchChatGPT = async () => {
+    // [2] ChatGPT API 호출 함수 (averagedGraph, tickers를 인자로 받음)
+    const fetchChatGPT = async (averagedGraphParam, tickersParam) => {
       try {
+        console.log("ChatGPT 호출 직전 averagedGraphParam:", averagedGraphParam);
+        console.log("ChatGPT 호출 직전 tickersParam:", tickersParam);
+
         const openai = new OpenAI({
           apiKey: process.env.REACT_APP_OPENAI_API_KEY,
           dangerouslyAllowBrowser: true, // 브라우저 환경 허용
         });
 
+        // system + user 메시지를 구성
+        const messages = [
+          {
+            role: "system",
+            content:
+              "너는 주식관련 상담 챗봇이야. 내가 자산과 종목에 대한 정보를 줄테니, 그 자산이 어떤 경향을 가지고 있는지 대략 70자 내외로 설명해줘. 종목들의 포트폴리오 경향도 대략적으로 설명해줘",
+          },
+          {
+            role: "user",
+            content: `실제 서버 평균 자산규모(averaged_graph): ${averagedGraphParam.join(", ")}
+티커(tickers): ${tickersParam.join(", ")}`,
+          },
+        ];
+
+        // 콘솔에서 확인하기 위해 로그 출력
+        console.log("ChatGPT에 보낼 메시지:", messages);
+
         const response = await openai.chat.completions.create({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "system",
-              content:
-                "너는 주식관련 상담 챗봇이야. 내가 자산 규모에 대한 정보를 줄테니, 그 자산이 어떤 경향을 가지고 있는지 대략 70자 내외로 설명해줘.간단 명료하게 설명해줘.",
-            },
-            {
-              role: "user",
-              content: "테스트 자산규모 데이터 예시: 100, 50, 100, 130.",
-            },
-          ],
+          model: "gpt-4o",
+          messages,
           max_tokens: 300,
           temperature: 0.7,
         });
@@ -72,8 +94,16 @@ const MyAnalyze = () => {
       }
     };
 
-    fetchSummedGraph();
-    fetchChatGPT();
+    // [3] 데이터 가져온 후 -> ChatGPT 호출
+    fetchSummedGraph().then(({ summed_graph, tickers, averaged_graph }) => {
+      // React 상태 업데이트 (그래프 표시용)
+      setSummedGraphData(summed_graph);
+      setTickers(tickers);
+      setAveragedGraph(averaged_graph);
+
+      // 평균 그래프 + 티커 정보를 ChatGPT에 전달
+      fetchChatGPT(averaged_graph, tickers);
+    });
   }, []);
 
   return (
@@ -86,13 +116,15 @@ const MyAnalyze = () => {
           */}
           {summedGraphData.length === 0 ? (
             <div className={styles.loadingWrapper}>
-              <div style={{
-                position: 'relative',
-                top: '60px',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                zIndex: 1000
-              }}>
+              <div
+                style={{
+                  position: "relative",
+                  top: "60px",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  zIndex: 1000,
+                }}
+              >
                 <LoadingAnimation />
               </div>
             </div>
@@ -102,6 +134,7 @@ const MyAnalyze = () => {
         </div>
 
         <div className={styles.group3}>
+          {/* 화면에는 chatGPTResponse만 표시 (system/user 메시지는 보이지 않음) */}
           <p className={styles.element}>
             {chatGPTResponse && (
               <span style={{ display: "block", marginTop: "1rem" }}>
