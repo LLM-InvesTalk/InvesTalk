@@ -217,7 +217,11 @@ def get_summed_graph(current_user):
         favorite_stocks = FavoriteStocks.query.filter_by(user_id=current_user['id']).all()
         if not favorite_stocks:
             # 관심 종목이 없으면 빈 리스트 반환
-            return jsonify({"summed_graph": [], "tickers": []})
+            return jsonify({
+                "summed_graph": [],
+                "tickers": [],
+                "averaged_graph": []
+            })
 
         stocks_data = []
 
@@ -249,8 +253,6 @@ def get_summed_graph(current_user):
                 })
 
         # 3) '그래프' 중 *가장 짧은 길이*를 구해서 그 범위까지만 합산
-        #    -> 모든 종목이 공통으로 가지고 있는 인덱스까지만 합산
-        #       (즉, 그래프 배열이 없는 종목이 있으면 길이 0 처리)
         min_length = min(len(stock.get("그래프", [])) for stock in stocks_data if "그래프" in stock)
         
         summed_graph = []
@@ -258,22 +260,31 @@ def get_summed_graph(current_user):
             sum_value = 0.0
             for stock in stocks_data:
                 graph_values = stock.get("그래프", [])
-                # 그래프가 min_length 이상이라면 i번째 값을 더함
                 sum_value += graph_values[i]
             
             # 소수점 아래 둘째 자리까지 반영
             summed_graph.append(round(sum_value, 2))
+
+        # (추가) 4) 10개 단위로 평균 계산
+        averaged_graph = []
+        for i in range(0, len(summed_graph), 10):
+            chunk = summed_graph[i:i+10]
+            # chunk가 비어있지 않다면 평균 계산
+            if chunk:
+                chunk_avg = sum(chunk) / len(chunk)
+                averaged_graph.append(round(chunk_avg, 2))
 
         # 관심 종목 티커 리스트 추출
         tickers_list = [stock.symbol for stock in favorite_stocks]
 
         response_data = {
             "summed_graph": summed_graph,
-            "tickers": tickers_list
+            "tickers": tickers_list,
+            "averaged_graph": averaged_graph  # 10개 단위 평균 리스트
         }
 
         # 디버깅용 출력
-        print("Final summed_graph:")
+        print("Final response_data:")
         print(json.dumps(response_data, ensure_ascii=False, indent=4))
 
         return jsonify(response_data)
