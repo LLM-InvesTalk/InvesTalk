@@ -23,14 +23,22 @@ const Recommend = (props) => {
   const API_URL = process.env.REACT_APP_FLASK_API_URL;
 
   useEffect(() => {
+    // tickerSymbol이 존재할 때만 API 호출
+    if (!tickerSymbol) {
+      return;
+    }
+
     // URL의 끝에 슬래시가 있으면 제거
     const baseUrl = API_URL.endsWith('/')
       ? API_URL.slice(0, -1)
       : API_URL;
-  
+
     const finalUrl = `${baseUrl}/api/recommend-sectors/${tickerSymbol}`;
     console.log("Final request URL:", finalUrl);
-  
+
+    // 로딩 상태 true로 세팅
+    setLoading(true);
+
     axios.get(finalUrl)
       .then(response => {
         const { similar_sectors } = response.data;
@@ -42,8 +50,9 @@ const Recommend = (props) => {
         setError('섹터 데이터를 가져오는 데 실패했습니다.');
         setLoading(false);
       });
-  }, [API_URL, tickerSymbol]);
-  
+  }, [API_URL, tickerSymbol]); 
+  // **의존성 배열에 tickerSymbol 포함** -> 검색 심볼 변경 시 재호출
+
   // 컴포넌트 전환 함수 (오른쪽 버튼 - Enterprise)
   const handleSwitchEnterprise = () => {
     setIsEnterprise((prev) => !prev); 
@@ -62,14 +71,12 @@ const Recommend = (props) => {
     <div className={styles.divWrapper}>
       {isNews ? (
         // 왼쪽 버튼을 누르면 NewsRecommend 컴포넌트 표시
-        // ** tickerSymbol을 넘겨줌 (중요) **
         <NewsRecommend tickerSymbol={tickerSymbol} />
       ) : isEnterprise ? (
         // 오른쪽 버튼을 누르면 EnterpriseRecommend 컴포넌트 표시
-        // ** tickerSymbol을 넘겨줌 (필요하다면) **
         <EnterpriseRecommend tickerSymbol={tickerSymbol}/>
       ) : (
-        // 기본적으로 Recommend 컴포넌트 표시
+        // 기본적으로 SectorRecommend 내용 표시
         <div className={styles.group11}>
           <div className={styles.overlap7}>
             <div className={styles.group12}>
@@ -91,7 +98,9 @@ const Recommend = (props) => {
                   <div className={styles.frame23}>
                     <div className={styles.frame24}>
                       {numbers.map((num, index) => (
-                        <div key={index} className={styles.textWrapper24}>{num}</div>
+                        <div key={index} className={styles.textWrapper24}>
+                          {num}
+                        </div>
                       ))}
                     </div>
                     <div className={styles.frame24}>
@@ -106,10 +115,12 @@ const Recommend = (props) => {
                           <LoadingAnimation />
                         </div>
                       ) : error ? (
-                        <div className={styles.errorMessage}>{error}</div> // 에러 발생 시 에러 메시지 표시
+                        <div className={styles.errorMessage}>{error}</div>
                       ) : (
                         sectors.map((sector, index) => (
-                          <div key={index} className={styles.textWrapper26}>{sector}</div>
+                          <div key={index} className={styles.textWrapper26}>
+                            {sector}
+                          </div>
                         ))
                       )}
                     </div>
