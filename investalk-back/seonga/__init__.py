@@ -9,6 +9,8 @@ from .config import Config
 load_dotenv()
 
 db = SQLAlchemy()  # SQLAlchemy 객체 생성
+migrate = Migrate()
+
 
 def create_app():
     app = Flask(__name__)
@@ -20,10 +22,13 @@ def create_app():
     db.init_app(app)
 
     # Migrate 설정
-    migrate = Migrate(app, db)
+    migrate.init_app(app, db)
+
+    from .models import FavoriteStocks, Users
 
     # 블루프린트 등록
     from .routes import main_bp
+
     app.register_blueprint(main_bp)
 
     return app
