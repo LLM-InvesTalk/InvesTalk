@@ -55,15 +55,15 @@ a {
     gap: 26px;
     position: relative;
     top: 30px;
-    left: 40px;
+    left: 35px;
 }
 
 .div-wrapper .frame-2 {
     display: flex;
     flex-direction: column;
     width: 40px;
-    align-items: flex-start;
-    gap: 60px;
+    align-items: center;
+    gap: 57px;
     position: relative;
 }
 
@@ -97,7 +97,7 @@ a {
 .div-wrapper .frame-3 {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 31px;
     position: relative;
     align-self: stretch;
@@ -180,7 +180,7 @@ a {
     flex-direction: column;
     width: 45px;
     align-items: center;
-    gap: 60px;
+    gap: 57px;
     position: relative;
 }
 
@@ -204,9 +204,10 @@ a {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 31px;
+    gap: 29px;
     position: relative;
     flex: 0 0 auto;
+    right: 7px;
 }
 
 .div-wrapper .text-wrapper-4 {
@@ -218,8 +219,9 @@ a {
     /* 텍스트 색상을 단일 색상으로 변경 */
     -webkit-background-clip: unset !important;
     background-clip: unset;
-    -webkit-text-fill-color: rgb(171.59, 179.93, 255); /* 이 부분에서 색상 지정 */
-    color: rgb(171.59, 179.93, 255); /* 투명한 색 대신 단일 색상 사용 */
+    -webkit-text-fill-color: rgb(171.59, 179.93, 255);
+    color: rgb(171.59, 179.93, 255);
+    /* 투명한 색 대신 단일 색상 사용 */
     position: relative;
     font-family: "Pretendard Variable-Regular", Helvetica;
     font-weight: 400;
@@ -233,14 +235,15 @@ a {
 .div-wrapper .text-wrapper-6 {
     align-self: stretch;
     margin-left: -0.15px;
-    -webkit-text-stroke: 0.15px #6b89ff;
+    -webkit-text-stroke: 0.15px rgb(255, 171.59, 211.63);
     /* 그라디언트 삭제 */
     /* background: linear-gradient(180deg, rgb(234.7, 255, 176.91) 0%, rgb(255, 226.1, 182.75) 32%, rgb(255, 171.59, 211.63) 100%); */
     /* 텍스트 색상을 단일 색상으로 변경 */
     -webkit-background-clip: unset !important;
     background-clip: unset;
-    -webkit-text-fill-color: rgb(255, 171.59, 211.63); /* 이 부분에서 색상 지정 */
-    color: rgb(255, 171.59, 211.63); /* 투명한 색 대신 단일 색상 사용 */
+    -webkit-text-fill-color: rgb(255, 171.59, 211.63);
+    color: rgb(255, 171.59, 211.63);
+    /* 투명한 색 대신 단일 색상 사용 */
     position: relative;
     font-family: "Pretendard Variable-Regular", Helvetica;
     font-weight: 400;
@@ -255,7 +258,7 @@ a {
 .div-wrapper .frame-8 {
     display: flex;
     flex-direction: column;
-    width: 45px;
+    width: 50px;
     align-items: flex-start;
     gap: 60px;
     position: relative;
@@ -280,7 +283,7 @@ a {
     display: flex;
     flex-direction: column;
     width: 120px;
-    align-items: flex-start;
+    align-items: center;
     gap: 60px;
     position: relative;
 }
@@ -296,6 +299,7 @@ a {
     text-align: center;
     letter-spacing: 0;
     line-height: normal;
+    left: 7px;
 }
 
 .div-wrapper .frame-10 {
@@ -327,10 +331,11 @@ a {
     display: flex;
     flex-direction: column;
     width: 41px;
-    align-items: flex-start;
+    align-items: center;
     gap: 31px;
     position: relative;
     flex: 0 0 auto;
+    left: -7px;
 }
 
 .div-wrapper .ai {
@@ -357,6 +362,7 @@ a {
     gap: 31px;
     position: relative;
     flex: 0 0 auto;
+    left: -15px;
 }
 
 .div-wrapper .text-wrapper-7 {
@@ -387,7 +393,105 @@ a {
     line-height: normal;
     white-space: nowrap;
 }
+
 .graph-wrapper {
     display: flex;
-    justify-content: center; /* 그래프가 중앙에 정렬되도록 */
-  }
+    justify-content: center;
+    /* 그래프가 중앙에 정렬되도록 */
+}
+
+.rating-5 {
+    margin-left: -0.15px;
+    -webkit-text-stroke: 0.15px rgb(103, 118, 255);
+    /* 그라디언트 삭제 */
+    /* background: linear-gradient(180deg, rgb(171.59, 179.93, 255) 0%, rgb(182.75, 237.66, 255) 58%, rgb(176.91, 255, 226.89) 100%); */
+    /* 텍스트 색상을 단일 색상으로 변경 */
+    -webkit-background-clip: unset !important;
+    background-clip: unset;
+    -webkit-text-fill-color: rgb(103, 118, 255);
+    position: relative;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+}
+
+.rating-4 {
+    margin-left: -0.15px;
+    -webkit-text-stroke: 0.15px rgb(171.59, 179.93, 255);
+    /* 그라디언트 삭제 */
+    /* background: linear-gradient(180deg, rgb(171.59, 179.93, 255) 0%, rgb(182.75, 237.66, 255) 58%, rgb(176.91, 255, 226.89) 100%); */
+    /* 텍스트 색상을 단일 색상으로 변경 */
+    -webkit-background-clip: unset !important;
+    background-clip: unset;
+    -webkit-text-fill-color: rgb(171.59, 179.93, 255);
+    position: relative;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+}
+
+.rating-3 {
+    margin-left: -0.15px;
+    -webkit-text-stroke: 0.15px rgb(233, 163, 255);
+    /* 그라디언트 삭제 */
+    /* background: linear-gradient(180deg, rgb(234.7, 255, 176.91) 0%, rgb(255, 226.1, 182.75) 32%, rgb(255, 171.59, 211.63) 100%); */
+    /* 텍스트 색상을 단일 색상으로 변경 */
+    -webkit-background-clip: unset !important;
+    background-clip: unset;
+    -webkit-text-fill-color: rgb(233, 163, 255);
+    position: relative;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+}
+
+.rating-2 {
+    margin-left: -0.15px;
+    -webkit-text-stroke: 0.15px rgb(255, 135, 151);
+    /* 그라디언트 삭제 */
+    /* background: linear-gradient(180deg, rgb(234.7, 255, 176.91) 0%, rgb(255, 226.1, 182.75) 32%, rgb(255, 171.59, 211.63) 100%); */
+    /* 텍스트 색상을 단일 색상으로 변경 */
+    -webkit-background-clip: unset !important;
+    background-clip: unset;
+    -webkit-text-fill-color: rgb(255, 135, 151);
+    position: relative;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+}
+
+.rating-1 {
+    margin-left: -0.15px;
+    -webkit-text-stroke: 0.15px rgb(255, 135, 151);
+    /* 그라디언트 삭제 */
+    /* background: linear-gradient(180deg, rgb(234.7, 255, 176.91) 0%, rgb(255, 226.1, 182.75) 32%, rgb(255, 171.59, 211.63) 100%); */
+    /* 텍스트 색상을 단일 색상으로 변경 */
+    -webkit-background-clip: unset !important;
+    background-clip: unset;
+    -webkit-text-fill-color: rgb(255, 95, 116);
+    position: relative;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+}
+
+.rating-default {
+    margin-left: -0.15px;
+    -webkit-text-stroke: 0.15px #808080;
+    /* 그라디언트 삭제 */
+    /* background: linear-gradient(180deg, rgb(234.7, 255, 176.91) 0%, rgb(255, 226.1, 182.75) 32%, rgb(255, 171.59, 211.63) 100%); */
+    /* 텍스트 색상을 단일 색상으로 변경 */
+    -webkit-background-clip: unset !important;
+    background-clip: unset;
+    -webkit-text-fill-color: #808080;
+    position: relative;
+    font-family: "Pretendard Variable-Regular", Helvetica;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+}
