@@ -3,6 +3,7 @@ import styles from './GraphComponentStyle.module.css';
 import ButtonComponent from './Button/ButtonComponent';
 import LeftButtonComponent from './Button/LeftButtonComponent';
 import LoadingAnimation from '../../loading/LoadingAnimation';
+import OpenAI from "openai";
 
 export default function DynamicBarChart() {
     const [etfData, setEtfData] = useState([]); // 전체 ETF 데이터를 저장
@@ -11,8 +12,11 @@ export default function DynamicBarChart() {
     const [hoveredChange, setHoveredChange] = useState(null); // 마우스 오버된 변동률
     const [maxChange, setMaxChange] = useState(1); // 최대 변동률
     const [isLoading, setIsLoading] = useState(true); // 로딩 상태
-    const FLASK_URL = process.env.REACT_APP_FLASK_URL;
 
+    // **ChatGPT API 응답 상태 추가**
+    const [chatGPTResponse, setChatGPTResponse] = useState(""); // API 호출 결과 저장
+
+    const FLASK_URL = process.env.REACT_APP_FLASK_URL;
     const barMaxHeight = 200; // 막대의 최대 높이
 
     const countryMapping = [
@@ -74,6 +78,49 @@ export default function DynamicBarChart() {
         fetchAllEtfData();
     }, [FLASK_URL, offset]);
 
+    // **ChatGPT API 호출 useEffect**
+    useEffect(() => {
+        // API 호출 함수
+        const fetchChatGPT = async () => {
+            try {
+                // OpenAI 인스턴스 생성
+                const openai = new OpenAI({
+                    apiKey: process.env.REACT_APP_OPENAI_API_KEY, // API 키 환경변수 사용
+                    dangerouslyAllowBrowser: true, // 브라우저 환경 허용
+                });
+
+                // **시스템 메시지와 유저 메시지 구성**
+                const messages = [
+                    {
+                        role: "system",
+                        content: "너는 주식관련 상담 챗봇이야. 경제에대한 정보를 줄게 대략적으로 간략하게 설명해줘", // 시스템 메시지
+                    },
+                    {
+                        role: "user",
+                        content: "트럼프가 대통령이 됐다", // 셈플 정보
+                    },
+                ];
+
+                // ChatGPT API 호출
+                const response = await openai.chat.completions.create({
+                    model: "gpt-4o",
+                    messages,
+                    
+                    temperature: 0.7,
+                });
+
+                // API 응답 결과 저장
+                const result = response.choices[0].message.content;
+                setChatGPTResponse(result);
+            } catch (error) {
+                console.error("Error calling ChatGPT API:", error);
+            }
+        };
+
+        // 컴포넌트 마운트 시 API 호출
+        fetchChatGPT();
+    }, []);
+
     const handleNext = () => {
         if (offset + 10 < etfData.length) {
             setOffset(offset + 3); // 3개씩 이동
@@ -94,9 +141,14 @@ export default function DynamicBarChart() {
                         <div className={styles['frame']}>
                             <div className={styles['text-wrapper-12']}>Now World Is...</div>
                             <div className={styles['text-description']}>
-                                Text Description...<br />
-                                ......................................................................................<br />
-                                ..................................................................
+                                {/* 기존 텍스트 대신 ChatGPT API 호출 결과 출력 */}
+                                {chatGPTResponse ? chatGPTResponse : (
+                                    <>
+                                        Text Description...<br />
+                                        ......................................................................................<br />
+                                        ..................................................................
+                                    </>
+                                )}
                             </div>
                         </div>
                         <div className={styles['group-3']} style={{ position: 'relative' }}>
@@ -126,7 +178,7 @@ export default function DynamicBarChart() {
                                         const barHeight =
                                             maxChange > 0
                                                 ? (Math.abs(entry.percentageChange) / maxChange) *
-                                                (barMaxHeight / 2.5)
+                                                  (barMaxHeight / 2.5)
                                                 : 0;
 
                                         const isPositiveChange = entry.percentageChange >= 0;
