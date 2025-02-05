@@ -127,13 +127,13 @@ export default function DynamicBarChart() {
     // 버튼 클릭 시 offset 업데이트 ~~페이지 이동~~
     const handleNext = () => {
         if (offset + 10 < etfData.length) {
-            setOffset(offset + 3); // 3개씩 이동
+            setOffset(offset + 10); // 3개씩 이동
         }
     };
 
     const handlePrev = () => {
         if (offset > 0) {
-            setOffset(offset - 3); // 3개씩 이동
+            setOffset(offset - 10); // 3개씩 이동
         }
     };
 
