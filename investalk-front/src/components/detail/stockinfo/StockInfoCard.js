@@ -6,11 +6,11 @@ import Button from "@mui/joy/Button";
 import ButtonGroup from "@mui/joy/ButtonGroup";
 
 const StockInfoCard = (props) => {
-  const { tickerSymbol } = props;
-
+  const { tickerSymbol, period, setPeriod } = props;
+  console.log("infocard period:",period)
   const [variant, setVariant] = useState("outlined");
   const [isLike, setIsLike] = useState(false); // 즐겨찾기 상태
-  const [period, setPeriod] = useState("1d");
+  // const [period, setPeriod] = useState("1d"); 
   const [stockInfo, setStockInfo] = useState({});
   const [percentageChange, setPercentageChange] = useState(0);
 

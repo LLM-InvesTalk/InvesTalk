@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const StockInfoChart = (props) => {
-  const { tickerSymbol, period, setPercentageChange } = props;
+  const { tickerSymbol, setPercentageChange, period } = props;
+  console.log("chart period:",period)
   const [data, setData] = useState(null);
   const [error, setError] = useState(null); // 오류 상태 추가
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
@@ -24,7 +25,7 @@ const StockInfoChart = (props) => {
         setError("차트 데이터를 불러오는 중 오류가 발생했습니다.");
       }) // 오류 메시지 설
       .finally(()=> setLoading(false))
-  }, [tickerSymbol, period]);
+  }, [tickerSymbol, period, setPercentageChange]);
 
   const config = {
     dataset: data?.data || [], // 데이터가 없을 때 빈 배열로 처리
