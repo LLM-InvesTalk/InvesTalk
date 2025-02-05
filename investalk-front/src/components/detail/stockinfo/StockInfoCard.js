@@ -7,7 +7,6 @@ import ButtonGroup from "@mui/joy/ButtonGroup";
 
 const StockInfoCard = (props) => {
   const { tickerSymbol, period, setPeriod } = props;
-  console.log("infocard period:",period)
   const [variant, setVariant] = useState("outlined");
   const [isLike, setIsLike] = useState(false); // 즐겨찾기 상태
   // const [period, setPeriod] = useState("1d"); 
@@ -160,18 +159,21 @@ const StockInfoCard = (props) => {
                       <Button
                         className={styles["text-wrapper-32"]}
                         onClick={() => handlePeriodChange("1d")}
+                        variant={period === "1d" ? "solid" : "outlined"}
                       >
                         1일
                       </Button>
                       <Button
                         className={styles["text-wrapper-32"]}
                         onClick={() => handlePeriodChange("1m")}
+                        variant={period === "1m" ? "solid" : "outlined"}
                       >
                         1달
                       </Button>
                       <Button
                         className={styles["text-wrapper-32"]}
                         onClick={() => handlePeriodChange("1y")}
+                        variant={period === "1y" ? "solid" : "outlined"}
                       >
                         1년
                       </Button>

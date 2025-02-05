@@ -7,7 +7,6 @@ import axios from "axios";
 
 const StockInfoChart = (props) => {
   const { tickerSymbol, setPercentageChange, period } = props;
-  console.log("chart period:",period)
   const [data, setData] = useState(null);
   const [error, setError] = useState(null); // 오류 상태 추가
   const [loading, setLoading] = useState(true); // 로딩 상태 추가

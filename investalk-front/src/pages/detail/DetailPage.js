@@ -9,7 +9,6 @@ import {useState } from "react";
 
 const DetailPage = () => {
   const { tickerSymbol, period, setPeriod } = useOutletContext();
-  console.log("period:",period)
   return (
     <div>
       <FinancialStatements tickerSymbol={tickerSymbol} />
