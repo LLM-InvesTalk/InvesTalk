@@ -33,14 +33,12 @@ a {
 
 @font-face {
   font-family: "Pretendard Variable-Bold";
-  src: url("https://anima-uploads.s3.amazonaws.com/projects/640764766bf479e1d3dd80f8/fonts/pretendard-bold.otf")
-    format("opentype");
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/640764766bf479e1d3dd80f8/fonts/pretendard-bold.otf") format("opentype");
 }
 
 @font-face {
   font-family: "Pretendard Variable-Regular";
-  src: url("https://anima-uploads.s3.amazonaws.com/projects/64cc773c2f271fdb15f930b6/fonts/pretendardvariable.ttf")
-    format("truetype");
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/64cc773c2f271fdb15f930b6/fonts/pretendardvariable.ttf") format("truetype");
 }
 
 /* 컴포넌트 스타일 */
@@ -65,12 +63,10 @@ a {
   border: 0.3px solid;
   border-color: var(--x);
   box-shadow: var(--);
-  background: linear-gradient(
-    180deg,
-    rgba(204.84, 212.1, 233.87, 0.25) 0%,
-    rgba(255, 255, 255, 0.2) 77.04%,
-    rgb(255, 255, 255) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(204.84, 212.1, 233.87, 0.25) 0%,
+      rgba(255, 255, 255, 0.2) 77.04%,
+      rgb(255, 255, 255) 100%);
 }
 
 .vector {
@@ -116,15 +112,18 @@ a {
   line-height: normal;
   white-space: nowrap;
 }
+
 .rectangle-10 {
   position: absolute;
   width: 480px;
   height: 181px;
-  top: 40px; /* 검색창 아래에 위치하도록 조정 */
+  top: 40px;
+  /* 검색창 아래에 위치하도록 조정 */
   left: 190px;
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: 14px;
-  border: 0.3px solid #1f6dd8; /* 테두리 색을 #38465a로 설정 */
+  border: 0.3px solid #1f6dd8;
+  /* 테두리 색을 #38465a로 설정 */
   box-shadow: 0 4px 12px rgba(26, 49, 109, 0.1);
   z-index: 999;
 }
@@ -138,10 +137,15 @@ a {
   font-size: 16px;
   white-space: nowrap;
   padding: 12px 16px;
+  cursor: pointer;
 }
 
 .text-wrapper-25 {
   top: 20px;
+}
+
+.text-wrapper-25:hover {
+  color: #3abdff;
 }
 
 .text-wrapper-26 {
@@ -154,8 +158,11 @@ a {
 
 .login-box-wrapper {
   position: absolute;
-  top: 100%; /* 부모 요소 바로 아래 */
+  top: 100%;
+  /* 부모 요소 바로 아래 */
   left: -110px;
-  margin-top: 10px; /* 간격을 두고 싶으면 조정 */
-  z-index: 10; /* 다른 요소 위에 나타나도록 설정 */
+  margin-top: 10px;
+  /* 간격을 두고 싶으면 조정 */
+  z-index: 10;
+  /* 다른 요소 위에 나타나도록 설정 */
 }
