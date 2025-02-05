@@ -28,17 +28,18 @@ def get_stockInfo_chart(ticker_symbol, period):
             max_val = max(market_caps)
             scaled_market_caps = [(mc - min_val) / (max_val - min_val) * 100 for mc in market_caps]
 
+            # 시각화용 데이터를 dataset에 저장
             for idx, value in enumerate(scaled_market_caps):
                 dataset.append({
                     "x": idx,
                     "y": int(value)  # 소수점 제거
                 })
 
-            # 마지막 값과 그 전 값으로 증감률 계산
-            if len(scaled_market_caps) > 1:
-                last_percentage_change = (scaled_market_caps[-1] - scaled_market_caps[-2]) / scaled_market_caps[-2] * 100
-                last_percentage_change = round(last_percentage_change, 2)  # 소수점 2자리 반올림
-
+            # 마지막 값과 그 전 값으로 증감률 계산 (실제 시가총액 기준)
+            if len(market_caps) > 1:
+                last_percentage_change = (market_caps[-1] - market_caps[-2]) / market_caps[-2] * 100
+                last_percentage_change = round(last_percentage_change, 2)
+                
         elif period == "1m":
             start_date = end_date - relativedelta(months=12)
             historical_data = ticker.history(start=start_date, end=end_date, interval='1mo')

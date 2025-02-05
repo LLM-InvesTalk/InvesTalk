@@ -52,9 +52,48 @@ def get_quarterly_financials(ticker_symbol):
     else:
         result['profit_margin_growth'] = 'N/A'
 
-    # Net Debt 증감율
+    # 2. 안전성 관련 정보
     balance_sheet = ticker.quarterly_balance_sheet.T  # 전치하여 행과 열을 바꿈
     balance_sheet = balance_sheet.sort_index()
+
+    # 유동비율(Current Ratio) 계산
+    # (기존 주석을 유지하고, 대체 열명 처리를 추가하고 round(2) 적용)
+    possible_current_assets_cols = ['Total Current Assets', 'Current Assets']
+    possible_current_liabilities_cols = ['Total Current Liabilities', 'Current Liabilities']
+
+    found_assets_col = None
+    found_liabilities_col = None
+
+    # Total Current Assets 또는 Current Assets 중 유효한 컬럼 찾기
+    for col in possible_current_assets_cols:
+        if col in balance_sheet.columns:
+            found_assets_col = col
+            break
+
+    # Total Current Liabilities 또는 Current Liabilities 중 유효한 컬럼 찾기
+    for col in possible_current_liabilities_cols:
+        if col in balance_sheet.columns:
+            found_liabilities_col = col
+            break
+
+    # 찾은 컬럼이 둘 다 존재해야 유동비율 계산 가능
+    if found_assets_col and found_liabilities_col:
+        balance_sheet[found_assets_col] = pd.to_numeric(balance_sheet[found_assets_col], errors='coerce')
+        balance_sheet[found_liabilities_col] = pd.to_numeric(balance_sheet[found_liabilities_col], errors='coerce')
+
+        balance_sheet['Current Ratio'] = (
+            balance_sheet[found_assets_col] / balance_sheet[found_liabilities_col]
+        ).round(2)  # 소수점 둘째 자리로 반올림
+
+        result['current_ratio'] = (
+            balance_sheet['Current Ratio'].iloc[-1]
+            if not balance_sheet['Current Ratio'].isnull().all()
+            else 'N/A'
+        )
+    else:
+        result['current_ratio'] = 'N/A'
+
+    # Net Debt 증감율
     if 'Net Debt' in balance_sheet.columns:
         balance_sheet['Net Debt'] = pd.to_numeric(balance_sheet['Net Debt'], errors='coerce')
         balance_sheet['Net Debt Growth (%)'] = balance_sheet['Net Debt'].pct_change() * 100

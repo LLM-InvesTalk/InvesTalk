@@ -122,6 +122,20 @@ if 'Operating Expense' in financials.index:
 else:
     print("영업비용 데이터를 찾을 수 없습니다.")
 
+# 2.3 유동비율(Current Ratio) 계산
+if 'Total Current Assets' in balance_sheet.columns and 'Total Current Liabilities' in balance_sheet.columns:
+    balance_sheet['Total Current Assets'] = pd.to_numeric(balance_sheet['Total Current Assets'], errors='coerce')
+    balance_sheet['Total Current Liabilities'] = pd.to_numeric(balance_sheet['Total Current Liabilities'], errors='coerce')
+
+    # 유동비율 계산
+    balance_sheet['Current Ratio'] = balance_sheet['Total Current Assets'] / balance_sheet['Total Current Liabilities']
+
+    print("\n분기별 유동비율 (Current Ratio):")
+    current_ratio_formatted = balance_sheet['Current Ratio'].apply(lambda x: f"{x:.2f}" if pd.notnull(x) else "N/A")
+    print(current_ratio_formatted)
+else:
+    print("유동비율 계산에 필요한 데이터가 부족합니다.")
+    
 # 3. 시장 추세 관련 정보
 print("\n--- 시장 추세 관련 정보 (분기별) ---")
 

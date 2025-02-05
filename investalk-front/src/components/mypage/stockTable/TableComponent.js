@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./TableComponentStyle.module.css"; // CSS 모듈로 가져옴
 import axios from "axios";
 import MyGraph from "./graph/mygraph"; // MyGraph 경로에 따라 수정
+import LoadingAnimation from "../../loading/LoadingAnimation";
 
 axios.defaults.withCredentials = true;
 const FLASK_URL = process.env.REACT_APP_FLASK_URL;
@@ -18,20 +19,20 @@ const TableComponent = () => {
   const [tempHopePrice, setTempHopePrice] = useState(""); // 주석: 임시로 입력받을 희망가격
 
   // 백엔드에서 데이터 가져오기
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true); // 데이터 요청 시작 시 로딩 상태 true
-      try {
-        const response = await axios.get(`${FLASK_URL}/api/user/favorite_stocks`);
-        console.log("API 응답 데이터:", response.data); // 데이터 구조 확인
-        setStockData(response.data); // 백엔드에서 받은 데이터를 state에 저장
-      } catch (error) {
-        console.error("데이터를 가져오는 중 오류 발생:", error);
-      } finally {
-        setLoading(false); // 데이터 요청이 끝나면 로딩 상태 false
-      }
-    };
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${FLASK_URL}/api/user/favorite_stocks`);
+      console.log("API 응답 데이터:", response.data);
+      setStockData(response.data);
+    } catch (error) {
+      console.error("데이터를 가져오는 중 오류 발생:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -112,35 +113,59 @@ const TableComponent = () => {
   /* 주석: 엔터키를 누르면 stockData를 업데이트하고 편집모드를 종료함 */
   const handleHopePriceKeyDown = async (e, index) => {
     if (e.key === "Enter") {
-      const symbol = stockData[index].symbol; 
-      const updatedStockData = [...stockData];
-  
+      const symbol = stockData[index].symbol;
       try {
-        // 2) 백엔드로 POST 요청: /api/user/update_price
         await axios.post(`${FLASK_URL}/api/user/update_price`, {
           symbol: symbol,
           desired_price: tempHopePrice
-        }, {
-          withCredentials: true // 쿠키 사용 시 필수
         });
-  
-        // 3) 응답이 성공이면, 프론트엔드 스테이트 갱신
-        updatedStockData[index] = {
-          ...updatedStockData[index],
-          나의희망가격: tempHopePrice,
-        };
-  
-        setStockData(updatedStockData);
-        setEditingIndex(null);
-        setTempHopePrice("");
-        
+        // 수정 후, 다시 전체 GET → ai기준가능성 즉시 업데이트
+        await fetchData();
       } catch (error) {
         console.error("희망가격 업데이트 중 오류:", error);
-        // 필요 시 사용자 알림 로직 추가
+      } finally {
+        setEditingIndex(null);
+        setTempHopePrice("");
       }
     }
   };
-  
+  // 1~5 평점을 대응하는 문구로 변환
+  const getAnalystRatingText = (rating) => {
+    switch (rating) {
+      case 5:
+        return "스트롱 바이";
+      case 4:
+        return "바이";
+      case 3:
+        return "뉴트럴";
+      case 2:
+        return "셀";
+      case 1:
+        return "스트롱 셀";
+      default:
+        return "N/A";
+    }
+  };
+
+  // 1~5 평점을 색상으로 매핑 (원하는 색상으로 조정 가능)
+  const getAnalystRatingClass = (rating) => {
+    switch (rating) {
+      case 5:
+        return styles["rating-5"];
+      case 4:
+        return styles["rating-4"];
+      case 3:
+        return styles["rating-3"];
+      case 2:
+        return styles["rating-2"];
+      case 1:
+        return styles["rating-1"];
+      default:
+        return styles["rating-default"];
+    }
+  };
+
+
 
   return (
     <div className={styles["div-wrapper"]}>
@@ -178,7 +203,15 @@ const TableComponent = () => {
             </p>
             <div className={styles["frame-5"]}>
               {loading ? (
-                <div>Loading...</div>
+                <div style={{
+                  position: 'absolute',
+                  top: '130px',
+                  left: '250px',
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: 1000
+                }}>
+                  <LoadingAnimation />
+                </div>
               ) : (
                 sortedData.map((item, index) => (
                   <div key={index} className={styles["graph-wrapper"]}>
@@ -222,26 +255,34 @@ const TableComponent = () => {
           </div>
 
           {/* --------------------------------------------------- 
-               4) 안전성 
+                4) 안전성 
           --------------------------------------------------- */}
           <div className={styles["frame-8"]}>
             <p className={styles["div-4"]}>
               <span className={styles["text-wrapper"]}>안전성</span>
               <span
                 className={`${styles["span"]} ${styles["arrow"]}`}
-                onClick={() => handleSort("안전성")}
+                onClick={() => handleSort("안정성")}
               >
-                {getArrow("안전성")}
+                {getArrow("안정성")}
               </span>
             </p>
             <div className={styles["frame-3"]}>
-              {sortedData.map((item, index) => (
-                <div key={index} className={getClassForChange(item.안전성)}>
-                  {item.안전성 || "N/A"}
-                </div>
-              ))}
+              {sortedData.map((item, index) => {
+                const rating = item.안정성;             // 숫자 (1~5 등)
+                const ratingText = getAnalystRatingText(rating);
+                const ratingClass = getAnalystRatingClass(rating); // 위에서 만든 함수
+
+                return (
+                  <div key={index} className={ratingClass}>
+                    {ratingText}
+                  </div>
+                );
+              })}
             </div>
           </div>
+
+
 
           {/* --------------------------------------------------- 
                5) 실적발표날짜 

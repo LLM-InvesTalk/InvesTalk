@@ -2,55 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './NewsComponentStyle.module.css';  // 모듈화된 CSS
 import ButtonComponent from './Button/ButtonComponent';
 import LeftButtonComponent from './Button/LeftButtonComponent';
-
-const LoadingAnimation = () => (
-    <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
-    }}>
-        <div style={{
-            display: 'flex',
-            gap: '4px',
-        }}>
-            <div style={{
-                width: '10px',
-                height: '10px',
-                backgroundColor: '#888',
-                borderRadius: '50%',
-                animation: 'bounce 1.5s infinite ease-in-out',
-                animationDelay: '0s'
-            }}></div>
-            <div style={{
-                width: '10px',
-                height: '10px',
-                backgroundColor: '#888',
-                borderRadius: '50%',
-                animation: 'bounce 1.5s infinite ease-in-out',
-                animationDelay: '0.2s'
-            }}></div>
-            <div style={{
-                width: '10px',
-                height: '10px',
-                backgroundColor: '#888',
-                borderRadius: '50%',
-                animation: 'bounce 1.5s infinite ease-in-out',
-                animationDelay: '0.4s'
-            }}></div>
-        </div>
-        <style>{`
-            @keyframes bounce {
-                0%, 80%, 100% {
-                    transform: scale(0);
-                }
-                40% {
-                    transform: scale(1);
-                }
-            }
-        `}</style>
-    </div>
-);
+import LoadingAnimation from '../../loading/LoadingAnimation';
 
 const NewsComponent = () => {
     const [news, setNews] = useState([]);

@@ -12,8 +12,8 @@ const DetailPage = () => {
   return (
     <div>
       <FinancialStatements tickerSymbol={tickerSymbol} />
-      <StockInfoCard tickerSymbol={tickerSymbol} period={period} setPeriod={setPeriod} />
-      <SectorRecommend />
+      <StockInfoCard tickerSymbol={tickerSymbol} />
+      <SectorRecommend tickerSymbol={tickerSymbol}/>
       <Analyze tickerSymbol={tickerSymbol}/>
       <Chatting />
     </div>

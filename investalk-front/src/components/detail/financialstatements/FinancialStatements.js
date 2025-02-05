@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./FinancialStatements.module.css";
 import axios from "axios";
+import LoadingAnimation from "../../loading/LoadingAnimation";
 
 const FinancialStatements = (props) => {
   const { tickerSymbol } = props;
@@ -18,6 +19,7 @@ const FinancialStatements = (props) => {
         );
         console.log("fetch data: ", response.data);
 
+        // 백엔드에서 받아온 데이터 매핑
         setCategories({
           수익성: {
             현금유동성: response.data.cash_growth,
@@ -29,7 +31,7 @@ const FinancialStatements = (props) => {
             빚: response.data.net_debt_growth,
             현금: response.data.cash_growth,
             영업비용: response.data.operating_expenses_growth,
-            마진: response.data.profit_margin_growth,
+            유동비율: response.data.current_ratio, // 유동비율 (소수점 그대로 출력)
           },
           시장추세: {
             RSI: response.data.rsi_growth,
@@ -53,9 +55,18 @@ const FinancialStatements = (props) => {
         <div className={styles["group-2"]}>
           <div className={styles["text-wrapper-2"]}>재무제표</div>
           <div className={styles.frame}>
-            {/* 로딩 중일 때는 "Loading..." 표시, 완료되면 데이터 맵핑 */}
             {loading ? (
-              <div>Loading...</div>
+              <div
+                style={{
+                  position: "relative",
+                  top: "75px",
+                  left: "220px",
+                  transform: "translate(-50%, -50%)",
+                  zIndex: 1000,
+                }}
+              >
+                <LoadingAnimation />
+              </div>
             ) : (
               Object.keys(categories).map((category, index) => (
                 <div className={styles["frame-wrapper"]} key={index}>
@@ -67,19 +78,32 @@ const FinancialStatements = (props) => {
                         <div className={styles["text-wrapper-5"]}>분기별</div>
                       </div>
                       <div className={styles["frame-5"]}>
-                        {Object.keys(categories[category]).map((item, idx) => (
-                          <div className={styles["frame-6"]} key={idx}>
-                            <div className={styles["text-wrapper-6"]}>{item}</div>
-                            <div className={styles["frame-7"]}>
-                              <div className={styles["text-wrapper-7"]}>
-                                {categories[category][item] >= 0 ? "+" : ""}
-                              </div>
-                              <div className={styles["text-wrapper-8"]}>
-                                {`${categories[category][item]}%`}
+                        {Object.keys(categories[category]).map((item, idx) => {
+                          const value = categories[category][item];
+                          const isNumber = typeof value === "number" && !isNaN(value);
+                          const isCurrentRatio = item === "유동비율";
+
+                          return (
+                            <div className={styles["frame-6"]} key={idx}>
+                              <div className={styles["text-wrapper-6"]}>{item}</div>
+                              <div className={styles["frame-7"]}>
+                                {/* 유동비율이 아닌 수치 항목이고, 양수면 + 기호 붙임 */}
+                                <div className={styles["text-wrapper-7"]}>
+                                  {!isCurrentRatio && isNumber && value >= 0 ? "+" : ""}
+                                </div>
+                                <div className={styles["text-wrapper-8"]}>
+                                  {/* 유동비율이면 그대로, 아니면 % 붙여서 표시 */}
+                                  {isNumber
+                                    ? isCurrentRatio
+                                      ? value // 유동비율은 그대로 출력(예: 0.87)
+                                      : `${value}%` // 나머지 항목은 % 붙여 출력
+                                    : value // N/A 등 숫자가 아닐 경우 그대로 출력
+                                  }
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
