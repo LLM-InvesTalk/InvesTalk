@@ -7,6 +7,7 @@ import NavBar from "../../components/detail/nav/NavBar";
 
 const LayoutPage = () => {
   const [tickerSymbol, setTickerSymbol] = useState("");
+  const [period, setPeriod] = useState("1d");
   return (
     <div>
       <div className={styles["div-wrapper"]}>
@@ -60,8 +61,8 @@ const LayoutPage = () => {
             />
           </div>
           <div className={styles["rectangle"]}></div>
-          <NavBar setTickerSymbol={setTickerSymbol} />
-          <Outlet context={{ tickerSymbol }} />
+          <NavBar setTickerSymbol={setTickerSymbol} setPeriod={setPeriod} />
+          <Outlet context={{ tickerSymbol, period, setPeriod }} />
         </div>
       </div>
     </div>
