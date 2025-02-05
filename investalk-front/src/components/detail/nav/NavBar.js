@@ -14,7 +14,7 @@ const NavBar = (props) => {
   const loginBoxRef = useRef(null);
   const loginButtonRef = useRef(null);
   const location = useLocation();
-  const { setTickerSymbol } = props;
+  const { setTickerSymbol, setPeriod } = props;
 
   const [searchText, setSearchText] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -41,7 +41,9 @@ const NavBar = (props) => {
       }
     };
     getSearchResult();
-  }, [searchText]);
+
+    setPeriod("1d");
+  }, [searchText, setPeriod]);
 
   const onChange = useCallback((e) => {
     setSearchText(e.target.value);
