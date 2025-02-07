@@ -79,69 +79,69 @@ export default function DynamicBarChart() {
         fetchAllEtfData();
     }, [FLASK_URL, offset]);
 
-    // ChatGPT API 호출 useEffect - ETF 데이터가 있을 때 호출
-    useEffect(() => {
-        // ETF 데이터가 없으면 호출하지 않음 ~~ETF 데이터 체크~~
-        if (etfData.length === 0) return;
+// ChatGPT API 호출 useEffect - ETF 데이터가 있을 때 최초 한 번만 호출
+useEffect(() => {
+    // ETF 데이터가 없거나 이미 ChatGPT 응답이 있으면 호출하지 않음 ~~ETF 데이터 체크 및 중복 호출 방지~~
+    if (etfData.length === 0 || chatGPTResponse !== "") return;
 
-        // API 호출 함수 ~~ChatGPT 호출~~
-        const fetchChatGPT = async () => {
-            try {
-                // OpenAI 인스턴스 생성 ~~API 키 환경변수 사용~~
-                const openai = new OpenAI({
-                    apiKey: process.env.REACT_APP_OPENAI_API_KEY, // API 키 환경변수 사용
-                    dangerouslyAllowBrowser: true, // 브라우저 환경 허용
-                });
+    // API 호출 함수 ~~ChatGPT 호출~~
+    const fetchChatGPT = async () => {
+        try {
+            // OpenAI 인스턴스 생성 ~~API 키 환경변수 사용~~
+            const openai = new OpenAI({
+                apiKey: process.env.REACT_APP_OPENAI_API_KEY, // API 키 환경변수 사용
+                dangerouslyAllowBrowser: true, // 브라우저 환경 허용
+            });
 
-                // 뉴스 데이터 fetch 함수 ~~뉴스 데이터 호출 및 타이틀 추출~~
-                const fetchNewsTitles = async () => {
-                    try {
-                        const response = await fetch(`${FLASK_URL}/api/get-news?offset=0&limit=10`);
-                        const newsData = await response.json();
-                        if (newsData.error) {
-                            throw new Error(newsData.error);
-                        }
-                        // **뉴스의 title만 추출**
-                        const newsTitles = newsData.map(item => item.title);
-                        return newsTitles;
-                    } catch (error) {
-                        console.error('뉴스 데이터를 가져오는 중 오류 발생:', error);
-                        return []; // 오류 발생 시 빈 배열 반환
+            // 뉴스 데이터 fetch 함수 ~~뉴스 데이터 호출 및 타이틀 추출~~
+            const fetchNewsTitles = async () => {
+                try {
+                    const response = await fetch(`${FLASK_URL}/api/get-news?offset=0&limit=10`);
+                    const newsData = await response.json();
+                    if (newsData.error) {
+                        throw new Error(newsData.error);
                     }
-                };
+                    // **뉴스의 title만 추출**
+                    const newsTitles = newsData.map(item => item.title);
+                    return newsTitles;
+                } catch (error) {
+                    console.error('뉴스 데이터를 가져오는 중 오류 발생:', error);
+                    return []; // 오류 발생 시 빈 배열 반환
+                }
+            };
 
-                // ETF 데이터와 함께 뉴스 타이틀을 포함하여 API에 전달
-                const newsTitles = await fetchNewsTitles();
+            // ETF 데이터와 함께 뉴스 타이틀을 포함하여 API에 전달
+            const newsTitles = await fetchNewsTitles();
 
-                // **시스템 메시지와 유저 메시지 구성**
-                const messages = [
-                    {
-                        role: "system",
-                        content: "너는 주식관련 상담 챗봇이야. 세계 정세에대해 대략적으로 간략하게 70글자 정도로 설명해줘", // 시스템 메시지
-                    },
-                    {
-                        role: "user",
-                        content: `다음은 ETF를 통한 경제데이터야 ${JSON.stringify(etfData)}. 그리고 최신뉴스정보를 줄테니 이정보도 반영해서 경제현황에대해 간략하게 설명해줘. ${newsTitles.join(", ")}. 그리고 설명할땐 ETF기반이라는건 안알려 줘도돼`, // ETF 데이터와 뉴스 타이틀 포함 메시지
-                    },
-                ];
+            // **시스템 메시지와 유저 메시지 구성**
+            const messages = [
+                {
+                    role: "system",
+                    content: "너는 주식관련 상담 챗봇이야. 세계 정세에대해 대략적으로 간략하게 70글자 정도로 설명해줘", // 시스템 메시지
+                },
+                {
+                    role: "user",
+                    content: `다음은 ETF를 통한 경제데이터야 ${JSON.stringify(etfData)}. 그리고 최신뉴스정보를 줄테니 이정보도 반영해서 경제현황에대해 간략하게 설명해줘. ${newsTitles.join(", ")}. 그리고 설명할땐 ETF기반이라는건 안알려 줘도돼`, // ETF 데이터와 뉴스 타이틀 포함 메시지
+                },
+            ];
 
-                // ChatGPT API 호출 ~~ChatGPT 호출~~
-                const response = await openai.chat.completions.create({
-                    model: "gpt-4o",
-                    messages,
-                    temperature: 0.7,
-                });
+            // ChatGPT API 호출 ~~ChatGPT 호출~~
+            const response = await openai.chat.completions.create({
+                model: "gpt-4o",
+                messages,
+                temperature: 0.7,
+            });
 
-                // API 응답 결과 저장 ~~응답 메시지 저장~~
-                const result = response.choices[0].message.content;
-                setChatGPTResponse(result);
-            } catch (error) {
-                console.error("Error calling ChatGPT API:", error);
-            }
-        };
+            // API 응답 결과 저장 ~~응답 메시지 저장~~
+            const result = response.choices[0].message.content;
+            setChatGPTResponse(result);
+        } catch (error) {
+            console.error("Error calling ChatGPT API:", error);
+        }
+    };
 
-        fetchChatGPT();
-    }, [etfData]);
+    fetchChatGPT();
+}, [etfData, chatGPTResponse]);
 
     // 버튼 클릭 시 offset 업데이트 ~~페이지 이동~~
     const handleNext = () => {
