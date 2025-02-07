@@ -6,18 +6,18 @@ import LoadingAnimation from '../../loading/LoadingAnimation';
 import OpenAI from "openai";
 
 export default function DynamicBarChart() {
-    const [etfData, setEtfData] = useState([]); // 전체 ETF 데이터를 저장
-    const [offset, setOffset] = useState(0); // 현재 화면의 오프셋
-    const [hoveredIndex, setHoveredIndex] = useState(null); // 마우스 오버된 막대의 인덱스
-    const [hoveredChange, setHoveredChange] = useState(null); // 마우스 오버된 변동률
-    const [maxChange, setMaxChange] = useState(1); // 최대 변동률
-    const [isLoading, setIsLoading] = useState(true); // ETF 데이터 로딩 상태
+    const [etfData, setEtfData] = useState([]); // 전체 ETF 데이터를 저장 ~~ETF 데이터 저장~~
+    const [offset, setOffset] = useState(0); // 현재 화면의 오프셋 ~~페이지 이동 관리~~
+    const [hoveredIndex, setHoveredIndex] = useState(null); // 마우스 오버된 막대의 인덱스 ~~툴팁 관리~~
+    const [hoveredChange, setHoveredChange] = useState(null); // 마우스 오버된 변동률 ~~툴팁 관리~~
+    const [maxChange, setMaxChange] = useState(1); // 최대 변동률 ~~그래프 스케일 설정~~
+    const [isLoading, setIsLoading] = useState(true); // ETF 데이터 로딩 상태 ~~로딩 애니메이션 관리~~
 
     // ChatGPT API 응답 상태 추가
-    const [chatGPTResponse, setChatGPTResponse] = useState(""); // API 호출 결과 저장
+    const [chatGPTResponse, setChatGPTResponse] = useState(""); // API 호출 결과 저장 ~~ChatGPT 응답 저장~~
 
     const FLASK_URL = process.env.REACT_APP_FLASK_URL;
-    const barMaxHeight = 200; // 막대의 최대 높이
+    const barMaxHeight = 200; // 막대의 최대 높이 ~~그래프 높이 설정~~
 
     const countryMapping = [
         { symbol: 'SPY', name: '미국' },
@@ -81,20 +81,39 @@ export default function DynamicBarChart() {
 
     // ChatGPT API 호출 useEffect - ETF 데이터가 있을 때 호출
     useEffect(() => {
-        // ETF 데이터가 없으면 호출하지 않음
+        // ETF 데이터가 없으면 호출하지 않음 ~~ETF 데이터 체크~~
         if (etfData.length === 0) return;
 
         // API 호출 함수 ~~ChatGPT 호출~~
         const fetchChatGPT = async () => {
             try {
-                // OpenAI 인스턴스 생성
+                // OpenAI 인스턴스 생성 ~~API 키 환경변수 사용~~
                 const openai = new OpenAI({
                     apiKey: process.env.REACT_APP_OPENAI_API_KEY, // API 키 환경변수 사용
                     dangerouslyAllowBrowser: true, // 브라우저 환경 허용
                 });
 
+                // 뉴스 데이터 fetch 함수 ~~뉴스 데이터 호출 및 타이틀 추출~~
+                const fetchNewsTitles = async () => {
+                    try {
+                        const response = await fetch(`${FLASK_URL}/api/get-news?offset=0&limit=10`);
+                        const newsData = await response.json();
+                        if (newsData.error) {
+                            throw new Error(newsData.error);
+                        }
+                        // **뉴스의 title만 추출**
+                        const newsTitles = newsData.map(item => item.title);
+                        return newsTitles;
+                    } catch (error) {
+                        console.error('뉴스 데이터를 가져오는 중 오류 발생:', error);
+                        return []; // 오류 발생 시 빈 배열 반환
+                    }
+                };
+
+                // ETF 데이터와 함께 뉴스 타이틀을 포함하여 API에 전달
+                const newsTitles = await fetchNewsTitles();
+
                 // **시스템 메시지와 유저 메시지 구성**
-                // ETF 데이터 결과값도 함께 보내도록 메시지 수정
                 const messages = [
                     {
                         role: "system",
@@ -102,18 +121,18 @@ export default function DynamicBarChart() {
                     },
                     {
                         role: "user",
-                        content: `다음은 ETF를 통한 경제데이터야 ${JSON.stringify(etfData)}. 이 데이터를 기반으로 간략하게 설명해줘. 그리고 설명할땐 ETF기반이라는건 안알려 줘도돼`, // ETF 데이터 포함 메시지
+                        content: `다음은 ETF를 통한 경제데이터야 ${JSON.stringify(etfData)}. 그리고 최신뉴스정보를 줄테니 이정보도 반영해서 경제현황에대해 간략하게 설명해줘. ${newsTitles.join(", ")}. 그리고 설명할땐 ETF기반이라는건 안알려 줘도돼`, // ETF 데이터와 뉴스 타이틀 포함 메시지
                     },
                 ];
 
-                // ChatGPT API 호출
+                // ChatGPT API 호출 ~~ChatGPT 호출~~
                 const response = await openai.chat.completions.create({
                     model: "gpt-4o",
                     messages,
                     temperature: 0.7,
                 });
 
-                // API 응답 결과 저장
+                // API 응답 결과 저장 ~~응답 메시지 저장~~
                 const result = response.choices[0].message.content;
                 setChatGPTResponse(result);
             } catch (error) {
@@ -122,18 +141,18 @@ export default function DynamicBarChart() {
         };
 
         fetchChatGPT();
-    }, [etfData]); // ETF 데이터가 업데이트될 때마다 호출
+    }, [etfData]);
 
     // 버튼 클릭 시 offset 업데이트 ~~페이지 이동~~
     const handleNext = () => {
         if (offset + 10 < etfData.length) {
-            setOffset(offset + 10); // 3개씩 이동
+            setOffset(offset + 10); // 10개씩 이동 ~~페이지네이션 설정~~
         }
     };
 
     const handlePrev = () => {
         if (offset > 0) {
-            setOffset(offset - 10); // 3개씩 이동
+            setOffset(offset - 10); // 10개씩 이동 ~~페이지네이션 설정~~
         }
     };
 
