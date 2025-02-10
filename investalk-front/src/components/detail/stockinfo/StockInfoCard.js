@@ -160,6 +160,14 @@ const StockInfoCard = (props) => {
                         className={styles["text-wrapper-32"]}
                         onClick={() => handlePeriodChange("1d")}
                         variant={period === "1d" ? "solid" : "outlined"}
+                        sx={{
+                          backgroundColor: period === "1d" ? "#6B89FF" : "transparent", // 선택된 버튼은 진한 파란색
+                          borderColor: "#A5C7FF", // outlined 버튼 테두리를 연한 파란색으로 변경
+                          fontWeight: "bold",
+                          "&:hover": {
+                            backgroundColor: period === "1d" ? "#5A7DE0" : "#E3EFFB", // hover 시 연한 파란 배경 추가
+                          },
+                        }}
                       >
                         1일
                       </Button>
@@ -167,6 +175,14 @@ const StockInfoCard = (props) => {
                         className={styles["text-wrapper-32"]}
                         onClick={() => handlePeriodChange("1m")}
                         variant={period === "1m" ? "solid" : "outlined"}
+                        sx={{
+                          backgroundColor: period === "1m" ? "#6B89FF" : "transparent", // 선택된 버튼은 진한 파란색
+                          borderColor: "#A5C7FF", // outlined 버튼 테두리를 연한 파란색으로 변경
+                          fontWeight: "bold",
+                          "&:hover": {
+                            backgroundColor: period === "1m" ? "#5A7DE0" : "#E3EFFB", // hover 시 연한 파란 배경 추가
+                          },
+                        }}
                       >
                         1달
                       </Button>
@@ -174,6 +190,14 @@ const StockInfoCard = (props) => {
                         className={styles["text-wrapper-32"]}
                         onClick={() => handlePeriodChange("1y")}
                         variant={period === "1y" ? "solid" : "outlined"}
+                        sx={{
+                          backgroundColor: period === "1y" ? "#6B89FF" : "transparent", // 선택된 버튼은 진한 파란색
+                          borderColor: "#A5C7FF", // outlined 버튼 테두리를 연한 파란색으로 변경
+                          fontWeight: "bold",
+                          "&:hover": {
+                            backgroundColor: period === "1y" ? "#5A7DE0" : "#E3EFFB", // hover 시 연한 파란 배경 추가
+                          },
+                        }}
                       >
                         1년
                       </Button>
