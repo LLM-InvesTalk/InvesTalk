@@ -5,7 +5,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import LogInBox from "../../login/LogInBox.js";
 import styles from "./NavBar.module.css";
 import { useNavigate, useLocation } from "react-router-dom";
-
 import axios from "axios";
 
 const NavBar = (props) => {
@@ -22,13 +21,17 @@ const NavBar = (props) => {
   // wrapperRef를 useRef로 정의
   const wrapperRef = useRef(null);
 
+  // **검색 Input 및 검색 결과용 ref 정의**
+  const searchInputRef = useRef(null);   // 검색창 ref ~하는 함수
+  const searchResultRef = useRef(null);  // 검색 결과 리스트 ref ~하는 함수
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const getSearchResult = async () => {
       try {
         if (searchText.trim() === "") {
-          setSearchResult([]); // 빈 검색어일 때 검색 결과 비우기
+          setSearchResult([]); // 빈 검색어일 때 결과 비우기 ~설정
           return;
         }
         const response = await axios.get(
@@ -65,7 +68,7 @@ const NavBar = (props) => {
   };
 
   useEffect(() => {
-    checkLoginStatus(); // 페이지가 처음 렌더링될 때 로그인 상태를 확인합니다.
+    checkLoginStatus(); // 페이지 렌더링 시 로그인 상태 확인 ~설정
   }, []);
 
   // MyPage 접근 시 토큰 검증 후 페이지 이동
@@ -101,7 +104,7 @@ const NavBar = (props) => {
     navigate("/");
   };
 
-  // 로그인 박스를 닫는 함수
+  // 로그인 박스 외부 클릭 시 로그인 박스 숨김 함수
   const handleClickOutside = (event) => {
     if (
       loginBoxRef.current &&
@@ -124,10 +127,10 @@ const NavBar = (props) => {
     setShowLoginBox(true);
   };
 
-  // 로그인 성공 시 NavBar의 상태 업데이트
+  // 로그인 성공 시 NavBar의 상태 업데이트 함수
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
-    setShowLoginBox(false); // 로그인 박스 닫기
+    setShowLoginBox(false); // 로그인 박스 닫기 ~하는 함수
   };
 
   const onSearch = useCallback(() => {
@@ -144,20 +147,41 @@ const NavBar = (props) => {
     navigate(`/detail`);
   };
 
+  // **검색창 외부 클릭 시 검색 결과 리스트 숨김 이벤트 등록**
+  useEffect(() => {
+    const handleClickOutsideSearch = (event) => {
+      // 검색 Input 및 결과 영역 외부를 클릭한 경우
+      if (
+        searchInputRef.current &&
+        !searchInputRef.current.contains(event.target) &&
+        searchResultRef.current &&
+        !searchResultRef.current.contains(event.target)
+      ) {
+        setSearchResult([]); // 검색 결과 숨김 ~설정
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutsideSearch);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideSearch);
+    };
+  }, []);
+
   return (
     <div className={styles["frame-8"]} ref={wrapperRef}>
       <img
         className={styles["frame-9"]}
         src="https://c.animaapp.com/8Gc7c0uK/img/frame-130.svg"
         alt="Frame"
-        onClick={() => navigate("/")} // 클릭 시 기본 경로("/")로 이동
-        style={{ cursor: "pointer" }} // 클릭 가능하도록 커서 변경
+        onClick={() => navigate("/")} // 클릭 시 기본 경로("/")로 이동 ~하는 함수
+        style={{ cursor: "pointer" }} // 클릭 가능하도록 커서 변경 ~설정
       />
       <Input
         className={styles["vector-wrapper"]}
         placeholder="Search..."
         value={searchText}
         onChange={onChange}
+        ref={searchInputRef} // 검색 Input에 ref 추가 ~하는 함수
         sx={{
           borderRadius: "40px",
         }}
@@ -186,15 +210,14 @@ const NavBar = (props) => {
       />
 
       {searchResult.length > 0 && (
-        <div className={styles["rectangle-10"]}>
+        <div className={styles["rectangle-10"]} ref={searchResultRef}>
           {searchResult.map((result) => (
             <div
               key={result.ticker}
               className={styles["text-wrapper-25"]}
               onClick={() => onSelectResult(result)}
             >
-              {result.ticker} - {result["company name"]} ({result["short name"]}
-              )
+              {result.ticker} - {result["company name"]} ({result["short name"]})
             </div>
           ))}
         </div>
@@ -223,8 +246,7 @@ const NavBar = (props) => {
         )}
         {showLoginBox && (
           <div ref={loginBoxRef} className={styles["login-box-wrapper"]}>
-            <LogInBox onLoginSuccess={handleLoginSuccess} />{" "}
-            {/* 로그인 성공 시 호출 */}
+            <LogInBox onLoginSuccess={handleLoginSuccess} /> {/* 로그인 성공 시 호출 */}
           </div>
         )}
       </div>
