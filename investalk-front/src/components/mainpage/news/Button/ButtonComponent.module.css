@@ -1,0 +1,49 @@
+.group14 {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 140px;
+  left: 670px;
+  margin-left: 10px;
+  box-shadow: var(--); /* 변수값 설정 필요 */
+}
+
+.overlap8 {
+  position: relative;
+  height: 20px;
+}
+
+.ellipse4 {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 4px;
+  left: 4px;
+  background-color: #6b89ff;
+  border-radius: 6px;
+}
+
+.subtract {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 0;
+  left: 0;
+}
+
+.vector3 {
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  top: 5px;
+  left: 7px;
+}
+
+.vectorLeft {
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  top: 5px;
+  left: 7px;
+  transform: scaleX(-1); /* 화살표를 좌우 반전 */
+}

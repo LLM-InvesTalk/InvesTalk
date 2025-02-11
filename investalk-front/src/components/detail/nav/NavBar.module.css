@@ -1,0 +1,172 @@
+/* NavBar.module.css */
+
+/* 글로벌 스타일 */
+:root {
+  --nvvj-48: rgba(56, 70, 90, 1);
+  --x: rgba(108, 138, 255, 1);
+  --1: 0px 30px 50px 0px rgba(175, 160, 218, 0.35);
+  --: 0px 2px 5px 0px rgba(199, 207, 239, 0.3);
+}
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+
+/* a blue color as a generic focus style */
+button:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline: -webkit-focus-ring-color auto 5px !important;
+}
+
+a {
+  text-decoration: none;
+}
+
+@font-face {
+  font-family: "Pretendard Variable-Bold";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/640764766bf479e1d3dd80f8/fonts/pretendard-bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Pretendard Variable-Regular";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/64cc773c2f271fdb15f930b6/fonts/pretendardvariable.ttf") format("truetype");
+}
+
+/* 컴포넌트 스타일 */
+.frame-8 {
+  display: inline-flex;
+  align-items: center;
+  gap: 30px;
+  position: absolute;
+  top: 148px;
+  left: 315px;
+}
+
+.frame-9 {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.vector-wrapper {
+  position: relative;
+  width: 650px;
+  height: 34px;
+  border: 0.3px solid;
+  border-color: var(--x);
+  box-shadow: var(--);
+  background: linear-gradient(180deg,
+      rgba(204.84, 212.1, 233.87, 0.25) 0%,
+      rgba(255, 255, 255, 0.2) 77.04%,
+      rgb(255, 255, 255) 100%);
+}
+
+.vector {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 8px;
+  left: 12px;
+}
+
+.navbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.text-wrapper-9 {
+  position: relative;
+  width: fit-content;
+  margin-top: -1px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+  margin-left: 50px;
+  cursor: pointer;
+}
+
+.text-wrapper-10 {
+  position: relative;
+  width: fit-content;
+  margin-top: -1px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: var(--nvvj-48);
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.rectangle-10 {
+  position: absolute;
+  width: 480px;
+  height: 181px;
+  top: 40px;
+  /* 검색창 아래에 위치하도록 조정 */
+  left: 190px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 14px;
+  border: 0.3px solid #1f6dd8;
+  /* 테두리 색을 #38465a로 설정 */
+  box-shadow: 0 4px 12px rgba(26, 49, 109, 0.1);
+  z-index: 999;
+}
+
+.text-wrapper-25,
+.text-wrapper-26,
+.text-wrapper-27 {
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 12px 16px;
+  cursor: pointer;
+  width: 100%;
+}
+
+
+.text-wrapper-25 {
+  top: 20px;
+}
+
+.text-wrapper-25:hover {
+  color: #3abdff;
+}
+
+.text-wrapper-26 {
+  top: 50px;
+}
+
+.text-wrapper-27 {
+  top: 80px;
+}
+
+.login-box-wrapper {
+  position: absolute;
+  top: 100%;
+  /* 부모 요소 바로 아래 */
+  left: -110px;
+  margin-top: 10px;
+  /* 간격을 두고 싶으면 조정 */
+  z-index: 10;
+  /* 다른 요소 위에 나타나도록 설정 */
+}

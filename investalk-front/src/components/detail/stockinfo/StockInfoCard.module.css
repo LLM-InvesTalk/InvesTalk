@@ -1,0 +1,251 @@
+/* StockInfoCard.module.css */
+
+:root {
+  --nvvj-48: rgba(56, 70, 90, 1);
+  --x: rgba(108, 138, 255, 1);
+  --1: 0px 30px 50px 0px rgba(175, 160, 218, 0.35);
+  --: 0px 2px 5px 0px rgba(199, 207, 239, 0.3);
+}
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+
+/* a blue color as a generic focus style */
+button:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline: -webkit-focus-ring-color auto 5px !important;
+}
+
+a {
+  text-decoration: none;
+}
+
+@font-face {
+  font-family: "Pretendard Variable-Bold";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/640764766bf479e1d3dd80f8/fonts/pretendard-bold.otf")
+    format("opentype");
+}
+
+@font-face {
+  font-family: "Pretendard Variable-Regular";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/64cc773c2f271fdb15f930b6/fonts/pretendardvariable.ttf")
+    format("truetype");
+}
+
+/* 컴포넌트 스타일 */
+
+.group-15 {
+  position: absolute;
+  width: 720px;
+  height: 154px;
+  top: 275px;
+  left: 266px;
+  background-color: #ffffffcc;
+  border-radius: 25px;
+  box-shadow: 0px 24px 40px rgba(175, 160, 217, 0.35);
+}
+
+.group-16 {
+  position: relative;
+  width: 640px;
+  height: 100px;
+  top: 30px;
+  left: 40px;
+}
+
+.overlap-9 {
+  position: relative;
+  height: 100px;
+}
+
+.group-17 {
+  position: absolute;
+  width: 640px;
+  height: 89px;
+  top: 11px;
+  left: 0;
+}
+
+.frame-25 {
+  display: flex;
+  flex-direction: column;
+  width: 82px;
+  align-items: flex-start;
+  gap: 4px;
+  position: absolute;
+  top: 47px;
+  left: 0;
+}
+
+.text-wrapper-28 {
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.text-wrapper-29 {
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.frame-26 {
+  display: flex;
+  flex-direction: column;
+  width: 138px;
+  align-items: flex-start;
+  gap: 4px;
+  position: absolute;
+  top: 19px;
+  left: 502px;
+}
+
+.frame-27 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.group-18 {
+  width: 20px;
+  height: 28px;
+}
+
+.text-wrapper-30 {
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a;
+  font-size: 12px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.frame-28 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.text-wrapper-31 {
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.group-19 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.frame-29 {
+  display: inline-flex;
+  flex-direction: row-reverse;
+}
+
+.frame-30,
+.frame-31 {
+  background: linear-gradient(
+    180deg,
+    rgb(225, 247, 255) 0%,
+    rgb(236, 255, 248) 44.5%,
+    rgb(247, 239, 255) 100%
+  );
+}
+
+.text-wrapper-32 {
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a;
+  font-size: 10px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+
+.group-20 {
+  display: flex;
+  width: 312px;
+  height: 62px;
+}
+
+.text-wrapper-33,
+.text-wrapper-34 {
+  -webkit-text-stroke: 0.15px #6b89ff;
+  font-family: "Pretendard Variable-Bold", Helvetica;
+  font-weight: 700;
+  color: #6b89ff;
+  font-size: 12px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  top: 10px;
+}
+
+.group-22 {
+  width: 127px;
+  height: 50px;
+}
+
+.overlap-group-4 {
+  position: relative;
+  width: 136px;
+  height: 63px;
+  left: -11px;
+  display: flex;
+  flex-direction: row;
+}
+
+.vector-4,
+.vector-5 {
+  width: 40px;
+  height: 40px;
+}
+
+.text-wrapper-35 {
+  font-family: "Pretendard Variable-Bold", Helvetica;
+  font-weight: 700;
+  color: #38465a;
+  font-size: 30px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.text-wrapper-group {
+  display: flex;
+  /* flex-direction: row-reverse; */
+}
+
+.graph-group {
+  position: absolute;
+  top: 20px;
+  left: 100px;
+  display: flex;
+  flex-direction: row;
+  width: 312px;
+  height: 62px;
+}

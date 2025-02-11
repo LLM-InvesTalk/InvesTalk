@@ -1,0 +1,254 @@
+/* FinancialStatements.module.css */
+
+/* 글로벌 스타일 */
+:root {
+  --nvvj-48: rgba(56, 70, 90, 1);
+  --x: rgba(108, 138, 255, 1);
+  --1: 0px 30px 50px 0px rgba(175, 160, 218, 0.35);
+  --: 0px 2px 5px 0px rgba(199, 207, 239, 0.3);
+}
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+
+/* a blue color as a generic focus style */
+button:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline: -webkit-focus-ring-color auto 5px !important;
+}
+
+a {
+  text-decoration: none;
+}
+
+@font-face {
+  font-family: "Pretendard Variable-Bold";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/640764766bf479e1d3dd80f8/fonts/pretendard-bold.otf")
+    format("opentype");
+}
+
+@font-face {
+  font-family: "Pretendard Variable-Regular";
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/64cc773c2f271fdb15f930b6/fonts/pretendardvariable.ttf")
+    format("truetype");
+}
+
+/* 컴포넌트 스타일 */
+.overlap {
+  position: relative;
+  width: 1635px;
+  height: 1205px;
+  top: -48px;
+  left: -72px;
+}
+
+.group {
+  position: absolute;
+  width: 1635px;
+  height: 1205px;
+  top: 0;
+  left: 0;
+}
+
+.group-wrapper {
+  position: absolute;
+  width: 720px;
+  height: 200px;
+  top: 459px;
+  left: 266px;
+  background-color: #ffffff;
+  border-radius: 25px;
+  box-shadow: 0px 24px 40px rgba(175, 160, 217, 0.35);
+  /* margin-top: 30px; */
+}
+
+.group-2 {
+  position: relative;
+  width: 654px;
+  height: 140px;
+  top: 30px;
+  left: 40px;
+}
+
+.text-wrapper-2 {
+  position: absolute;
+  height: 24px;
+  top: 0;
+  left: 0;
+  font-family: "Pretendard Variable-Bold", Helvetica;
+  font-weight: 700;
+  color: #38465a;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.frame {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  position: absolute;
+  top: 0;
+  left: 102px;
+}
+
+.frame-wrapper {
+  position: relative;
+  width: 170px;
+  height: 140px;
+  box-shadow: 0px 24px 40px #afa0d926;
+}
+
+.frame-2 {
+  display: flex;
+  flex-direction: column;
+  width: 170px;
+  height: 140px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 10px;
+  position: relative;
+  border-radius: 25px;
+  border: 0.15px solid;
+  border-color: var(--x);
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.frame-3 {
+  display: flex;
+  flex-direction: column;
+  width: 149px;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  flex: 0 0 auto;
+  margin-top: -0.5px;
+  margin-bottom: -0.5px;
+}
+
+.frame-4 {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0px 8px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.text-wrapper-3 {
+  position: relative;
+  width: fit-content;
+  font-family: "Pretendard Variable-Bold", Helvetica;
+  font-weight: 700;
+  color: #38465a;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.text-wrapper-4 {
+  position: relative;
+  width: fit-content;
+  margin-top: -0.8px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #534848;
+  font-size: 16px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.text-wrapper-5 {
+  position: relative;
+  width: fit-content;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.frame-5 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px 10px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.frame-6 {
+  display: flex;
+  flex-direction: column;
+  width: 68px;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  position: relative;
+  background-color: #ffffffa6;
+  border-radius: 11.2px;
+  box-shadow: 0px 24px 40px #afa0d959;
+}
+
+.text-wrapper-6 {
+  width: fit-content;
+  margin-top: -0.8px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  font-size: 12px;
+  white-space: nowrap;
+  position: relative;
+  color: #38465a;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.frame-7 {
+  display: inline-flex;
+  align-items: flex-start;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.text-wrapper-7 {
+  position: relative;
+  width: fit-content;
+  margin-top: -0.8px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #7f7f7f;
+  font-size: 11.2px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.text-wrapper-8 {
+  position: relative;
+  width: fit-content;
+  margin-top: -0.8px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #7f7f7f;
+  font-size: 10px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}

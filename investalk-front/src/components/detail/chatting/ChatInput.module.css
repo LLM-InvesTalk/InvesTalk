@@ -1,0 +1,65 @@
+.group10 {
+  /* position: absolute; */
+  width: 264px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+}
+
+.overlap6 {
+  /* position: absolute; */
+  width: 262px;
+  height: 30px;
+  top: 35px;
+  left: 0;
+  border-radius: 15px;
+  border: 0.3px solid;
+  border-color: var(--x);
+  box-shadow: var(--);
+  background: linear-gradient(
+    180deg,
+    rgba(204.84, 212.1, 233.87, 0.25) 0%,
+    rgba(255, 255, 255, 0.2) 77.04%,
+    rgb(255, 255, 255) 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.textWrapper19 {
+  /* position: absolute; */
+  top: 6px;
+  left: 20px;
+  font-family: "Pretendard Variable-Regular", Helvetica;
+  font-weight: 400;
+  color: #38465a80;
+  font-size: 16px;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+  border: none;
+  outline: none;
+}
+
+
+.vector2 {
+  position: absolute; /* 위치를 절대값으로 설정 */
+  width: 30px; /* 동그라미 크기 */
+  height: 30px; /* 동그라미 크기 */
+  top: 610px; /* 위치 조정 */
+  left: 140px; /* 위치 조정 */
+  z-index: 1000; /* 다른 요소 위에 표시 */
+  cursor: pointer; /* 클릭 가능한 포인터 표시 */
+
+  /* 동그란 배경 */
+  background-color: rgb(228, 247, 255); /* 연한 회색 배경 */
+  border: 1.5px solid rgb(0, 0, 0, 0.2);
+  border-radius: 50%; /* 동그란 모양 */
+  display: flex; /* 중앙 정렬을 위한 flex */
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: center; /* 수평 가운데 정렬 */
+  transform: rotate(180deg); /* 아래쪽으로 회전 */
+  padding: 9px;
+}
+
